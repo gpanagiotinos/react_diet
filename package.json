@@ -1,0 +1,26 @@
+{
+  "name": "react_diet",
+  "version": "0.0.1",
+  "description": "React App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon ./src/api/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gpanagiotinos/react_diet.git"
+  },
+  "author": "Georgios Panagiotinos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gpanagiotinos/react_diet/issues"
+  },
+  "homepage": "https://github.com/gpanagiotinos/react_diet#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "sequelize": "^4.42.0",
+    "webpack": "^4.29.0",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
