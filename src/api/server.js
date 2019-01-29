@@ -5,7 +5,8 @@ import {buildSchema} from 'graphql'
 import bodyParser from 'body-parser'
 
 import {dbConnection} from './db/dbsqlite.js'
-import dbSync from './db/fakerdata.js'
+import dbSync from './db/syncmodels.js'
+import dbFake from './db/fakerdata.js'
 // import index from 'routes'
 // config graphql
 const schema = buildSchema(`
@@ -23,7 +24,10 @@ dbConnection().then((message) => {
     console.log('Connection with db established')
     return dbSync()
 }).then(() => {
+    return dbFake()
     console.log('Sync functions')
+}).then(() => {
+    console.log('Add fake data')
 }).catch((error) => {
     console.log('Database Connection failed:' + error)
 })

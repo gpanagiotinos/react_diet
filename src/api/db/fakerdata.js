@@ -1,15 +1,14 @@
-import faker from 'faker'
-import models from '../models/init.js'
+import fake from 'faker'
+const models = require('../models/init.js')
 
-
-async function dbSync () {
-    await models.user.sync({force: false}).then(() => {
-        for (let index = 0; index < array.length; index++) {
-            models.user.create({
-                username: faker.internet.userName,
-                password: '123456'
-            })
-        }
-    })
+async function dbFake () {
+    for (let index = 0; index < 10; index++) {
+        await models.user.build({
+            username: fake.internet.userName,
+            password: '123456',
+            createdAt: fake.date.recent(),
+            updatedAt: fake.date.recent()
+        })
+    }
 }
-module.exports = dbSync
+module.exports = dbFake
