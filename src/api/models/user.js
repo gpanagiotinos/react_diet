@@ -7,13 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         username: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                is: {
-                    args: /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/i,
-                    msg: 'This is not valid username'
-                }
-            }
+            allowNull: false
         },
         password: {
             type: DataTypes.STRING,

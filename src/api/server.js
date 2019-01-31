@@ -1,22 +1,14 @@
 import path from 'path'
 import express from 'express'
 import express_graphql from 'express-graphql'
-import {buildSchema} from 'graphql'
 import bodyParser from 'body-parser'
 
 import {dbConnection} from './db/dbsqlite.js'
 import dbSync from './db/syncmodels.js'
 import dbFake from './db/fakerdata.js'
-// import index from 'routes'
-// config graphql
-const schema = buildSchema(`
-    type Query {
-        message: String
-    }
-`)
-var root = {
-    message: () => 'Hello World!'
-}
+import schema from './schema/schema.js'
+import resolver from './schema/resolvers.js'
+const models = require('./models/init.js')
 
 
 // db connection instance
@@ -42,9 +34,14 @@ app.use(express.static(DIST_DIR))
 app.get('/', (req, res) => {
     res.sendFile(HTML_FILE)
 })
+app.get('/users', (req, res) => {
+    models.user.findAll().then((data) => {
+        console.log(data)
+    })
+    res.sendFile(HTML_FILE)
+})
 app.use('/graphql', express_graphql({
     schema: schema,
-    rootValue: root,
     graphiql: true
 }))
 // app.use('/api/', index)
