@@ -23,9 +23,8 @@ const UserType = new GraphQLObjectType({
 const userQueries = {
     users: {
         type: new GraphQLList(UserType),
-        resolve: async () => {
-            const user = await models.users.findAll()
-            console.log('user')
+        resolve: async (rootValue, {input}) => {
+            const user = await models.user.findAll()
             return user
         } 
     }

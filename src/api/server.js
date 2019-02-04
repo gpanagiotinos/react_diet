@@ -2,12 +2,11 @@ import path from 'path'
 import express from 'express'
 import express_graphql from 'express-graphql'
 import bodyParser from 'body-parser'
-
 import {dbConnection} from './db/dbsqlite.js'
 import dbSync from './db/syncmodels.js'
 import dbFake from './db/fakerdata.js'
 import schema from './schema/schema.js'
-import resolver from './schema/resolvers.js'
+const router = express.Router()
 const models = require('./models/init.js')
 
 
@@ -31,13 +30,7 @@ HTML_FILE = path.join(DIST_DIR, 'index.html')
 app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))
 
-app.get('/', (req, res) => {
-    res.sendFile(HTML_FILE)
-})
-app.get('/users', (req, res) => {
-    models.user.findAll().then((data) => {
-        console.log(data)
-    })
+app.get('/george', (req, res) => {
     res.sendFile(HTML_FILE)
 })
 app.use('/graphql', express_graphql({
