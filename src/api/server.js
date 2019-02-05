@@ -1,14 +1,10 @@
 import path from 'path'
 import express from 'express'
-import express_graphql from 'express-graphql'
 import bodyParser from 'body-parser'
 import {dbConnection} from './db/dbsqlite.js'
 import dbSync from './db/syncmodels.js'
 import dbFake from './db/fakerdata.js'
-import schema from './schema/schema.js'
-const router = express.Router()
-const models = require('./models/init.js')
-
+import routes from './routes/index.js'
 
 // db connection instance
 dbConnection().then((message) => {
@@ -29,14 +25,10 @@ HTML_FILE = path.join(DIST_DIR, 'index.html')
 
 app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))
-
+app.use('/', routes)
 app.get('/george', (req, res) => {
     res.sendFile(HTML_FILE)
 })
-app.use('/graphql', express_graphql({
-    schema: schema,
-    graphiql: true
-}))
 // app.use('/api/', index)
 const PORT = process.env.PORT || 8090
 

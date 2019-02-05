@@ -1,0 +1,12 @@
+type UserType {
+    user_id: ID!
+    username: String!
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+type Query {
+    getUsers: [UserType],
+    getUser(user_id: ID!): UserType
+}
+scalar Date

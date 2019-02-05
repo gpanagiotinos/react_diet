@@ -1,8 +1,10 @@
-import {GraphQLSchema, GraphQLObjectType} from 'graphql'
-import {userQueries} from './queries.js'
- export default new GraphQLSchema({
-    query: new GraphQLObjectType({
-        name: 'Query',
-        fields: () => ({...userQueries})
-    })
- })
+import fs from 'fs'
+import path from 'path'
+import resolvers from './resolvers.js'
+import {makeExecutableSchema} from 'graphql-tools'
+
+const schemaFile = path.join(__dirname, 'schemaFile.graphql')
+const typeDefs = fs.readFileSync(schemaFile, 'utf8')
+const schema = makeExecutableSchema({typeDefs, resolvers})
+
+module.exports = schema
