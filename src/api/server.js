@@ -26,10 +26,6 @@ HTML_FILE = path.join(DIST_DIR, 'index.html')
 app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))
 app.use('/', routes)
-app.get('/george', (req, res) => {
-    res.sendFile(HTML_FILE)
-})
-// app.use('/api/', index)
 const PORT = process.env.PORT || 8090
 
 app.listen(PORT, () => {

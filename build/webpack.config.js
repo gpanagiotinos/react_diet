@@ -1,15 +1,14 @@
 const path = require('path')
-const webpack = require('webpack')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: {
-        server: './src/api/server.js'
+        client: './src/client/index.js',
     },
     output: {
         path: path.join(__dirname, 'dist'),
-        publicPath: '/',
-        filename: '[name].js'
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         rules: [
@@ -21,16 +20,31 @@ module.exports = {
                 }
             },
             {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                use: {
+                  loader: 'babel-loader'
+                }
+            },
+            {
                 test: /\.html$/,
                 use: [{loader: 'html-loader'}]
             }
         ]
     },
-    plugins: [
-        new HtmlWebPackPlugin({
-            template: './index.html',
-            filename: './index.html',
-            excludeChunks: ['server']
-        })
-    ]
+    // devServer: {
+    //     historyApiFallback: true,
+    //     port: 8090,
+    //     open: true,
+    //     proxy: {
+    //         '/api': 'http://localhost:8091'
+    //     }
+    // },
+    // plugins: [
+    //     new HtmlWebPackPlugin({
+    //         template: './src/index.html',
+    //         filename: './index.html',
+    //         excludeChunks: ['server']
+    //     })
+    // ]
 }
