@@ -1,11 +1,12 @@
 const template = (title, initialState = {}, content = "") => {
     let scripts = ''
     if (content) {
-        scripts = `
-        <script src="dist/bundle.js"></script>
-        `
+        scripts = ` <script>
+                        window.__STATE__ = ${JSON.stringify(initialState)}
+                    </script>
+                    <script src="assets/client.js"></script>`
     } else {
-        scripts = `<script src="dist/bundle.js"></script>`
+        scripts = `<script src="assets/bundle.js></script>`
     }
     let page = `
         <!DOCTYPE html>

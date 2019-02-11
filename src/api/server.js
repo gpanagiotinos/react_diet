@@ -26,7 +26,9 @@ HTML_FILE = path.join(DIST_DIR, 'index.html')
 app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))
 app.use('/', routes)
-const PORT = process.env.PORT || 8090
+
+
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
     console.log(`App listening to ${PORT}`)

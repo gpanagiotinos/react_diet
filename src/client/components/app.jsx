@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-
+import {hot, setConfig} from 'react-hot-loader'
 class App extends Component {
     componentDidMount () {
-        fetch('localhost:8090/graphql')
+        fetch('http://localhost:3001/graphql')
             .then((response) => {
                 console.log(response)
             })
@@ -10,9 +10,10 @@ class App extends Component {
     render () {
        return ( 
        <div> 
-            App Component
+            App Components
         </div>
        )
     }
 }
+
 export default App
