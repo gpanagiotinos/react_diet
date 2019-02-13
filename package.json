@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config build/webpack.config.prod.js --mode production",
+    "build": "webpack --config build/webpack.config.prod.js --mode production --watch",
     "start": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\"",
-    "ssr": "npm run build && npm run server",
+    "ssr": "concurrently \"npm run build\" \"npm run server\"",
     "server": "nodemon ./src/api/server.js --exec babel-node --presets @babel/preset-env",
     "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --hot"
   },
