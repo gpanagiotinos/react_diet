@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Searchusda from './searchusda.jsx'
+import TopNavBar from './TopNavBar.jsx'
 class App extends Component {
     componentDidMount () {
         fetch('http://localhost:3001/graphql', {
@@ -14,8 +14,8 @@ class App extends Component {
     }
     render () {
        return ( 
-       <div> 
-        <Searchusda/>
+       <div>
+            <TopNavBar/>
         </div>
        )
     }
