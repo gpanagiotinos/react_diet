@@ -28,7 +28,20 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: [{loader: 'html-loader'}]
-            }
+            },
+            {
+                test: /\.(scss|sass)$/,
+                use: [{
+                  loader: 'style-loader'
+                }, {
+                  loader: 'css-loader'
+                }, {
+                  loader: 'sass-loader',
+                  options: {
+                    includePaths: [path.resolve('../node_modules')]
+                  }
+                }]
+              }
         ]
     },
     // devServer: {

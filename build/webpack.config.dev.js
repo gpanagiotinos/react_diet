@@ -1,12 +1,16 @@
 const path = require('path')
-const HtmlWebPackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
-const htmlPlugin = new HtmlWebPackPlugin({
-    template: './src/index.html',
-    filename: './index.html'
-  })
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
-    entry: './src/client/bundle.js',
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        })
+    ],
+    entry: {
+        client: './src/client/client.js',
+        bundle: './src/client/bundle.js'
+    },
     output: {
         path: path.join(__dirname, '../assets'),
         filename: '[name].js',
@@ -31,18 +35,11 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: [{loader: 'html-loader'}]
-            }
+            },
+            {
+                test: /\.(scss|sass)$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+              }
         ]
-    },
-    devServer: {
-        historyApiFallback: true,
-        port: 8080,
-        open: true,
-        proxy: {
-          '/api': 'http://localhost:3000'
-        }
-    },
-    plugins: [
-        htmlPlugin
-    ]
+    }
 }
