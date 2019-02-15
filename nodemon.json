@@ -1,0 +1,8 @@
+{
+  "igonore": [
+      "src/api/ssr"
+  ],
+  "watch": [
+    "src/api"
+  ]
+}

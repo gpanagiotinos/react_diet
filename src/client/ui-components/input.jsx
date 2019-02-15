@@ -16,9 +16,11 @@ export default class Input extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleInputClass = this.handleInputClass.bind(this)
         this.handleInputType = this.handleInputType.bind(this)
-        this.handleInputIcons = this.handleInputIcons.bind(this)
+        this.handleInputLeftIcons = this.handleInputLeftIcons.bind(this)
+        this.handleInputRightIcons = this.handleInputRightIcons.bind(this)
     }
     handleChange(e) {
+        console.log(e.target)
         e.persist()
         this.setState((prevState, props) => {
             value: e.target.value
@@ -42,23 +44,24 @@ export default class Input extends React.Component {
             break
         }
     }
-    handleInputIcons() {
-        let htmlIcon = null
+    handleInputLeftIcons() {
         if (this.state.leftIcon !== undefined) {
-            htmlIcon += <span class="icon is-small is-left"><FontAwesomeIcon icon={['fas', this.state.leftIcon]} /></span>
+            return <span className='icon is-small is-left'><FontAwesomeIcon icon={['fas', this.state.leftIcon]} /></span>
         }
+    }
+    handleInputRightIcons() {
         if (this.state.rightIcon !== undefined) {
-            htmlIcon += <span class="icon is-small is-right"><FontAwesomeIcon icon={['fas', this.state.rightIcon]} /></span>
+            return <span className='icon is-small is-right'><FontAwesomeIcon icon={['fas', this.state.rightIcon]} /></span>
         }
-        return htmlIcon
     }
     render () {
         return (
             <div className='field'>
-                <p className='control'>
-                    <label className='label'>{this.state.label}</label>
+                <label className='label'>{this.state.label}</label>
+                <p className={'control' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon ? ' has-icons-right': '')}>
                     <input className='input' type={this.handleInputType()} ref={this.InputRef} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
-                    {this.handleInputIcons()}
+                    {this.handleInputLeftIcons()}
+                    {this.handleInputRightIcons()}
                 </p>
             </div>
         )

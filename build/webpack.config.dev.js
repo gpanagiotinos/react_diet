@@ -41,5 +41,10 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
               }
         ]
+    },
+    externals: {
+        config: JSON.stringify({
+            apiUrl: 'http://localhost:3001'
+        })
     }
 }
