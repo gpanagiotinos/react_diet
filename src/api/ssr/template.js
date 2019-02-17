@@ -19,12 +19,10 @@ const template = (title, initialState = {}, content = "") => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <title>${title} </title>
-            ${css}
+           ${css}
         </head>
         <body>
-            <section id="app">
-            ${content}
-            </section>
+            <section id="app">${content}</section>
         </body>
         ${scripts}
         </html>

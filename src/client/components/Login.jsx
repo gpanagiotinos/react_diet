@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Input from '../ui-components/Input.jsx'
+import Button from '../ui-components/Button.jsx'
 import { userActions } from '../redux/actions'
 
 class Login extends React.Component {
@@ -13,30 +14,40 @@ class Login extends React.Component {
             submitted: false
         }
         this.handleChange = this.handleChange.bind(this)
-        // this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleLoggedIn = this.handleLoggedIn.bind(this)
     }
     handleChange(e) {
-        console.log(e.target)
         const {name, value} = e.target
         this.setState({
             [name]: value
         })
+    }
+    handleLoggedIn(e) {
+        const {username, password} = this.state
+        console.log(this.props)
+        const dispatch = this.props.dispatch
+        if (username && password) {
+            dispatch(userActions.login(username, password))
+        }
+
     }
     render () {
         return (
             <div className='columns is-mobile is-centered'>
                 <div className='column is-half'>
                     <p className='title is-1'>
-                        Log in SuperFoods
+                        Log in Nutrition Informatics
                     </p>
-                    <Input type='username' label='Username' value={this.state.username} onChange={this.handleChange} leftIcon='user'/>
-                    <Input type='password' label='Password' value={this.state.password} onChange={this.handleChange} leftIcon='lock'/>
+                    <Input type='username' label='Username' name='username' value={this.state.username} onInputChange={this.handleChange} leftIcon='user'/>
+                    <Input type='password' label='Password' name='password' value={this.state.password} onInputChange={this.handleChange} leftIcon='lock' rightIcon = 'eye'/>
+                    <Button label='Log in' bulmaType='link' onButtonClick={this.handleLoggedIn}/>
                 </div>
             </div>
         )
     }
 }
 function mapStateToProps(state) {
+    console.log(state.authentication)
     const { loggingIn } = state.authentication
     return {
         loggingIn

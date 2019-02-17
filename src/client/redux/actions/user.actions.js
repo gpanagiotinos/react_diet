@@ -7,9 +7,9 @@ export const userActions = {
 
 function login (username, password) {
     return dispatch => {
-        dispatch(request({username}))
+        dispatch(request({ username }))
         userService.login(username, password)
-            then((user) => {
+            .then((user) => {
                 dispatch(success(user))
             }, (error) => {
                 dispatch(failure(error.toString()))

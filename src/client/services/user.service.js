@@ -1,8 +1,10 @@
+import {config} from '../config'
 export const userService = {
     login
 }
 
 function login(username, password) {
+    console.log(config)
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
