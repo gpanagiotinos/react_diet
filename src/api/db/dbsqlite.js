@@ -1,4 +1,4 @@
-import {db_user} from '../config/dbconfig.js'
+import {db_user} from '../config/database.js'
 import Sequelize from 'sequelize'
 
 const sequelize = new Sequelize(db_user.dbname, db_user.dbusername, db_user.dbpassword, {

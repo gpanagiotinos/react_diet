@@ -1,5 +1,5 @@
 node_modules/
 package-lock.json
-assets/
+/assets/
 dist/
 !client/assets/

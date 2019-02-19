@@ -36,7 +36,7 @@ class Login extends React.Component {
             <div className='columns is-mobile is-centered'>
                 <div className='column is-half'>
                     <p className='title is-1'>
-                        Log in Nutrition Informatics
+                        Log in
                     </p>
                     <Input type='username' label='Username' name='username' value={this.state.username} onInputChange={this.handleChange} leftIcon='user'/>
                     <Input type='password' label='Password' name='password' value={this.state.password} onInputChange={this.handleChange} leftIcon='lock' rightIcon = 'eye'/>

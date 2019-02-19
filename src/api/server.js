@@ -5,6 +5,7 @@ import {dbConnection} from './db/dbsqlite.js'
 import dbSync from './db/syncmodels.js'
 import dbFake from './db/fakerdata.js'
 import routes from './routes/index.js'
+import session from './config/session.js'
 
 // db connection instance
 dbConnection().then((message) => {
@@ -25,6 +26,7 @@ HTML_FILE = path.join(DIST_DIR, 'index.html')
 
 app.use(bodyParser.json())
 app.use(express.static(DIST_DIR))
+app.use(session)
 app.use('/', routes)
 
 
