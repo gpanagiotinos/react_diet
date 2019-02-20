@@ -13,4 +13,4 @@ fs
         var model = sequelize.import(path.join(__dirname, file))
         dbModel[model.name] = model
     })
-    module.exports = dbModel
+   export{dbModel}

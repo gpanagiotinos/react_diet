@@ -1,18 +1,17 @@
 import schema from '../schema/schema.js'
 import express_graphql from 'express-graphql'
-import models from '../models/init.js'
+import {dbModel} from '../models/init.js'
 import express from 'express'
 import path from 'path'
 const router = express.Router()
 import ssr from '../ssr/index.js'
 import template from '../ssr/template.js'
 import {router as user} from './user.js'
-
 router.use('/assets', express.static(path.resolve(__dirname, '../../../assets')))
 router.use('/graphql', express_graphql({
     schema: schema,
     graphiql: true,
-    context: {models}
+    context: {dbModel}
 }))
 router.use('/user', user)
 
@@ -29,4 +28,4 @@ router.get('/', (req, res) => {
     res.send(response)
 })
 
-module.exports = router
+export {router}

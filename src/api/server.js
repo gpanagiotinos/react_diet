@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import {dbConnection} from './db/dbsqlite.js'
 import dbSync from './db/syncmodels.js'
 import dbFake from './db/fakerdata.js'
-import routes from './routes/index.js'
+import {router as routes} from './routes/index.js'
 import session from './config/session.js'
 
 // db connection instance
