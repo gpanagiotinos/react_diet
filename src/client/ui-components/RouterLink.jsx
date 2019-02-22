@@ -6,16 +6,15 @@ export default class RouterLink extends React.Component {
         super(props)
         this.state = {
             to: this.props.to,
-            text: this.props.text
+            text: this.props.text,
+            navLinkClassName: this.props.navLinkClassName
         }
     }
     render () {
         return (
-            <div>
-                <NavLink to={this.state.to}>
-                    {this.state.text}
-                </NavLink>
-            </div>
+            <NavLink className={this.state.navLinkClassName} to={this.state.to}>
+                {this.state.text}
+            </NavLink>
         )
     }
 }

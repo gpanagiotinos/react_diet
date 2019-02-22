@@ -4,8 +4,8 @@ import {dbModel} from '../models/init.js'
 import express from 'express'
 import path from 'path'
 const router = express.Router()
-import ssr from '../ssr/index.js'
-import template from '../ssr/template.js'
+import {render} from '../ssr/index.js'
+import {template} from '../ssr/template.js'
 import {router as user} from './user.js'
 router.use('/assets', express.static(path.resolve(__dirname, '../../../assets')))
 router.use('/graphql', express_graphql({
@@ -16,8 +16,8 @@ router.use('/graphql', express_graphql({
 router.use('/user', user)
 
 // ssr request
-router.get('/', (req, res) => {
-    const {content} = ssr({})
+router.get('/*', (req, res) => {
+    const {content} = render({}, {}, req)
     let response = null
     if (process.env.NODE_ENV === 'development') {
         response = template('Development SSR', {}, content)

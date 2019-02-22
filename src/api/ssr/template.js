@@ -1,7 +1,8 @@
 const template = (title, initialState = {}, content = "") => {
     let scripts = ''
     let css = ''
-    if (content) {
+    let fontawesome = ''
+    if (process.env.NODE_ENV === 'production') {
         scripts = ` <script>
                         window.__STATE__ = ${JSON.stringify(initialState)}
                     </script>
@@ -10,6 +11,7 @@ const template = (title, initialState = {}, content = "") => {
     } else {
         scripts = `<script src="assets/bundle.js></script>`
         css = `<link href="assets/bundle.css" rel="stylesheet">`
+        fontawesome = `<link href="https://use.fontawesome.com/releases/v5.7.2/css/svg-with-js.css" rel="stylesheet"></link>`
     }
     let page = `
         <!DOCTYPE html>
@@ -19,6 +21,7 @@ const template = (title, initialState = {}, content = "") => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <title>${title} </title>
+            ${fontawesome}
            ${css}
         </head>
         <body>
@@ -29,4 +32,4 @@ const template = (title, initialState = {}, content = "") => {
     `
     return page
 }
-module.exports = template
+export {template}

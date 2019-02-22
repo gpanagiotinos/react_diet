@@ -7,15 +7,16 @@ import configureStore from '../../client/redux/configureStore.js'
 
 import {StaticRouter} from 'react-router-dom'
 
-const render = (initialState) => {
+const render = (initialState, context, req) => {
   const store = configureStore(initialState)
   let content = renderToString(
     <Provider store= {store}>
-      <StaticRouter>
+      <StaticRouter context={ context } location={ req.url }>
           <App/>
       </StaticRouter>
     </Provider>
   )
-  return {content}
+  const preloadedState = store.getState()
+  return {content, preloadedState}
 }
-module.exports = render
+export {render}

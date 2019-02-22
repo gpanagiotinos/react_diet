@@ -6,23 +6,13 @@ import {fas} from '@fortawesome/free-solid-svg-icons'
 library.add(fas)
 
 import TopNavBar from './TopNavBar.jsx'
-import Login from './Login.jsx'
+import Main from './Main.jsx'
 class App extends Component {
-    componentDidMount () {
-        fetch('http://localhost:3001/graphql', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({query: "{getUsers{username}}"})
-        }).then((response) => {
-            return response.json()
-        }).then((response) => {
-            console.log(response)
-        })
-    }
     render () {
        return ( 
        <div>
-            <Login/>
+           <TopNavBar/>
+           <Main/>
         </div>
        )
     }

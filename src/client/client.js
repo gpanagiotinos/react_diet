@@ -1,7 +1,7 @@
 import React from 'react'
 import {hydrate} from 'react-dom'
 
-import {StaticRouter} from 'react-router-dom'
+import {Router} from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 const browserHistory = createBrowserHistory({basename: '/'})
 
@@ -17,9 +17,9 @@ const store = configureStore()
 
 hydrate(
     <Provider store= {store}>
-        <StaticRouter>
+        <Router history={browserHistory}>
             <App/>
-        </StaticRouter>
+        </Router>
     </Provider>,
     document.getElementById('app')
 )
