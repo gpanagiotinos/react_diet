@@ -33,6 +33,18 @@
   justify-content: flex-end;
   margin-left: auto;
 }
+.homeWrapper{
+  margin-top: 10%;
+  .homeTitle{
+    font-style: italic;
+    span:nth-child(1){
+      color: #6ca339;
+    }
+    span:nth-child(2){
+      color: #004987;
+    }
+  }
+}
 .mainWrapper {
   padding-top: 70px;
 }

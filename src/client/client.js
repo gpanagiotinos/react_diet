@@ -13,7 +13,7 @@ import App from './components/App.jsx'
 const state = window.__STATE__
 delete window.__STATE__
 
-const store = configureStore()
+const store = configureStore(state)
 
 hydrate(
     <Provider store= {store}>

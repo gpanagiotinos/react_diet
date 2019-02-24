@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 
-import {StaticRouter} from 'react-router-dom'
+import {Router} from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 const browserHistory = createBrowserHistory({basename: '/'})
 
@@ -10,13 +10,16 @@ import configureStore from './redux/configureStore'
 import './assets/scss/main.scss'
 import App from './components/App.jsx'
 
-const store = configureStore()
+const state = window.__STATE__
+delete window.__STATE__
+
+const store = configureStore(state)
 
 render(
     <Provider store= {store}>
-        <StaticRouter history = {browserHistory}>
+        <Router history = {browserHistory}>
             <App/>
-        </StaticRouter>
+        </Router>
     </Provider>,
     document.getElementById('app')
 )

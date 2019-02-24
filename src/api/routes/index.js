@@ -7,6 +7,7 @@ const router = express.Router()
 import {render} from '../ssr/index.js'
 import {template} from '../ssr/template.js'
 import {router as user} from './user.js'
+import {validateSession} from '../helpers/session.helpers.js'
 router.use('/assets', express.static(path.resolve(__dirname, '../../../assets')))
 router.use('/graphql', express_graphql({
     schema: schema,
@@ -17,15 +18,27 @@ router.use('/user', user)
 
 // ssr request
 router.get('/*', (req, res) => {
-    const {content} = render({}, {}, req)
-    let response = null
-    if (process.env.NODE_ENV === 'development') {
-        response = template('Development SSR', {}, content)
-    } else {
-        response = template("SSR", {}, content)
-    }
-    res.setHeader('Cache-Control', 'assets, max-age=604800')
-    res.send(response)
+    validateSession(req).then((user) => {
+        const {content} = render({loggedIn: true, user: user}, {}, req)
+        let response = null
+        if (process.env.NODE_ENV === 'development') {
+            response = template('Development SSR', {loggedIn: true, user: user})
+        } else {
+            response = template("SSR", {}, content)
+        }
+        res.setHeader('Cache-Control', 'assets, max-age=604800')
+        res.send(response)
+    }).catch((error) => {
+        const {content} = render({}, {}, req)
+        let response = null
+        if (process.env.NODE_ENV === 'development') {
+            response = template('Development SSR', {loggedIn: false, user: null})
+        } else {
+            response = template("SSR", {}, content)
+        }
+        res.setHeader('Cache-Control', 'assets, max-age=604800')
+        res.send(response)
+    })
 })
 
 export {router}

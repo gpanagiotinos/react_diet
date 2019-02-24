@@ -1,8 +1,12 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {Route} from 'react-router-dom'
 import routes from '../router/route.js'
 
-export default class Main extends React.Component {
+class Main extends React.Component {
+  constructor(props) {
+    super(props)
+  }
   render () {
     return (
       <div className='columns is-multiline is-mobile mainWrapper'>
@@ -22,3 +26,5 @@ export default class Main extends React.Component {
     )
   }
 }
+
+export default Main

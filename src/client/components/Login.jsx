@@ -24,7 +24,6 @@ class Login extends React.Component {
     }
     handleLoggedIn(e) {
         const {username, password} = this.state
-        console.log(this.props)
         const dispatch = this.props.dispatch
         if (username && password) {
             dispatch(userActions.login(username, password))
@@ -47,7 +46,6 @@ class Login extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    console.log(state.authentication)
     const { loggingIn } = state.authentication
     return {
         loggingIn

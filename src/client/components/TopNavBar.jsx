@@ -10,7 +10,7 @@ class TopNavBar extends React.Component {
         this.handleAccessibleRouter = this.handleAccessibleRouter.bind(this)
     }
     handleAccessibleRouter () {
-        return <div className='navbar-start'>
+        return <div className='navbar-end'>
         {
             routes.map((route) => (
                     <RouterLink
