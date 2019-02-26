@@ -1,7 +1,8 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {Route} from 'react-router-dom'
 import routes from '../router/route.js'
+import PrivateRoute from './PrivateRoute.jsx'
+import Home from './Home.jsx'
 
 class Main extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class Main extends React.Component {
     return (
       <div className='columns is-multiline is-mobile mainWrapper'>
         <div className='column is-12'>
+        <PrivateRoute exact path="/" component={Home} />
           {
             routes.map((route, index) => (
               <Route
@@ -26,5 +28,4 @@ class Main extends React.Component {
     )
   }
 }
-
 export default Main

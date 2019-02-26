@@ -14,7 +14,6 @@ const state = window.__STATE__
 delete window.__STATE__
 
 const store = configureStore(state)
-
 render(
     <Provider store= {store}>
         <Router history = {browserHistory}>

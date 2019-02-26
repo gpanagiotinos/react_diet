@@ -8,8 +8,8 @@ const databaseRoles = [{'1000': 'Super User'}, {'1001': 'Admin'}, {'1002': 'User
 const  sessionSave = (session, data)  => {
   session.data = data
 }
-const  userHasSession = (req)  => {
-  return req.session.user && req.cookies.user_sid
+const  userHasSession = (session)  => {
+  return session.cookie && session.data
 }
  const sessionCheck = (access = [])  => {
   return (req, res, next) => {
@@ -27,13 +27,13 @@ const  userHasSession = (req)  => {
 
  const validateSession = async (req)  => {
    try {
-    if (userHasSession(req)) {
+    if (userHasSession(req.session)) {
       return req.session.user
     } else {
-      throw new Error({status: 401, error: 'User Invalid Session'})
+      throw ({status: 401, error: 'User Invalid Session'})
     }
    } catch (error) {
-      throw new Error({status: 500, error: error})
+      throw ({status: 500, error: error})
    }
 
 }

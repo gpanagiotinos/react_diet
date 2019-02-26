@@ -17,22 +17,24 @@ router.use('/graphql', express_graphql({
 router.use('/user', user)
 
 // ssr request
-router.get('/*', (req, res) => {
+router.get('/', (req, res) => {
     validateSession(req).then((user) => {
-        const {content} = render({loggedIn: true, user: user}, {}, req)
+        console.log('logged')
+        const {content} = render({isLogged: true, user: user}, {}, req)
         let response = null
         if (process.env.NODE_ENV === 'development') {
-            response = template('Development SSR', {loggedIn: true, user: user})
+            response = template('Development SSR', {loggedIn: true, user: user}, content)
         } else {
             response = template("SSR", {}, content)
         }
         res.setHeader('Cache-Control', 'assets, max-age=604800')
         res.send(response)
     }).catch((error) => {
+        console.log(error)
         const {content} = render({}, {}, req)
         let response = null
         if (process.env.NODE_ENV === 'development') {
-            response = template('Development SSR', {loggedIn: false, user: null})
+            response = template('Development SSR', {isLogged: false, user: null}, content)
         } else {
             response = template("SSR", {}, content)
         }
