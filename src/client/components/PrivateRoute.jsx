@@ -1,18 +1,20 @@
 import React from 'react'
-import {Route, Redirect} from 'react-router-dom'
+import {Route, Redirect, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
-const PrivateRoute = ({component: Component, ...rest}) => (
+const PrivateRoute = ({component: Component, authLogged, ...rest}) => (
   <Route {...rest} render={(props) => {
-    console.log(props)
-    return props.isLogged ? <Component {...props}/> : <Redirect to={{ pathname: '/login', state: {from: props.location}}} />
+    return authLogged.loggedIn ? <Component {...props}/> : <Redirect to={{ pathname: '/login', state: {from: props.location}}} />
   }} />
 )
-function mapStateToProps(state) {
-  console.log(state.initialState)
-  const { isLogged } = state.initialState
+PrivateRoute.propTypes = {
+  authLogged: PropTypes.object.isRequired,
+  component: PropTypes.func.isRequired
+}
+function mapStateToProps(state, props) {
   return {
-    isLogged
+    authLogged: state.initialState
   }
 }
-export default connect(mapStateToProps)(PrivateRoute)
+export default  withRouter(connect(mapStateToProps, null, null, {pure: false})(PrivateRoute))

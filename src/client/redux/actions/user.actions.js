@@ -2,7 +2,8 @@ import { userConstants } from '../constants'
 import { userService } from '../../services'
 
 export const userActions = {
-    login
+    login,
+    authenticatedUser
 }
 
 function login (username, password) {
@@ -31,6 +32,20 @@ function login (username, password) {
         return {
             type: userConstants.LOGIN_ERROR, 
             error
+        }
+    }
+}
+
+function authenticatedUser (user) {
+    return dispatch => {
+        if (user) {
+            dispatch(success(user))
+        }
+    }
+    function success(user) {
+        return {
+            type: userConstants.LOGIN_SUCCESS, 
+            user
         }
     }
 }

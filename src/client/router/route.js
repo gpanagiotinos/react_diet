@@ -4,14 +4,14 @@ import Register from '../components/Register.jsx'
 import Home from '../components/Home.jsx'
 
 export default [
-    {
-        name: 'Home',
-        path: '/',
-        key: 'home',
-        role:['all'],
-        exact: true,
-        main: () => <Home />
-    },
+    // {
+    //     name: 'Home',
+    //     path: '/',
+    //     key: 'home',
+    //     role:['all'],
+    //     exact: true,
+    //     main: () => <Home />
+    // },
     {
         name: 'Login',
         path: '/login',
@@ -24,8 +24,9 @@ export default [
         name: 'Register',
         path: '/register',
         key: 'register',
-        role: ['all'],
+        role: ['Super User'],
         exact: true,
         main: () => <Register />
     }
+
 ]

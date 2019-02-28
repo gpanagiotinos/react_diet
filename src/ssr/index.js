@@ -1,9 +1,9 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import App from '../../client/components/app.jsx'
+import App from '../client/components/App.jsx'
 
 import {Provider} from 'react-redux'
-import configureStore from '../../client/redux/configureStore.js'
+import configureStore from '../client/redux/configureStore.js'
 
 import {StaticRouter} from 'react-router-dom'
 

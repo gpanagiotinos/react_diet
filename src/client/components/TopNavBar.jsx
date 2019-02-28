@@ -1,8 +1,5 @@
 import React from 'react'
-import {withRouter} from 'react-router'
-import RouterLink from '../ui-components/RouterLink.jsx'
-import routes from '../router/route'
-import {connect} from 'react-redux'
+import RouterAuth from '../ui-components/RouterAuth.jsx'
 
 class TopNavBar extends React.Component {
     constructor(props) {
@@ -12,14 +9,7 @@ class TopNavBar extends React.Component {
     handleAccessibleRouter () {
         return <div className='navbar-end'>
         {
-            routes.map((route) => (
-                    <RouterLink
-                        navLinkClassName='navbar-item'
-                        key= {route.key}
-                        to={route.path}
-                        text={route.name}
-                    />
-            ))
+            <RouterAuth />
         }
         </div>
     }
@@ -31,4 +21,4 @@ class TopNavBar extends React.Component {
       )
     }
 }
-export default withRouter((TopNavBar))
+export default TopNavBar

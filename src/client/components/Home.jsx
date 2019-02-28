@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { userActions } from '../redux/actions'
 
 class Home extends React.Component {
     constructor(props) {
@@ -18,4 +19,10 @@ class Home extends React.Component {
         )
     }
 }
-export default Home
+function mapStateToProps(state) {
+    const { loggedIn } = state.initialState
+    return {
+        loggedIn
+    }
+}
+export default connect(mapStateToProps)(Home)

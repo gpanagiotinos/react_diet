@@ -7,6 +7,8 @@ import dbFake from './db/fakerdata.js'
 import {router as routes} from './routes/index.js'
 import session from './config/session.js'
 
+
+
 // db connection instance
 dbConnection().then((message) => {
     console.log('Connection with db established')

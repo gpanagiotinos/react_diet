@@ -12,7 +12,7 @@ class Main extends React.Component {
     return (
       <div className='columns is-multiline is-mobile mainWrapper'>
         <div className='column is-12'>
-        <PrivateRoute exact path="/" component={Home} />
+        <PrivateRoute exact path="/" component={Home} authLogged={{loggedIn: false, user: null}} />
           {
             routes.map((route, index) => (
               <Route
