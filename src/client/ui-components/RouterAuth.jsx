@@ -9,18 +9,20 @@ class RouterAuth extends React.Component {
     super(props)
     this.handleRouterAuth = this.handleRouterAuth.bind(this)
   }
-  componentDidMount () {
-    this.handleRouterAuth()
-  }
   handleRouterAuth() {
-  const authRoutes = routes.filter((route) => {
-      return route.role.indexOf(this.props.user.role) > -1 || route.role === 'all'
+  const user = {...this.props.user}
+  if (user !== null && user.role !== undefined) {
+    const role = user.role
+    return routes.filter((route) => {
+      return (route.role.indexOf(role) > -1 || route.role.indexOf('all') > -1) && route.key !== 'login'
     })
-  console.log(authRoutes)
+  } else {
+    return []
+  }
   }
   render () {
     return (
-      routes.map((route) => (
+      this.handleRouterAuth().map((route) => (
         <RouterLink
             navLinkClassName='navbar-item'
             key= {route.key}
@@ -33,7 +35,8 @@ class RouterAuth extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {user} = {...state.authentication, ...state.initialState}
+  console.log('routerauth: ', state)
+  const {user} = {...state.authentication}
   return {
     user
   }

@@ -2,8 +2,10 @@ export {
   sessionCheck,
   sessionSave,
   userHasSession,
-  validateSession
+  validateSession,
+  deleteSession
 }
+
 const databaseRoles = [{'1000': 'Super User'}, {'1001': 'Admin'}, {'1002': 'User'}, {'1003': 'Moderator'}]
 const  sessionSave = (session, data)  => {
   const roleName = databaseRoles.filter((role) => {
@@ -11,9 +13,11 @@ const  sessionSave = (session, data)  => {
   })
   session.data = {...{role: Object.values(roleName[0])[0]}}
 }
+
 const  userHasSession = (session)  => {
   return session.cookie && session.data
 }
+
  const sessionCheck = (access = [])  => {
   return (req, res, next) => {
     if (req.session.data && req.cookies.data_sid) {
@@ -40,4 +44,15 @@ const  userHasSession = (session)  => {
         reject ({status: 500, error: error})
      }
    })
+}
+const deleteSession = (req) => {
+  return new Promise((resolve, reject) => {
+    req.session.destroy((error) => {
+      console.log(error)
+      if (error) {
+        reject(error)
+      }
+      resolve('Session Deleted')
+    })
+  })
 }

@@ -13,6 +13,9 @@ export function authentication (state = {}, action) {
             }
         case userConstants.LOGIN_FAILURE:
             return {}
+        case userConstants.LOGOUT:
+            console.log('logout')
+            return {}
         default:
             return state
     }

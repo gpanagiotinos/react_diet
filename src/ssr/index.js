@@ -9,6 +9,7 @@ import {StaticRouter} from 'react-router-dom'
 
 const render = (initialState, context, req) => {
   const store = configureStore(initialState)
+  console.log('store: ', store)
   let content = renderToString(
     <Provider store= {store}>
       <StaticRouter context={ context } location={ req.url }>

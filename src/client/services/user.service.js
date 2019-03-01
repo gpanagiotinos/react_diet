@@ -1,10 +1,10 @@
 import {config} from '../config'
 export const userService = {
-    login
+    login,
+    logout
 }
 
 function login(username, password) {
-    console.log(config)
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -17,6 +17,17 @@ function login(username, password) {
         })
 }
 
+function logout () {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'}
+    }
+    return fetch(`${config.apiUrl}/user/logout`, requestOptions)
+            .then(handleResponse)
+            .then((response) => {
+                return response
+            })
+}
 function handleResponse(response) {
     return response.text().then((text) => {
         const data = text && JSON.parse(text)

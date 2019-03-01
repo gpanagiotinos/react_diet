@@ -2,6 +2,7 @@ import React from 'react'
 import Login from '../components/Login.jsx'
 import Register from '../components/Register.jsx'
 import Home from '../components/Home.jsx'
+import Logout from '../components/Logout.jsx'
 
 export default [
     // {
@@ -27,6 +28,13 @@ export default [
         role: ['Super User'],
         exact: true,
         main: () => <Register />
+    },
+    {
+        name: 'Logout',
+        path: '/logout',
+        key: 'logout',
+        role: ['all'],
+        exact: true,
+        main: () => <Logout />
     }
-
 ]

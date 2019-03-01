@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import routes from '../router/route.js'
 import PrivateRoute from './PrivateRoute.jsx'
 import Home from './Home.jsx'
@@ -12,17 +12,19 @@ class Main extends React.Component {
     return (
       <div className='columns is-multiline is-mobile mainWrapper'>
         <div className='column is-12'>
-        <PrivateRoute exact path="/" component={Home} authLogged={{loggedIn: false, user: null}} />
-          {
-            routes.map((route, index) => (
-              <Route
-                key={route.key}
-                path={route.path}
-                exact={route.exact}
-                component={route.main}
-              />
-            ))
-          }
+        <Switch>
+          <PrivateRoute exact path="/" component={Home} authLogged={{loggedIn: false, user: null}} />
+            {
+              routes.map((route, index) => (
+                <Route
+                  key={route.key}
+                  path={route.path}
+                  exact={route.exact}
+                  component={route.main}
+                />
+              ))
+            }
+          </Switch>
         </div>
       </div>
     )

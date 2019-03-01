@@ -20,7 +20,7 @@ class Home extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { loggedIn } = state.initialState
+    const { loggedIn } = state.authentication
     return {
         loggedIn
     }

@@ -1,9 +1,7 @@
 import express from 'express'
 import {dbModel} from '../models/init.js'
-import {sessionSave} from '../helpers/session.helpers.js'
+import {sessionSave, deleteSession} from '../helpers/session.helpers.js'
 import {errorHandler} from '../helpers/error.helpers.js'
-import { findIconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { rejects } from 'assert';
 const router = express.Router()
 const checkUser = async (username, password, session) => {
     try {
@@ -31,4 +29,15 @@ router.post('/login', (req, res) => {
     })
 })
 
+router.delete('/logout', (req, res) => {
+ deleteSession(req).then(() => {
+    res.status(200)
+    res.json({
+        message: 'Logout'
+    })
+    res.end()
+ }).catch((error) => {
+     errorHandler(error, res)
+ })
+})
 export {router}

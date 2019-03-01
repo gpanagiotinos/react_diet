@@ -1,12 +1,13 @@
 import React from 'react'
 import RouterAuth from '../ui-components/RouterAuth.jsx'
-
+import {connect} from 'react-redux'
 class TopNavBar extends React.Component {
     constructor(props) {
         super(props)
         this.handleAccessibleRouter = this.handleAccessibleRouter.bind(this)
     }
     handleAccessibleRouter () {
+        console.log('router access')
         return <div className='navbar-end'>
         {
             <RouterAuth />
@@ -21,4 +22,4 @@ class TopNavBar extends React.Component {
       )
     }
 }
-export default TopNavBar
+export default connect()(TopNavBar)
