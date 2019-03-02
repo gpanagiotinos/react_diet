@@ -3,7 +3,10 @@ import {alertConstants} from '../constants/alert.constants.js'
 export const alertActions = {
     success,
     error,
-    clear
+    clear,
+    successInput,
+    errorInput,
+    clearInput
 }
 
 function success(message) {
@@ -16,4 +19,15 @@ function error (message) {
 
 function clear (message) {
     return {type: alertConstants.CLEAR, message}
+}
+function successInput(message, input) {
+    return {type: alertConstants.SUCCESS_INPUT, message, input}
+}
+
+function errorInput (message, input) {
+    return {type: alertConstants.ERROR_INPUT, message, input}
+}
+
+function clearInput (input) {
+    return {type: alertConstants.CLEAR_INPUT, input}
 }

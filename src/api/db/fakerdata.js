@@ -5,11 +5,11 @@ async function dbFake () {
     // fake data user
     for (let index = 0; index < 10; index++) {
         await dbModel.user.create({
-            username: index === 0 ? 'george':fake.internet.userName(),
+            username: index === 0 || index === 1 ? ('george' + index) :fake.internet.userName(),
             password: '123456',
             createdAt: fake.date.recent(),
             updatedAt: fake.date.recent(),
-            role: '1000'
+            role: index === 0 ? '1000' : '1001'
         })
     }
     

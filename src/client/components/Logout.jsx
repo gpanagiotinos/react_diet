@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 class Logout extends React.Component {
   componentWillMount () {
-    this.props.dispatch(userActions.logout())
+    this.props.dispatch(userActions.logout(this.props.history))
   }
   render () {
     return null

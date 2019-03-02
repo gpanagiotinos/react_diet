@@ -15,7 +15,7 @@ class Main extends React.Component {
         <Switch>
           <PrivateRoute exact path="/" component={Home} authLogged={{loggedIn: false, user: null}} />
             {
-              routes.map((route, index) => (
+              routes().map((route, index) => (
                 <Route
                   key={route.key}
                   path={route.path}

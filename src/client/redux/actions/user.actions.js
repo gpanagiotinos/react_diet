@@ -1,19 +1,19 @@
 import { userConstants } from '../constants'
 import { userService } from '../../services'
-import {history} from '../helpers'
+// import {history} from '../helpers'
 export const userActions = {
     login,
     logout,
     authenticatedUser
 }
 
-function login (username, password) {
+function login (username, password, history) {
     return dispatch => {
+        console.log(history)
         dispatch(request({ username }))
         userService.login(username, password)
-            .then((user) => {
-                dispatch(success(user))
-                console.log(user)
+            .then((response) => {
+                dispatch(success(response.user))
                 history.push('/')
             }, (error) => {
                 dispatch(failure(error.toString()))
@@ -38,7 +38,7 @@ function login (username, password) {
         }
     }
 }
-function logout() {
+function logout(history) {
     console.log('dispatch')
     return dispatch => {userService.logout().then(() => {
             dispatch(success())
@@ -50,7 +50,8 @@ function logout() {
     }
     function success() {
         console.log('success')
-        return {type: userConstants.LOGOUT}
+        const logoutState = {loggedIn: false, user: {}}
+        return {type: userConstants.LOGOUT, logoutState}
     } 
 }
 function authenticatedUser (user) {

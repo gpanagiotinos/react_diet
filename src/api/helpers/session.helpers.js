@@ -11,7 +11,7 @@ const  sessionSave = (session, data)  => {
   const roleName = databaseRoles.filter((role) => {
     return Object.keys(role).indexOf(data.role.toString()) > -1 
   })
-  session.data = {...{role: Object.values(roleName[0])[0]}}
+  session.data = {...{role: Object.values(roleName[0])[0], username: data.username}}
 }
 
 const  userHasSession = (session)  => {

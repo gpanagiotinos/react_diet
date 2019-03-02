@@ -21,6 +21,7 @@ router.use('/user', user)
 // ssr request
 router.get('*', (req, res) => {
     validateSession(req).then((user) => {
+        console.log('user', user)
         const {content} = render({loggedIn: true, user: user}, {}, req)
         let response = null
         if (process.env.NODE_ENV === 'development') {

@@ -1,5 +1,6 @@
 import { userConstants } from '../constants'
-export function authentication (state = {}, action) {
+
+export function authentication (state = {loggedIn: false, user: {}}, action) {
     switch (action.type) {
         case userConstants.LOGIN_REQUEST:
             return {
@@ -11,10 +12,14 @@ export function authentication (state = {}, action) {
                 loggedIn: true,
                 user: action.user
             }
+        case userConstants.INITIAL_USER:
+            return {
+                loggedIn: action.loggedIn,
+                user: action.user
+            }  
         case userConstants.LOGIN_FAILURE:
             return {}
         case userConstants.LOGOUT:
-            console.log('logout')
             return {}
         default:
             return state

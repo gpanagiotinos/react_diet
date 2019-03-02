@@ -10,7 +10,8 @@ const checkUser = async (username, password, session) => {
            throw new Error('User Not Found')
         } else {
             sessionSave(session, user.dataValues)
-            return user
+            console.log(session)
+            return session.data
         }
     } catch (error) {
         throw new Error(error)
@@ -21,7 +22,8 @@ router.post('/login', (req, res) => {
     checkUser(req.body.username, req.body.password, req.session).then((user) => {
         res.status(200)
         res.json({
-            message: 'Login'
+            user: user,
+            message: 'Successful Login'
         })
         res.end()  
     }).catch((error) => {

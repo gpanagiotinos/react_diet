@@ -7,7 +7,6 @@ class TopNavBar extends React.Component {
         this.handleAccessibleRouter = this.handleAccessibleRouter.bind(this)
     }
     handleAccessibleRouter () {
-        console.log('router access')
         return <div className='navbar-end'>
         {
             <RouterAuth />

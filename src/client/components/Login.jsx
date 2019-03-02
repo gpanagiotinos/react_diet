@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
+import {withRouter} from 'react-router-dom'
 import Input from '../ui-components/Input.jsx'
 import Button from '../ui-components/Button.jsx'
-import { userActions } from '../redux/actions'
+import { userActions, alertActions } from '../redux/actions'
 
 class Login extends React.Component {
     constructor(props) {
@@ -13,6 +13,7 @@ class Login extends React.Component {
             password: '',
             submitted: false
         }
+        console.log(this.props)
         this.handleChange = this.handleChange.bind(this)
         this.handleLoggedIn = this.handleLoggedIn.bind(this)
     }
@@ -23,13 +24,26 @@ class Login extends React.Component {
         })
     }
     handleLoggedIn(e) {
+        e.preventDefault()
+
+        this.setState({ submitted: true })
         const {username, password} = this.state
         const dispatch = this.props.dispatch
         if (username && password) {
-            dispatch(userActions.login(username, password))
+            dispatch(userActions.login(username, password, this.props.history))
+        } else {
+            ['username', 'password'].map((value) => {
+                if(this.state[value] === '') {
+                    console.log(value)
+                    dispatch(alertActions.errorInput(capitalize(value) + ' is Required', value))
+                }
+            })
         }
-
+        function capitalize(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1)
+         }
     }
+
     render () {
         return (
             <div className='columns is-mobile is-centered'>
@@ -47,8 +61,6 @@ class Login extends React.Component {
 }
 function mapStateToProps(state) {
     const { loggingIn } = state.authentication
-    return {
-        loggingIn
-    }
+    return {loggingIn}
 }
-export default connect(mapStateToProps)(Login)
+export default withRouter(connect(mapStateToProps)(Login))

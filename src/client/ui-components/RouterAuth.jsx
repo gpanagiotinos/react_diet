@@ -13,7 +13,8 @@ class RouterAuth extends React.Component {
   const user = {...this.props.user}
   if (user !== null && user.role !== undefined) {
     const role = user.role
-    return routes.filter((route) => {
+    const routeArray = [...routes(user.username)]
+    return routeArray.filter((route) => {
       return (route.role.indexOf(role) > -1 || route.role.indexOf('all') > -1) && route.key !== 'login'
     })
   } else {
@@ -35,7 +36,6 @@ class RouterAuth extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log('routerauth: ', state)
   const {user} = {...state.authentication}
   return {
     user

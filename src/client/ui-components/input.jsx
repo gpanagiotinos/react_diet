@@ -1,6 +1,8 @@
 import React from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-export default class Input extends React.Component {
+import {connect} from 'react-redux'
+import {alertActions} from '../redux/actions'
+class Input extends React.Component {
     constructor (props) {
         super(props)
         // this.InputRef = React.createRef()
@@ -13,7 +15,8 @@ export default class Input extends React.Component {
             label: this.props.label,
             leftIcon: this.props.leftIcon,
             rightIcon: this.props.rightIcon, 
-            onInputChange: this.props.onInputChange
+            onInputChange: this.props.onInputChange,
+            required: this.props.required
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleInputClass = this.handleInputClass.bind(this)
@@ -21,12 +24,14 @@ export default class Input extends React.Component {
         this.handleInputLeftIcons = this.handleInputLeftIcons.bind(this)
         this.handleInputRightIcons = this.handleInputRightIcons.bind(this)
         this.handleShowPassword = this.handleShowPassword.bind(this)
+        this.handleInputHelpMessage = this.handleInputHelpMessage.bind(this)
     }
     handleChange(e) {
         e.persist()
         this.setState((prevState, props) => ({
             value: e.target.value
         }))
+        this.props.dispatch(alertActions.clearInput(this.state.type))
         this.state.onInputChange(e)
     }
     handleInputClass() {
@@ -65,6 +70,13 @@ export default class Input extends React.Component {
             type: prevState.type === 'password' ? 'text' : 'password'
         }))
     }
+    handleInputHelpMessage() {
+        if (this.props.helpMessage !== undefined && this.props.helpMessage !== null) {
+            return <p className={'help ' + this.props.helpMessage.type}>{this.props.helpMessage.message}</p>
+        } else {
+            return null
+        }
+    }
     render () {
         return (
             <div className='field'>
@@ -73,8 +85,17 @@ export default class Input extends React.Component {
                     <input className='input' type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}
+                    {this.handleInputHelpMessage()}
                 </p>
             </div>
         )
     }
 }
+function mapStateToProps(state, props) {
+    const helpMessage = state.alertInput.find((object) => {
+        return object.input === props.type
+    })
+    // const helpMessage = {type: state.alertInput.type, message: state.alertInput.message, input: state.alertInput.input}
+    return {helpMessage}
+}
+export default connect(mapStateToProps)(Input)
