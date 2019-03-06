@@ -31,7 +31,9 @@ class Input extends React.Component {
         this.setState((prevState, props) => ({
             value: e.target.value
         }))
-        this.props.dispatch(alertActions.clearInput(this.state.type))
+        if (e.target.value.length ===  1) {
+            this.props.dispatch(alertActions.clearInput(this.state.type))
+        }
         this.state.onInputChange(e)
     }
     handleInputClass() {
@@ -81,12 +83,12 @@ class Input extends React.Component {
         return (
             <div className='field'>
                 <label className='label'>{this.state.label}</label>
-                <p className={'control' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
+                <div className={'control' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
                     <input className='input' type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}
                     {this.handleInputHelpMessage()}
-                </p>
+                </div>
             </div>
         )
     }

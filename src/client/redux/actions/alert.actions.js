@@ -17,8 +17,8 @@ function error (message) {
     return {type: alertConstants.ERROR, message}
 }
 
-function clear (message) {
-    return {type: alertConstants.CLEAR, message}
+function clear () {
+    return {type: alertConstants.CLEAR}
 }
 function successInput(message, input) {
     return {type: alertConstants.SUCCESS_INPUT, message, input}

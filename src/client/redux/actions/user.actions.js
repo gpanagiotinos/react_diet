@@ -1,5 +1,6 @@
 import { userConstants } from '../constants'
 import { userService } from '../../services'
+import { alertConstants } from '../constants/alert.constants';
 // import {history} from '../helpers'
 export const userActions = {
     login,
@@ -16,7 +17,9 @@ function login (username, password, history) {
                 dispatch(success(response.user))
                 history.push('/')
             }, (error) => {
+                console.log(error)
                 dispatch(failure(error.toString()))
+                dispatch(failureAlert(error))
             })
     }
     function request(user) {
@@ -31,10 +34,16 @@ function login (username, password, history) {
             user
         }
     }
-    function error(error) {
+    function failure(error) {
         return {
             type: userConstants.LOGIN_FAILURE, 
             error
+        }
+    }
+    function failureAlert(error) {
+        return {
+            type: alertConstants.ERROR,
+            message: error
         }
     }
 }

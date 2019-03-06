@@ -45,6 +45,17 @@
     }
   }
 }
+
+.appDisplayNone {
+  display: none !important;
+}
 .mainWrapper {
   padding-top: 70px;
+}
+.notificationWrapper {
+  padding-top: 70px;
+}
+
+.notification .is-danger{
+    background-color: rgba(255, 56, 96, 0.1);
 }

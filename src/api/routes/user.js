@@ -7,7 +7,7 @@ const checkUser = async (username, password, session) => {
     try {
         const user = await dbModel.user.findOne({where: {username: username, password: password}})
         if (!user) {
-           throw new Error('User Not Found')
+           return Promise.reject({status: 401, message: 'The username and password you entered did not match our records. Please double-check and try again.'})
         } else {
             sessionSave(session, user.dataValues)
             console.log(session)

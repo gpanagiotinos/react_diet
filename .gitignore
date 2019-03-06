@@ -1,4 +1,5 @@
 node_modules/
+src/client/config.js
 package-lock.json
 /assets/
 dist/

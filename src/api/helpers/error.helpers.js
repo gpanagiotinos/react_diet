@@ -8,10 +8,9 @@ const errorParser = (error) => {
 }
 
 const errorHandler = (error, res) => {
-    console.log('error')
-    res.status(500)
+    res.status(error.status)
     res.json({
-        message: error
+        message: error.message
     })
     res.end()
 }
