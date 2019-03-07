@@ -12,6 +12,6 @@ export default session ({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 300000
+    maxAge: 3600000
   }
 })

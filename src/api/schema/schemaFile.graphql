@@ -4,9 +4,31 @@ type UserType {
     createdAt: Date!
     updatedAt: Date!
 }
-
+type USDAData {
+    list: USDADataList
+}
+type USDADataList {
+    q: String!
+    sr: String!
+    ds: String!
+    start: String!
+    end: String!
+    total: String!
+    groud: String!
+    sort: String!
+    item: [USDADataItem]
+}
+type USDADataItem {
+    offset: Int!
+    group: String!
+    name: String!
+    ndbno: String!
+    ds: String!
+    manu: String! 
+}
 type Query {
     getUsers: [UserType],
-    getUser(user_id: ID!): UserType
+    getUser(user_id: ID!): UserType,
+    getUSDAData(text: String!): USDAData
 }
 scalar Date

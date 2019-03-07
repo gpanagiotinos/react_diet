@@ -3,6 +3,7 @@ import Login from '../components/Login.jsx'
 import Register from '../components/Register.jsx'
 import Home from '../components/Home.jsx'
 import Logout from '../components/Logout.jsx'
+import UsdaSearch from '../components/UsdaSearch.jsx'
 
 export default (param = '') => ([
     // {
@@ -28,6 +29,14 @@ export default (param = '') => ([
         role: ['Super User'],
         exact: true,
         main: () => <Register />
+    },
+    {
+        name: 'USDASearch',
+        path: '/usdasearch',
+        key: 'usdaSearch',
+        role: ['all'],
+        exact: true,
+        main: () => <UsdaSearch />
     },
     {
         name: 'Logout(' + param + ')',
