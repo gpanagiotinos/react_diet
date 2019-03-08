@@ -1,7 +1,9 @@
 import React from 'react'
 import Input from '../ui-components/Input.jsx'
 import Button from '../ui-components/Button.jsx'
-import {usdaService} from '../services/usda.service.js'
+import Table from '../ui-components/Table.jsx'
+import {connect} from 'react-redux'
+import {usdaActions} from '../redux/actions'
 
 class UsdaSearch extends React.Component {
   constructor(props) {
@@ -19,17 +21,21 @@ class UsdaSearch extends React.Component {
   })
   }
   handleButtonChange(e) {
-    usdaService.search(this.state.usdaSearch)
+    const dispatch = this.props.dispatch
+    dispatch(usdaActions.usdaSearch(this.state.usdaSearch, 0))
   }
   render () {
     return (
-      <div className='columns is-mobile is-centered'>
+      <div className='columns is-multiline is-mobile is-centered'>
         <div className='column is-half'>
           <Input type='search' label='Search USDA DataBase' name='usdaSearch' value={this.state.searchValue} onInputChange={this.handleInputChange}/>
           <Button label='Search' bulmaType='link' onButtonClick={this.handleButtonChange}/>
+        </div>
+        <div className='column is-12'>
+          <Table/>
         </div>
       </div>
     )
   }
 }
-export default UsdaSearch
+export default connect()(UsdaSearch)

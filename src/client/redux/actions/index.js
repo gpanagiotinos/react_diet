@@ -1,3 +1,5 @@
 export * from './actions.js'
 export * from './alert.actions.js'
 export * from './user.actions.js'
+export * from './table.actions.js'
+export * from './usda.actions.js'

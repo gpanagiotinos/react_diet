@@ -29,6 +29,6 @@ type USDADataItem {
 type Query {
     getUsers: [UserType],
     getUser(user_id: ID!): UserType,
-    getUSDAData(text: String!): USDAData
+    getUSDAData(text: String!, offset: Int!): USDAData
 }
 scalar Date

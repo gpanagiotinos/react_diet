@@ -1,5 +1,5 @@
 import {config} from '../../client/config'
-import fetch from 'node-fetch'
+import fetch from 'isomorphic-fetch'
 const resolvers = {
     Query: {
         getUsers: {
@@ -16,8 +16,8 @@ const resolvers = {
             }
         },
         getUSDAData: {
-            resolve: async(_, {text}, context) => {
-                const usdaData = await fetch(config.usdaUrlSearch(text, 'n', 25, 0), {method: 'GET', headers: {'Content-Type': 'application/json'}})
+            resolve: async(_, {text, offset}, context) => {
+                const usdaData = await fetch(config.usdaUrlSearch(text, 'n', 25, offset), {method: 'GET', headers: {'Content-Type': 'application/json'}})
                 const usdaDataJson = await usdaData.json()
                 return usdaDataJson
             }
