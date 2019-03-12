@@ -1,34 +1,39 @@
 import fake from 'faker'
 import {dbModel} from '../models/init.js'
-
-async function dbFake () {
-    // fake data user
+function createFakeUsers () {
+    let fakeUserArray = []
     for (let index = 0; index < 10; index++) {
-        await dbModel.user.create({
-            username: index === 0 || index === 1 ? ('george' + index) :fake.internet.userName(),
+        fakeUserArray.push({
+            username: 'george',
             password: '123456',
             createdAt: fake.date.recent(),
             updatedAt: fake.date.recent(),
             role: index === 0 ? '1000' : '1001'
+        })  
+    }
+    return fakeUserArray
+}
+function createFakeRoles () {
+    let fakeRoles = []
+    let roleNames = ['Super User', 'Admin', 'User', 'Moderator']
+    for (let index = 0; index < 4; index++) {
+        fakeRoles.push({
+            role_id: '100' + index,
+            role_name: roleNames[index]
         })
+    }
+    return fakeRoles
+}
+
+async function dbFake () {
+    // fake data user
+    for(const user of createFakeUsers()) {
+        const userCreate = await dbModel.user.create(user)
     }
     
     // fake data roles
-    await dbModel.role.create({
-        role_id: '1000',
-        role_name: 'Super User'
-    })
-    await dbModel.role.create({
-        role_id: '1001',
-        role_name: 'Admin'
-    })
-    await dbModel.role.create({
-        role_id: '1002',
-        role_name: 'User'
-    })
-    await dbModel.role.create({
-        role_id: '1003',
-        role_name: 'Moderator'
-    })
+    for(const role of createFakeRoles()) {
+        const rolesCreate = await dbModel.role.create(role)
+    }
 }
-module.exports = dbFake
+export {dbFake}
