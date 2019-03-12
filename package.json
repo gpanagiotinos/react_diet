@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "testAPI": "mocha --require @babel/register --require @babel/polyfill tests/*.js --exit",
     "build": "webpack --config build/webpack.config.dev.js --mode development --watch",
     "start": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run build\"",
     "ssr": "cross-env NODE_ENV=development concurrently \"npm run build\" \"npm run server\"",
@@ -55,6 +56,7 @@
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.2",
+    "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
