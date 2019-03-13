@@ -9,6 +9,16 @@ import {dbFake} from '../src/api/db/fakerdata.js'
 chai.use(chaiHttp)
 chai.should()
 
+let successfulLogin = {
+  'username': 'george',
+  'password': '123456'
+}
+let errorLogin = {
+  'username': 'wrongusername',
+  'password': 'wrongpassword'
+}
+let agent = chai.request.agent(app)
+
 describe("Open Server", () => {
   describe("GET /", () => {
     before((done) => {
@@ -35,30 +45,38 @@ describe("Open Server", () => {
     })
   })
 })
-describe("Login", () => {
+describe("Successful Login", () => {
   describe("POST /", () => {
-    it("should login successfully", (done) => {
-      let agent = chai.request.agent(app)
-      agent
+    it("should login successfully", () => {
+      return agent
         .post('/user/login')
-        .send({
-          'username': 'george',
-          'password': '123456'
-        })
+        .send(successfulLogin)
         .then((res) => {
           res.should.have.status(200)
           res.should.have.cookie('connect.sid')
+          res.body.should.have.all.keys('user', 'message')
+          res.body.user.should.have.all.keys('username', 'role')
           return agent.get('/')
+        }, (error) => {
+          error.should.have.status(401)
+          error.body.should.have.property('message')
         }).then((res) => {
-          console.log('error')
           res.should.have.status(200)
-          res.should.have.cookie('connect.sid')
-          res.should.have.session('data')
-          return Promise.resolve()
-        }).then((res) => {
-          done()
-        }).catch((error) => {
-          // console.log(error)
+        })
+    })
+  })
+})
+describe("Error Login", () => {
+  describe("POST /", () => {
+    it("should error login", () => {
+      return agent
+        .post('/user/login')
+        .send(errorLogin)
+        .then((res) => {
+          res.should.have.status(401)
+          res.body.should.have.property('message', 'The username and password you entered did not match our records. Please double-check and try again.')
+        }, (error) => {
+          res.should.have.status(500)
         })
     })
   })
