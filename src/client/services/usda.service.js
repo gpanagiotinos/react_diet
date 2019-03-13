@@ -5,33 +5,47 @@ export const usdaService = {
 }
 
 function search(text, offset) {
-  return apollo.apolloQuery(text, offset)
+  return apollo.apolloQuery('GET_USDADATA')(text, offset)
     .then(handleUSDADataResponse)
     .then((data) => {
       return data
     })
 }
 
+// function searchItem(itemID) {
+//   return apollo
+// }
+
 function handleUSDADataResponse (response) {
-  const tableData = {
-    head: USDADataTableHead(response.data.getUSDAData.list.item[0], ['group', 'name', 'ds', 'manu']),
-    body: response.data.getUSDAData.list.item
+  let tableData = {}
+  if (response.data.getUSDAData.list !== null) {
+    tableData = {...{
+      head: ['group', 'name', 'ds', 'manu', 'Actions'],
+      body: USDADataTableBody(response.data.getUSDAData.list.item)
+    }}
   }
   return tableData
 }
 
-function USDADataTableHead (object, arrayVisibility = []) {
-  if (arrayVisibility.length > 0) {
-    return Object.keys(object).map((value) => {
-      if (arrayVisibility.indexOf(value) > -1) {
-        return {text: value, visible: true}
-      } else {
-        return {text: value, visible: false}
+function USDADataTableBody (items = []) {
+  return items.map((object) => {
+    object['Actions'] = [
+      {
+        icon: 'info',
+        label: 'Show Nutrition',
+        args: object['ndbno'],
+        function: availableMethods['showNutrition']
       }
-    })
-  } else {
-    Object.keys(object).map((value) => {
-      return {text: value, visible: true}
+    ]
+    return object
+  })
+}
+const availableMethods = {
+  'showNutrition': (itemID) => {
+    return apollo.apolloQuery('GET_USDANUTRITION')(itemID)
+    .then(handleUSDADataResponse)
+    .then((data) => {
+      return data
     })
   }
-} 
+}

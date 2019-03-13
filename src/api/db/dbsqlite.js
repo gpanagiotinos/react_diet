@@ -16,7 +16,4 @@ const sequelize = new Sequelize(db_user.dbname, db_user.dbusername, db_user.dbpa
 async function dbConnection () {
     return await sequelize.authenticate
 }
-module.exports = {
-    dbConnection: dbConnection,
-    sequelize: sequelize
-}
+export {dbConnection, sequelize}

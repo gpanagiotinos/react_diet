@@ -30,9 +30,17 @@ const GET_USDADATA = gql`query getUSDAData($text: String!, $offset: Int!) {getUS
     }
 }`
 
-function apolloQuery (text, offset) {
-  return client.query({
-    query: GET_USDADATA,
-    variables: {text: text, offset: offset}
-  })
+function apolloQuery (query) {
+  switch (query) {
+    case 'GET_USDADATA':
+      return (text, offset) => {
+          return client.query({
+          query: GET_USDADATA,
+          variables: {text: text, offset: offset}
+        })
+      }
+    default:
+      break;
+  }
+
 }

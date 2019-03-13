@@ -1,4 +1,4 @@
-import schema from '../schema/schema.js'
+import {schema} from '../schema/schema.js'
 import express_graphql from 'express-graphql'
 import {dbModel} from '../models/init.js'
 import express from 'express'
