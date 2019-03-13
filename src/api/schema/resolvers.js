@@ -17,7 +17,7 @@ const resolvers = {
         },
         getUSDAData: {
             resolve: async(_, {text, offset}, context) => {
-                const usdaData = await fetch(config.usdaUrlSearch(text, 'n', 25, offset), {method: 'GET', headers: {'Content-Type': 'application/json'}})
+                const usdaData = await fetch(config.usdaUrlSearch('json', text, 'n', 25, offset), {method: 'GET', headers: {'Content-Type': 'application/json'}})
                 const usdaDataJson = await usdaData.json()
                 return usdaDataJson
             }

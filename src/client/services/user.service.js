@@ -3,7 +3,6 @@ export const userService = {
     login,
     logout
 }
-
 function login(username, password) {
     const requestOptions = {
         method: 'POST',
