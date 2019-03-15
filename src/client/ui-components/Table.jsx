@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import TableBody from './TableBody.jsx'
 class Table extends React.Component{
   constructor(props) {
     super(props)
@@ -55,7 +56,8 @@ class Table extends React.Component{
     return (
       <table className='table is-bordered is-fullwidth'>
         {this.handleTableHead()}
-        {this.handleTableBody()}
+        <TableBody/>
+        {/* {this.handleTableBody()} */}
       </table>
     )
   }

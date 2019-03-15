@@ -2,9 +2,10 @@ import {tableConstants, alertConstants} from '../constants'
 import {usdaService} from '../../services'
 
 export const usdaActions = {
-  usdaSearch
+  usdaSearch,
+  usdaNutritionAction
 }
-
+console.log()
 function usdaSearch (text, offset) {
   return dispatch => {
     dispatch(request({text, offset}))
@@ -33,4 +34,17 @@ function usdaSearch (text, offset) {
         message: error
     }
   }
+}
+
+function usdaNutritionAction (ndbno, service) {
+  console.log(ndbno, service)
+  console.log(usdaService)
+  return {}
+  // usdaService.availableServiceMethods[service](ndbno).then((data) => {
+  //   console.log(data)
+  //   return {}
+  // }, (error) => {
+  //   console.log(error)
+  //   return {}
+  // })
 }

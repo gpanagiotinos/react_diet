@@ -29,6 +29,40 @@ const GET_USDADATA = gql`query getUSDAData($text: String!, $offset: Int!) {getUS
       }
     }
 }`
+const GET_USDANUTRITION = gql`query getUSDANutritionData($ndbno: String!) {getUSDANutritionData(ndbno: $ndbno)
+  {
+    report 
+    { 
+      sr
+      type
+      food 
+      {
+        ndbno
+        name
+        ds
+        manu
+        ru
+        nutrients 
+        {
+          nutrient_id
+          name
+          derivation
+          group
+          unit
+          value
+          measures 
+          {
+            label
+            eqv
+            eunit
+            qty
+            value
+          }
+        }
+      }
+    }
+  }
+}`
 
 function apolloQuery (query) {
   switch (query) {
@@ -37,6 +71,13 @@ function apolloQuery (query) {
           return client.query({
           query: GET_USDADATA,
           variables: {text: text, offset: offset}
+        })
+      }
+    case 'GET_USDANUTRITION':
+      return (ndbno) => {
+          return client.query({
+          query: GET_USDANUTRITION,
+          variables: {ndbno: ndbno}
         })
       }
     default:

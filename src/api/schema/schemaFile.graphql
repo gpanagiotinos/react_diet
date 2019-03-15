@@ -4,6 +4,7 @@ type UserType {
     createdAt: Date!
     updatedAt: Date!
 }
+# USDA Data Search Types
 type USDAData {
     list: USDADataList
 }
@@ -26,9 +27,43 @@ type USDADataItem {
     ds: String!
     manu: String! 
 }
+# USDA Nutrition Search Types
+type USDANutritionData {
+    report: USDAReportData
+}
+type USDAReportData {
+    sr: String!
+    type: String!
+    food: USDAFoodData
+}
+type USDAFoodData{
+    ndbno: String!
+    name: String!
+    ds: String!
+    manu: String!
+    ru: String!
+    nutrients: [USDANutientsData]
+}
+type USDANutientsData{
+    nutrient_id: String!
+    name: String!
+    derivation: String!
+    group: String!
+    unit: String!
+    value: String!
+    measures: [USDANutientsMeasuresData]
+}
+type USDANutientsMeasuresData{
+    label: String!
+    eqv: String!
+    eunit: String!
+    qty: Int!
+    value: String!
+}
 type Query {
     getUsers: [UserType],
     getUser(user_id: ID!): UserType,
-    getUSDAData(text: String!, offset: Int!): USDAData
+    getUSDAData(text: String!, offset: Int!): USDAData,
+    getUSDANutritionData(ndbno: String!): USDANutritionData
 }
 scalar Date

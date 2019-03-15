@@ -22,13 +22,13 @@ const resolvers = {
                 return usdaDataJson
             }
         },
-        // getUSDANutriotion: {
-        //     resolve: async(_, {ndbno}, context) => {
-        //         const usdaData = await fetch(config.usdaUrlSearch('json', text, 'r', 25, offset), {method: 'GET', headers: {'Content-Type': 'application/json'}})
-        //         const usdaDataJson = await usdaData.json()
-        //         return usdaDataJson
-        //     }
-        // }
+        getUSDANutritionData: {
+            resolve: async(_, {ndbno}, context) => {
+                const USDANutritionData = await fetch(config.usdaNutritionSearch(ndbno, 'b', 'json'), {method: 'GET', headers: {'Content-Type': 'application/json'}})
+                const NutritionData = await USDANutritionData.json()
+                return NutritionData
+            }
+        }
     }
 }
 export{resolvers}

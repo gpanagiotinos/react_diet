@@ -1,7 +1,9 @@
 import {config} from '../config'
 import {apollo} from './apollo.service.js'
+import {usdaActions} from '../redux/actions'
 export const usdaService = {
-  search
+  search,
+  availableServiceMethods
 }
 
 function search(text, offset) {
@@ -33,18 +35,20 @@ function USDADataTableBody (items = []) {
       {
         icon: 'info',
         label: 'Show Nutrition',
+        service: 'showNutrition',
         args: object['ndbno'],
-        function: availableMethods['showNutrition']
+        action: usdaActions.usdaNutritionAction
       }
     ]
     return object
   })
 }
-const availableMethods = {
+const availableServiceMethods = {
   'showNutrition': (itemID) => {
     return apollo.apolloQuery('GET_USDANUTRITION')(itemID)
     .then(handleUSDADataResponse)
     .then((data) => {
+      console.log(data)
       return data
     })
   }
