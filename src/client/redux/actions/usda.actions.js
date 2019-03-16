@@ -5,7 +5,7 @@ export const usdaActions = {
   usdaSearch,
   usdaNutritionAction
 }
-console.log()
+
 function usdaSearch (text, offset) {
   return dispatch => {
     dispatch(request({text, offset}))
@@ -18,7 +18,7 @@ function usdaSearch (text, offset) {
   }
   function request(data) {
     return {
-      type: 'REQUEST',
+      type: tableConstants.REQUEST_TABLE_DATA,
       data
     }
   }
@@ -37,14 +37,29 @@ function usdaSearch (text, offset) {
 }
 
 function usdaNutritionAction (ndbno, service) {
-  console.log(ndbno, service)
-  console.log(usdaService)
-  return {}
-  // usdaService.availableServiceMethods[service](ndbno).then((data) => {
-  //   console.log(data)
-  //   return {}
-  // }, (error) => {
-  //   console.log(error)
-  //   return {}
-  // })
+  return dispatch => {
+    usdaService.availableServiceMethods[service](ndbno).then((data) => {
+      dispatch(success(data))
+    }, (error) => {
+      dispatch(failureAlert(data))
+    })
+  }
+  function request(data) {
+    return {
+      type: tableConstants.REQUEST_ROW_DATA,
+      data
+    }
+  }
+  function success(data) {
+    return {
+      type: tableConstants.ADD_ROW_DATA,
+      data
+    }
+  }
+  function failureAlert(error) {
+    return {
+      type: alertConstants.ERROR,
+      message: error
+  }
+  }
 }

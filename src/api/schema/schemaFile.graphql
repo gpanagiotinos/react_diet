@@ -29,20 +29,29 @@ type USDADataItem {
 }
 # USDA Nutrition Search Types
 type USDANutritionData {
-    report: USDAReportData
+    foods: [USDAFoodsData]
 }
-type USDAReportData {
-    sr: String!
-    type: String!
+type USDAFoodsData{
     food: USDAFoodData
 }
-type USDAFoodData{
+type USDAFoodData {
+    sr: String!
+    type: String!
+    desc: USDAFoodDescription
+    ing: USDAFoodIng
+    nutrients: [USDANutientsData]
+}
+type USDAFoodDescription{
     ndbno: String!
     name: String!
     ds: String!
     manu: String!
     ru: String!
-    nutrients: [USDANutientsData]
+   
+}
+type USDAFoodIng {
+    desc: String!
+    upd: String!
 }
 type USDANutientsData{
     nutrient_id: String!

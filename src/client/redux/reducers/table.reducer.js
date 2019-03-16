@@ -21,3 +21,25 @@ export function table(state = {}, action) {
       return state
   }
 }
+
+export function tableRow(state = {}, action) {
+  switch (action.type) {
+    case tableConstants.REQUEST_ROW_DATA:
+    return {
+      requestResolved: false,
+      rowData: action.data
+    }
+    case tableConstants.ADD_ROW_DATA:
+      return {
+        requestResolved: true,
+        rowData: action.data
+      }
+    case tableConstants.FAILURE_ROW_DATA:
+      return {
+        requestResolved: true,
+        rowData: action.data
+      }
+    default: 
+      return state
+  }
+}

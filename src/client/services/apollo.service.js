@@ -31,17 +31,23 @@ const GET_USDADATA = gql`query getUSDAData($text: String!, $offset: Int!) {getUS
 }`
 const GET_USDANUTRITION = gql`query getUSDANutritionData($ndbno: String!) {getUSDANutritionData(ndbno: $ndbno)
   {
-    report 
+    foods 
     { 
-      sr
-      type
-      food 
+      food
       {
-        ndbno
-        name
-        ds
-        manu
-        ru
+        sr
+        type
+        desc {
+          ndbno
+          name
+          ds
+          manu
+          ru
+        }
+        ing {
+          desc
+          upd
+        }
         nutrients 
         {
           nutrient_id
