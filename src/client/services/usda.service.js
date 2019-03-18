@@ -25,8 +25,14 @@ function handleUSDADataResponse (response) {
   return tableData
 }
 function handleUSDANutritionResponse(response) {
-  console.log(response)
-  return response
+  let rowData = {}
+  if (response.data.getUSDANutritionData.foods[0].food !== null) {
+    rowData = {...{
+      rowID: response.data.getUSDANutritionData.foods[0].food.desc.ndbno,
+      data: response.data.getUSDANutritionData.foods[0].food
+    }}
+  }
+  return rowData
 }
 
 function USDADataTableBody (items = []) {

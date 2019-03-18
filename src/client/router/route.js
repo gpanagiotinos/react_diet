@@ -34,7 +34,7 @@ export default (param = '') => ([
         name: 'USDASearch',
         path: '/usdasearch',
         key: 'usdaSearch',
-        role: ['all'],
+        role: ['Super User', 'Admin'],
         exact: true,
         main: () => <UsdaSearch />
     },

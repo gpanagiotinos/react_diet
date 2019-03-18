@@ -41,7 +41,7 @@ function usdaNutritionAction (ndbno, service) {
     usdaService.availableServiceMethods[service](ndbno).then((data) => {
       dispatch(success(data))
     }, (error) => {
-      dispatch(failureAlert(data))
+      dispatch(failureAlert(error))
     })
   }
   function request(data) {

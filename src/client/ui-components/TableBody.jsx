@@ -19,6 +19,7 @@ class TableBody extends React.Component {
     this.handleTableActions = this.handleTableActions.bind(this)
     this.handleActionClicked = this.handleActionClicked.bind(this)
     this.handleDynamicRowComponent = this.handleDynamicRowComponent.bind(this)
+    this.handleBodyTdActions = this.handleBodyTdActions.bind(this)
   }
   handleDynamicRowComponent(key) {
     return React.createElement(this.components[key])
@@ -39,14 +40,19 @@ class TableBody extends React.Component {
       }
     </ul>
   }
-  handleBodyTd (item, index) {
+  handleBodyTd (item) {
     return Object.keys(item).map((value) => {
      if (this.props.tableData.head.indexOf(value) > -1 && value !== 'Actions') {
       return (<td key={value}>{item[value]}</td>)
-     } else if (value === 'Actions') {
-      return (<td key={value}>{this.handleTableActions(item[value], index)}</td>)
      }
     })
+  }
+  handleBodyTdActions (item, index) {
+    return Object.keys(item).map((value) => {
+     if (value === 'Actions') {
+       return (<td key={value}>{this.handleTableActions(item[value], index)}</td>)
+      }
+     })
   }
   handleBodyTr () {
     if (this.props.requestResolved) {
@@ -54,9 +60,13 @@ class TableBody extends React.Component {
         if (this.state.componentRow.componentIndex !== null && this.state.componentRow.componentIndex === index) {
           return ( <tr key={index}>
           {this.handleDynamicRowComponent(this.state.componentRow.componentKey)}
+          {this.handleBodyTdActions(item, index)}
           </tr> )
         } else {
-          return (<tr key={index}>{this.handleBodyTd(item, index)}</tr>)
+          return (<tr key={index}>
+          {this.handleBodyTd(item)}
+          {this.handleBodyTdActions(item, index)}
+          </tr>)
         }
         })
     } else {
@@ -72,7 +82,6 @@ class TableBody extends React.Component {
   }
 }
 function mapStateToProps(state) {
-  console.log(state)
   const {requestResolved, tableData} = state.table
   return {requestResolved, tableData}
 }

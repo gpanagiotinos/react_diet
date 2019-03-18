@@ -59,3 +59,12 @@
 .notification .is-danger{
     background-color: rgba(255, 56, 96, 0.1);
 }
+
+td[colspan="4"] {
+  text-align: center;
+}
+
+.nutrition-dropdown {
+  max-height: 200px;
+  overflow-y: scroll;
+}

@@ -15,14 +15,23 @@ class Main extends React.Component {
         <Switch>
           <PrivateRoute exact path="/" component={Home} authLogged={{loggedIn: false, user: null}} />
             {
-              routes().map((route, index) => (
-                <Route
-                  key={route.key}
-                  path={route.path}
-                  exact={route.exact}
-                  component={route.main}
+              routes().map((route, index) => {
+                if (route.role.indexOf('all') !== -1) {
+                  return <Route
+                    key={route.key}
+                    path={route.path}
+                    exact={route.exact}
+                    component={route.main}
+                  />
+                } else {
+                  return <PrivateRoute
+                    key={route.key}
+                    path={route.path}
+                    exact={route.exact}
+                    component={route.main}
                 />
-              ))
+                }
+              })
             }
           </Switch>
         </div>
