@@ -1,6 +1,6 @@
 import {config} from '../config'
 import {apollo} from './apollo.service.js'
-import {usdaActions} from '../redux/actions'
+import {usdaActions, paginationActions} from '../redux/actions'
 
 function search(text, offset) {
   return apollo.apolloQuery('GET_USDADATA')(text, offset)
@@ -10,19 +10,21 @@ function search(text, offset) {
     })
 }
 
-// function searchItem(itemID) {
-//   return apollo
-// }
-
 function handleUSDADataResponse (response) {
   let tableData = {}
+  let paginationData = {}
   if (response.data.getUSDAData.list !== null) {
     tableData = {...{
       head: ['group', 'name', 'ds', 'manu', 'Actions'],
       body: USDADataTableBody(response.data.getUSDAData.list.item)
     }}
+    paginationData = {...{
+      offset: response.data.getUSDAData.list.start,
+      limit: response.data.getUSDAData.list.end,
+      total: response.data.getUSDAData.list.total
+    }}
   }
-  return tableData
+  return {tableData, paginationData}
 }
 function handleUSDANutritionResponse(response) {
   let rowData = {}

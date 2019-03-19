@@ -2,6 +2,7 @@ import React from 'react'
 import Input from '../ui-components/Input.jsx'
 import Button from '../ui-components/Button.jsx'
 import Table from '../ui-components/Table.jsx'
+import Pagination from '../ui-components/Pagination.jsx'
 import {connect} from 'react-redux'
 import {usdaActions} from '../redux/actions'
 
@@ -33,6 +34,9 @@ class UsdaSearch extends React.Component {
         </div>
         <div className='column is-12'>
           <Table/>
+        </div>
+        <div className='column is-12'>
+          <Pagination/>
         </div>
       </div>
     )

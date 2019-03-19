@@ -1,6 +1,6 @@
 import {tableConstants, alertConstants} from '../constants'
 import {usdaService} from '../../services'
-
+import {paginationActions} from '../actions'
 export const usdaActions = {
   usdaSearch,
   usdaNutritionAction
@@ -10,9 +10,10 @@ function usdaSearch (text, offset) {
   return dispatch => {
     dispatch(request({text, offset}))
     usdaService.search(text, offset).then((data) => {
-      dispatch(success(data))
+      console.log(data)
+      dispatch(success(data.tableData))
+      dispatch(pagination(data.paginationData, {text, offset}))
     }, (error) => {
-      console.log(error)
       dispatch(failureAlert(error))
     })
   }
@@ -32,6 +33,11 @@ function usdaSearch (text, offset) {
     return {
         type: alertConstants.ERROR,
         message: error
+    }
+  }
+  function pagination(data, args) {
+    return dispatch => {
+      dispatch(paginationActions.addPaginationData(data.offset, data.limit, data.total, usdaActions.usdaSearch, args))
     }
   }
 }

@@ -6,7 +6,6 @@ class Table extends React.Component{
   constructor(props) {
     super(props)
     this.handleTableHead = this.handleTableHead.bind(this)
-    this.handleTableBody = this.handleTableBody.bind(this)
     this.handleTableActions = this.handleTableActions.bind(this)
   }
   handleTableHead () {
@@ -18,27 +17,6 @@ class Table extends React.Component{
             })}
           </tr>
         </thead>
-    } else {
-      return null
-    }
-  }
-  handleTableBody () {
-    if (this.props.requestResolved) {
-      return <tbody>
-            {this.props.tableData.body.map((item, index) => {
-                return <tr key={index}>
-                {
-                  Object.keys(item).map((value) => {
-                    if (value === 'Actions') {
-                      return <td key={value}>{this.handleTableActions(item[value])}</td>
-                    } else if (this.props.tableData.head.indexOf(value) > -1) {
-                      return <td key={value}>{item[value]}</td>
-                    }
-                  })
-                }
-                </tr>
-            })}
-    </tbody>
     } else {
       return null
     }
@@ -57,7 +35,6 @@ class Table extends React.Component{
       <table className='table is-bordered is-fullwidth'>
         {this.handleTableHead()}
         <TableBody/>
-        {/* {this.handleTableBody()} */}
       </table>
     )
   }
