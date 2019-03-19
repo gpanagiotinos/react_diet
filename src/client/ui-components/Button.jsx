@@ -18,7 +18,7 @@ export default class Button extends React.Component {
     render () {
         return (
             <div className='control'>
-                <a className={'button is-' + this.state.bulmaType} onClick={this.handleClick}>{this.state.label}</a>
+                <a className={'button' + ' is-' + this.state.bulmaType} onClick={this.handleClick}>{this.state.label}</a>
             </div>
         )
     }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import Button from '../ui-components/Button.jsx'
 
 class Pagination extends React.Component {
   constructor(props) {
@@ -7,7 +8,8 @@ class Pagination extends React.Component {
     this.state = {
       activeNext: true,
       activePrevious: true,
-      currentPage: 0
+      currentPage: 0,
+      buttonsArray: []
     }
     this.handlePaginationComponent = this.handlePaginationComponent.bind(this)
     this.handlePaginationNumbers = this.handlePaginationNumbers.bind(this)
@@ -20,7 +22,17 @@ class Pagination extends React.Component {
           <a className='pagination-previous'>Previous</a>
           <a className='pagination-next'>Next</a>
             <ul className='pagination-list'>
-              <li></li>
+            {
+              this.handlePaginationNumbers().map((button) => {
+                if (button.visible) {
+                  return (
+                    <li key={button.index}>
+                      <Button  label={button.buttonText}/>
+                    </li>
+                  )
+                }
+              })
+            }
             </ul>
           </nav>
         )
@@ -33,9 +45,24 @@ class Pagination extends React.Component {
   }
   handlePaginationNumbers () {
     const paginationPages = Math.ceil(this.props.paginationData.total/this.props.paginationData.limit)
+    const middlePaginationPages = Math.ceil(paginationPages/2)
+    let paginationButtonsArray = []
     for (let index = 1; index <= paginationPages; index++) {
-      const element = {index: index, buttonText: index}
+      const element = {}
+      if (index < 2) {
+        element = {index: index, buttonText: index, visible: true}
+      } else if (index === paginationPages ) {
+        element = {index: index, buttonText: index, visible: true}
+      } else if (index === middlePaginationPages) {
+        element = {index: index, buttonText: index, visible: true}
+      } else if (index === (middlePaginationPages + 1) || index === (middlePaginationPages - 1)) {
+        element = {index: index, buttonText: index, visible: true}
+      } else {
+        element = {index: index, buttonText: index, visible: false}
+      }
+      paginationButtonsArray.push(element)
     }
+    return paginationButtonsArray
   }
   render () {
     return (this.handlePaginationComponent())
