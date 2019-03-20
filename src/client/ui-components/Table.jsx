@@ -41,7 +41,6 @@ class Table extends React.Component{
 }
 function mapStateToProps(state) {
   const {requestResolved, tableData} = state.table
-  console.log(state.table)
   return {requestResolved, tableData}
 }
 export default connect(mapStateToProps)(Table)

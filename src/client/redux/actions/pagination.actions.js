@@ -5,14 +5,16 @@ export const paginationActions = {
   removePaginationData
 }
 
-function addPaginationData (offset, limit, total, action, args) {
+function addPaginationData (offset, limit, total, action, args, currentPagination = 0) {
   let paginationData = {
     offset: offset,
     limit: limit,
     total: total,
     paginationAction: action,
-    actionArgs: args
+    actionArgs: args,
+    currentPagination: currentPagination
   }
+  console.log(paginationData)
   return {
     type: paginationConstants.ADD_PAGINATION_DATA,
     paginationData

@@ -10,7 +10,6 @@ function usdaSearch (text, offset) {
   return dispatch => {
     dispatch(request({text, offset}))
     usdaService.search(text, offset).then((data) => {
-      console.log(data)
       dispatch(success(data.tableData))
       dispatch(pagination(data.paginationData, {text, offset}))
     }, (error) => {
@@ -36,8 +35,10 @@ function usdaSearch (text, offset) {
     }
   }
   function pagination(data, args) {
+    const currentPagination = parseInt(args.offset) === 0 ? 0 : (((parseInt(args.offset) + parseInt(data.limit))/parseInt(data.limit)) - 1)
+    console.log(currentPagination)
     return dispatch => {
-      dispatch(paginationActions.addPaginationData(data.offset, data.limit, data.total, usdaActions.usdaSearch, args))
+      dispatch(paginationActions.addPaginationData(parseInt(args.offset), (parseInt(args.offset) + parseInt(data.limit)), parseInt(data.total), usdaActions.usdaSearch, args, currentPagination))
     }
   }
 }

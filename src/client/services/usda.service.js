@@ -13,6 +13,7 @@ function search(text, offset) {
 function handleUSDADataResponse (response) {
   let tableData = {}
   let paginationData = {}
+  console.log(response)
   if (response.data.getUSDAData.list !== null) {
     tableData = {...{
       head: ['group', 'name', 'ds', 'manu', 'Actions'],

@@ -15,7 +15,6 @@ PrivateRoute.propTypes = {
   dispatch: PropTypes.func.isRequired
 }
 function mapStateToProps(state) {
-  console.log(state.authentication)
   return {
     authLogged: {...state.authentication}
   }
