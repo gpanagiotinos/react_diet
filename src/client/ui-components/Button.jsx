@@ -11,6 +11,7 @@ export default class Button extends React.Component {
             buttonCustomClass: this.props.buttonCustomClass,
             value: this.props.value
         }
+        console.log('Button', this.state.buttonCustomClass)
         this.handleClick = this.handleClick.bind(this)
     }
     handleClick (e) {

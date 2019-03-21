@@ -13,7 +13,6 @@ class Pagination extends React.Component {
     }
     this.handlePaginationComponent = this.handlePaginationComponent.bind(this)
     this.handlePaginationNumbers = this.handlePaginationNumbers.bind(this)
-    this.handleActiveCurrentPage = this.handleActiveCurrentPage.bind(this)
     this.handlePaginationChange = this.handlePaginationChange.bind(this)
   }
   handlePaginationComponent () {
@@ -25,11 +24,11 @@ class Pagination extends React.Component {
           <Button value={'next'} buttonCustomClass={'pagination-next'} label={'Next'} onButtonClick={this.handlePaginationChange}/>
             <ul className='pagination-list'>
             {
-              this.handlePaginationNumbers().map((button) => {
+              this.handlePaginationNumbers().map((button, index) => {
                 if (button.visible === 'number') {
                   return (
-                    <li key={button.index}>
-                      <Button value={button.index} buttonCustomClass={'pagination-link ' + this.handleActiveCurrentPage(button.index)} label={button.buttonText} onButtonClick={this.handlePaginationChange}/>
+                    <li key={index}>
+                      <Button key={button.index}  value={button.index} buttonCustomClass={'pagination-link ' + button.isCurrent} label={button.buttonText} onButtonClick={this.handlePaginationChange}/>
                     </li>
                   )
                 } else if (button.visible === 'separator') {
@@ -52,48 +51,28 @@ class Pagination extends React.Component {
     }
   }
   handlePaginationNumbers () {
-    const paginationPages = Math.ceil(this.props.paginationData.total/this.props.paginationData.limit)
+    const paginationPages = Math.ceil(this.props.paginationData.total/(this.props.paginationData.limit - this.props.paginationData.offset))
     let paginationButtonsArray = []
-    if (paginationPages > 10) {
-      const middlePaginationPages = Math.ceil(paginationPages/2)
-      for (let index = 1; index <= paginationPages; index++) {
-        const element = {}
-        if (index < 2) {
-          element = {index: index, buttonText: index, visible: 'number'}
-          paginationButtonsArray.push(element)
-          paginationButtonsArray.push({index: 'separator_' + index, buttonText: '...', visible: 'separator' })
-        } else if (index === paginationPages ) {
-          element = {index: index, buttonText: index, visible: 'number'}
-          paginationButtonsArray.push(element)
-        } else if (index === middlePaginationPages) {
-          element = {index: index, buttonText: index, visible: 'number'}
-          paginationButtonsArray.push(element)
-        } else if (index === (middlePaginationPages + 1)) {
-          element = {index: index, buttonText: index, visible: 'number'}
-          paginationButtonsArray.push(element)
-          paginationButtonsArray.push({index: 'separator_' + index, buttonText: '...', visible: 'separator' })
-        } else if (index === (middlePaginationPages - 1)) {
-          element = {index: index, buttonText: index, visible: 'number'}
-          paginationButtonsArray.push(element)
-        } else {
-          element = {index: index, buttonText: index, visible: false}
-          paginationButtonsArray.push(element)
-        }
-      }
+    if (paginationPages > 10 && (paginationPages - this.props.paginationData.currentPagination) > 10) {
+      const middlePaginationPages = Math.round((paginationPages + this.props.paginationData.currentPagination)/2)
+      const currentPaginationText = this.props.paginationData.currentPagination === 0 ? 1 : this.props.paginationData.currentPagination
+      paginationButtonsArray = new Array(
+        {index: this.props.paginationData.currentPagination, buttonText: currentPaginationText, visible: 'number', isCurrent: 'is-current'},
+        {index: 'separator_1', buttonText: '...', visible: 'separator'},
+        {index: (middlePaginationPages - 1), buttonText: (middlePaginationPages - 1), visible: 'number', isCurrent: ''},
+        {index: middlePaginationPages, buttonText: middlePaginationPages, visible: 'number', isCurrent: ''},
+        {index: (middlePaginationPages + 1), buttonText: (middlePaginationPages + 1), visible: 'number', isCurrent: ''},
+        {index: 'separator_2', buttonText: '...', visible: 'separator'},
+        {index: paginationPages, buttonText: paginationPages, visible: 'number', isCurrent: ''}
+      )
     } else {
       for (let index = 1; index <= paginationPages; index++) {
         const element = {index: index, buttonText: index, visible: 'number'}
         paginationButtonsArray.push(element)
       }
     }
+    console.log(paginationButtonsArray)
     return paginationButtonsArray
-  }
-  handleActiveCurrentPage (index) {
-    if (index === (this.props.paginationData.currentPagination + 1)) {
-      return 'is-current'
-    } else {
-      return ''
-    }
   }
   handlePaginationChange(e, value) {
     let offset = 1
@@ -121,7 +100,6 @@ class Pagination extends React.Component {
 }
 function mapStateToProps(state) {
   const paginationData = {...state.pagination}
-  console.log(paginationData)
   return {paginationData}
 }
 export default connect(mapStateToProps)(Pagination)
