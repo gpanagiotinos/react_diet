@@ -35,10 +35,12 @@ function usdaSearch (text, offset) {
     }
   }
   function pagination(data, args) {
-    const currentPagination = parseInt(args.offset) === 0 ? 0 : (((parseInt(args.offset) + parseInt(data.limit))/parseInt(data.limit)) - 1)
-    console.log(currentPagination)
+    const intOffset = parseInt(args.offset)
+    const intLimit = (parseInt(args.offset) + parseInt(data.limit))
+    console.log(intOffset, intLimit)
+    const currentPagination = (intLimit/(intLimit-intOffset))
     return dispatch => {
-      dispatch(paginationActions.addPaginationData(parseInt(args.offset), (parseInt(args.offset) + parseInt(data.limit)), parseInt(data.total), usdaActions.usdaSearch, args, currentPagination))
+      dispatch(paginationActions.addPaginationData(intOffset, intLimit, parseInt(data.total), usdaActions.usdaSearch, args, currentPagination))
     }
   }
 }

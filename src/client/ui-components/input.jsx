@@ -16,7 +16,8 @@ class Input extends React.Component {
             leftIcon: this.props.leftIcon,
             rightIcon: this.props.rightIcon, 
             onInputChange: this.props.onInputChange,
-            required: this.props.required
+            required: this.props.required,
+            size: this.props.size
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleInputClass = this.handleInputClass.bind(this)
@@ -25,6 +26,7 @@ class Input extends React.Component {
         this.handleInputRightIcons = this.handleInputRightIcons.bind(this)
         this.handleShowPassword = this.handleShowPassword.bind(this)
         this.handleInputHelpMessage = this.handleInputHelpMessage.bind(this)
+        this.handleLabel = this.handleLabel.bind(this)
     }
     handleChange(e) {
         e.persist()
@@ -51,6 +53,9 @@ class Input extends React.Component {
             break
             case 'password':
                 return 'password'
+            break
+            case 'number':
+                return 'number'
             break
         }
     }
@@ -79,12 +84,19 @@ class Input extends React.Component {
             return null
         }
     }
+    handleLabel() {
+        if (this.state.label !== undefined) {
+            return (<label className='label'>{this.state.label}</label>)
+        } else {
+            return (null)
+        }
+    }
     render () {
         return (
             <div className='field'>
-                <label className='label'>{this.state.label}</label>
+                {this.handleLabel()}
                 <div className={'control' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
-                    <input className='input' type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
+                    <input className='input' size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}
                     {this.handleInputHelpMessage()}

@@ -9,9 +9,9 @@ export default class Button extends React.Component {
             bulmaType: this.props.bulmaType,
             onButtonClick: this.props.onButtonClick,
             buttonCustomClass: this.props.buttonCustomClass,
-            value: this.props.value
+            value: this.props.value,
+            disable: this.props.disable !== undefined ? this.props.disable : false
         }
-        console.log('Button', this.state.buttonCustomClass)
         this.handleClick = this.handleClick.bind(this)
     }
     handleClick (e) {
@@ -20,9 +20,7 @@ export default class Button extends React.Component {
     }
     render () {
         return (
-            <div className='control'>
-                <a className={this.state.buttonCustomClass !== undefined ? this.state.buttonCustomClass :  'button' + ' is-' + this.state.bulmaType} onClick={this.handleClick}>{this.state.label}</a>
-            </div>
+            <a className={this.state.buttonCustomClass !== undefined ? this.state.buttonCustomClass :  'button' + ' is-' + this.state.bulmaType} onClick={this.handleClick}>{this.state.label}</a>
         )
     }
 }

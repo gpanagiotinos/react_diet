@@ -5,7 +5,7 @@ export const paginationActions = {
   removePaginationData
 }
 
-function addPaginationData (offset, limit, total, action, args, currentPagination = 0) {
+function addPaginationData (offset, limit, total, action, args, currentPagination = 1) {
   let paginationData = {
     offset: offset,
     limit: limit,

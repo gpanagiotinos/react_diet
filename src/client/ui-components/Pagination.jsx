@@ -2,33 +2,33 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Button from '../ui-components/Button.jsx'
+import Input from '../ui-components/Input.jsx'
 
 class Pagination extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeNext: true,
-      activePrevious: true,
-      buttonsArray: []
+      paginationInputValue: null
     }
     this.handlePaginationComponent = this.handlePaginationComponent.bind(this)
     this.handlePaginationNumbers = this.handlePaginationNumbers.bind(this)
     this.handlePaginationChange = this.handlePaginationChange.bind(this)
+    this.handlePreviousNextDisable = this.handlePreviousNextDisable.bind(this)
   }
   handlePaginationComponent () {
     if (this.props.paginationData !== undefined) {
       if (Object.keys(this.props.paginationData).length > 0 && this.props.paginationData.constructor === Object) {
         return (
           <nav className='pagination is-centered' role='navigation' aria-label='pagination'>
-          <Button value={'previous'} buttonCustomClass={'pagination-previous'} label={'Previous'} onButtonClick={this.handlePaginationChange}/>
-          <Button value={'next'} buttonCustomClass={'pagination-next'} label={'Next'} onButtonClick={this.handlePaginationChange}/>
+          <Button key={'previous'} value={'previous'} disable={() => this.hanlePreviousNextDisable('previous')} buttonCustomClass={'pagination-previous'} label={'Previous'} onButtonClick={this.handlePaginationChange}/>
+          <Button key={'next'} value={'next'} disable={() => this.hanlePreviousNextDisable('next')} buttonCustomClass={'pagination-next'} label={'Next'} onButtonClick={this.handlePaginationChange}/>
             <ul className='pagination-list'>
             {
               this.handlePaginationNumbers().map((button, index) => {
                 if (button.visible === 'number') {
                   return (
                     <li key={index}>
-                      <Button key={button.index}  value={button.index} buttonCustomClass={'pagination-link ' + button.isCurrent} label={button.buttonText} onButtonClick={this.handlePaginationChange}/>
+                      <Button key={button.index + button.isCurrent}  value={button.index} buttonCustomClass={'pagination-link ' + button.isCurrent} label={button.buttonText} onButtonClick={this.handlePaginationChange}/>
                     </li>
                   )
                 } else if (button.visible === 'separator') {
@@ -40,6 +40,14 @@ class Pagination extends React.Component {
                 }
               })
             }
+            <li className='field has-addons'>
+              <div className='control'>
+                <Input type='number' size='1' value={this.state.paginationInputValue}/>
+              </div> 
+              <div className='control'>
+                <Button buttonCustomClass={'button'} label='Go' value={this.state.paginationInputValue} onButtonClick={this.handlePaginationChange}/>
+              </div>
+            </li>
             </ul>
           </nav>
         )
@@ -52,10 +60,11 @@ class Pagination extends React.Component {
   }
   handlePaginationNumbers () {
     const paginationPages = Math.ceil(this.props.paginationData.total/(this.props.paginationData.limit - this.props.paginationData.offset))
+    const currentPaginationPages = (paginationPages - this.props.paginationData.currentPagination)
     let paginationButtonsArray = []
-    if (paginationPages > 10 && (paginationPages - this.props.paginationData.currentPagination) > 10) {
+    if (currentPaginationPages > 10) {
       const middlePaginationPages = Math.round((paginationPages + this.props.paginationData.currentPagination)/2)
-      const currentPaginationText = this.props.paginationData.currentPagination === 0 ? 1 : this.props.paginationData.currentPagination
+      const currentPaginationText = this.props.paginationData.currentPagination
       paginationButtonsArray = new Array(
         {index: this.props.paginationData.currentPagination, buttonText: currentPaginationText, visible: 'number', isCurrent: 'is-current'},
         {index: 'separator_1', buttonText: '...', visible: 'separator'},
@@ -66,33 +75,51 @@ class Pagination extends React.Component {
         {index: paginationPages, buttonText: paginationPages, visible: 'number', isCurrent: ''}
       )
     } else {
-      for (let index = 1; index <= paginationPages; index++) {
-        const element = {index: index, buttonText: index, visible: 'number'}
+      const startPagination = (paginationPages - 10)
+      for (let index = startPagination; index <= paginationPages; index++) {
+        const element = {}
+        element = {...{index: index, buttonText: index, visible: 'number', isCurrent: ''}, isCurrent: index === this.props.paginationData.currentPagination ? 'is-current' : ''}
         paginationButtonsArray.push(element)
       }
     }
-    console.log(paginationButtonsArray)
     return paginationButtonsArray
   }
   handlePaginationChange(e, value) {
-    let offset = 1
+    let nextPagination = 1
     switch (value) {
       case 'next':
-        offset = ((this.props.paginationData.currentPagination + 1) * (this.props.paginationData.limit - this.props.paginationData.offset))
+        nextPagination = (this.props.paginationData.currentPagination + 1)
         break;
       case 'previous':
-        offset = ((this.props.paginationData.currentPagination - 1) * (this.props.paginationData.limit - this.props.paginationData.offset))
+        nextPagination = (this.props.paginationData.currentPagination - 1)
         break;
       default:
-        offset = ((value) * (this.props.paginationData.limit - this.props.paginationData.offset))
+        nextPagination = value
         break;
     }
+    const paginationPages = Math.ceil(this.props.paginationData.total/(this.props.paginationData.limit - this.props.paginationData.offset))
+    if (nextPagination > paginationPages || nextPagination < 0) {
+      nextPagination = this.props.paginationData.currentPagination
+    }
     const args = {...this.props.paginationData.actionArgs}
+    // based on button clicked count the offset
+    const offset = Math.max(...[...Array(nextPagination).keys()].map((key) => {
+      return (key*(this.props.paginationData.limit - this.props.paginationData.offset))
+    }))
     args['offset'] = offset
     const dispatch = this.props.dispatch
     dispatch(this.props.paginationData.paginationAction.apply(null, Object.keys(args).map((key) => {
       return args[key]
     })))
+  }
+  handlePreviousNextDisable (button) {
+    const paginationPages = Math.ceil(this.props.paginationData.total/(this.props.paginationData.limit - this.props.paginationData.offset))
+    switch (button) {
+      case 'next':
+      return this.props.paginationData.currentPagination === paginationPages ? true : false
+      case 'previous':
+      return this.props.paginationData.currentPagination === 0 ? true : false
+    }
   }
   render () {
     return (this.handlePaginationComponent())
