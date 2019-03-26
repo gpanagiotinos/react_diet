@@ -36,7 +36,9 @@ class Input extends React.Component {
         if (e.target.value.length ===  1) {
             this.props.dispatch(alertActions.clearInput(this.state.type))
         }
-        this.state.onInputChange(e)
+        if (this.state.onInputChange !== undefined) {
+            this.state.onInputChange(e)
+        } 
     }
     handleInputClass() {
         switch (this.state.type) {

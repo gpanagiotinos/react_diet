@@ -9,7 +9,6 @@ function search(text, offset) {
       return data
     })
 }
-
 function handleUSDADataResponse (response) {
   let tableData = {}
   let paginationData = {}

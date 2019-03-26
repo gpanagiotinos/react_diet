@@ -1,12 +1,22 @@
-import ApolloBoostClient from 'apollo-boost'
+import ApolloBoostClient, { Observable } from 'apollo-boost'
 import gql from 'graphql-tag'
 import fetch from 'isomorphic-fetch'
+import {ApolloLink} from 'apollo-link'
+import {HttpLink} from 'apollo-link-http'
+import {onError} from 'apollo-link-error'
 export  const apollo = {
   client,
   apolloQuery
 }
-const client = new ApolloBoostClient({
+const httpLink = new HttpLink({
   uri: 'http://localhost:3001/graphql',
+})
+const combineLinks = new ApolloLink.from([
+  httpLink,
+  apolloError
+])
+const client = new ApolloBoostClient({
+  link: combineLinks,
   fetch: fetch
 })
 
@@ -91,3 +101,14 @@ function apolloQuery (query) {
   }
 
 }
+const apolloError = onError(({graphQLErrors, networkError}) => {
+  console.log('Errors')
+    if(graphQLErrors) {
+      graphQLErrors.map(({message, locations, path}) => {
+        return `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      })
+    }
+    if (networkError) {
+      return `[Network error]: ${networkError}`
+    }
+})

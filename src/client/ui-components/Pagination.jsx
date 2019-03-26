@@ -14,6 +14,7 @@ class Pagination extends React.Component {
     this.handlePaginationNumbers = this.handlePaginationNumbers.bind(this)
     this.handlePaginationChange = this.handlePaginationChange.bind(this)
     this.handlePreviousNextDisable = this.handlePreviousNextDisable.bind(this)
+    this.handlePaginationOnInputChange = this.handlePaginationOnInputChange.bind(this)
   }
   handlePaginationComponent () {
     if (this.props.paginationData !== undefined) {
@@ -42,10 +43,10 @@ class Pagination extends React.Component {
             }
             <li className='field has-addons'>
               <div className='control'>
-                <Input type='number' size='1' value={this.state.paginationInputValue}/>
+                <Input type='number' size='1' onInputChange = {this.handlePaginationOnInputChange} value={this.state.paginationInputValue}/>
               </div> 
               <div className='control'>
-                <Button buttonCustomClass={'button'} label='Go' value={this.state.paginationInputValue} onButtonClick={this.handlePaginationChange}/>
+                <Button buttonCustomClass={'button'} label='Go' onButtonClick={(e) => (this.handlePaginationChange(e, parseInt(this.state.paginationInputValue)))}/>
               </div>
             </li>
             </ul>
@@ -98,7 +99,7 @@ class Pagination extends React.Component {
         break;
     }
     const paginationPages = Math.ceil(this.props.paginationData.total/(this.props.paginationData.limit - this.props.paginationData.offset))
-    if (nextPagination > paginationPages || nextPagination < 0) {
+    if (nextPagination > paginationPages || nextPagination < 1) {
       nextPagination = this.props.paginationData.currentPagination
     }
     const args = {...this.props.paginationData.actionArgs}
@@ -123,6 +124,13 @@ class Pagination extends React.Component {
   }
   render () {
     return (this.handlePaginationComponent())
+  }
+  handlePaginationOnInputChange(e) {
+    const {value} = e.target
+    this.setState((prevState, props) => {
+      console.log(value)
+      return {paginationInputValue: value}
+    })
   }
 }
 function mapStateToProps(state) {

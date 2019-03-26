@@ -31,7 +31,7 @@ function usdaSearch (text, offset) {
   function failureAlert(error) {
     return {
         type: alertConstants.ERROR,
-        message: error
+        message: error.message
     }
   }
   function pagination(data, args) {
