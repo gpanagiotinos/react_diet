@@ -24,11 +24,18 @@ const resolvers = {
         },
         getUSDANutritionData: {
             resolve: async(_, {ndbno}, context) => {
-                const USDANutritionData = await fetch(config.usdaNutritionSearch(ndbno, 'b', 'json'), {method: 'GET', headers: {'Content-Type': 'application/json'}})
+                console.log('getUSDANutritionData', ndbno)
+                const USDANutritionData = await fetch(config.usdaNutritionSearch(ndbno, 'f', 'json'), {method: 'GET', headers: {'Content-Type': 'application/json'}})
                 const NutritionData = await USDANutritionData.json()
                 return NutritionData
             }
         }
-    }
+    },
+    Mutation: {
+        setUSDAFood: (_, {food}, context) => {
+                console.log('mutation resolver', food)
+                return food
+            }
+        }   
 }
 export{resolvers}

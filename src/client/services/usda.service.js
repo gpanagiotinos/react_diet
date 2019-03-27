@@ -47,6 +47,14 @@ function USDADataTableBody (items = []) {
         args: object['ndbno'],
         action: usdaActions.usdaNutritionAction,
         component: 'NutritionRow'
+      },
+      {
+        icon: 'save',
+        label: 'Save Nutrition',
+        service: 'saveNutrition',
+        args: object['ndbno'],
+        action: usdaActions.usdaNutritionAction,
+        component: ''
       }
     ]
     return object
@@ -58,6 +66,23 @@ const availableServiceMethods = {
     .then(handleUSDANutritionResponse)
     .then((data) => {
       console.log(data)
+      return data
+    })
+  },
+  'saveNutrition': (itemID) => {
+    return apollo.apolloQuery('GET_USDANUTRITION')(itemID)
+    .then(handleUSDANutritionResponse)
+    .then((data) => {
+      const {__typename, ...nutritionData} = data.data.desc
+      console.log('nutritionData', nutritionData)
+      return nutritionData
+    })
+    .then((nutrition) => {
+      console.log('set data food', nutrition)
+      return apollo.apolloMutation('SET_USDAFOOD')(nutrition)
+    })
+    .then((data) => {
+      console.log('set food', data)
       return data
     })
   }

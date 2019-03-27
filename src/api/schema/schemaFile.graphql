@@ -1,3 +1,4 @@
+# Queries and Types
 type UserType {
     user_id: ID!
     username: String!
@@ -44,10 +45,19 @@ type USDAFoodData {
 type USDAFoodDescription{
     ndbno: String!
     name: String!
+    sd: String
+    fg: String
+    sn: String
+    cn: String
+    nf: String
+    cf: String
+    ff: String
+    pf: String
+    r: String
+    rd: String
     ds: String!
     manu: String!
     ru: String!
-   
 }
 type USDAFoodIng {
     desc: String!
@@ -60,6 +70,9 @@ type USDANutientsData{
     group: String!
     unit: String!
     value: String!
+    se: String!
+    dp: String!
+    sourcecode: String!
     measures: [USDANutientsMeasuresData]
 }
 type USDANutientsMeasuresData{
@@ -74,5 +87,28 @@ type Query {
     getUser(user_id: ID!): UserType,
     getUSDAData(text: String!, offset: Int!): USDAData,
     getUSDANutritionData(ndbno: String!): USDANutritionData
+}
+#Inputs and Mutations
+input USDAFoodInput {
+    ndbno: String!
+    name: String!
+    sd: String
+    fg: String
+    sn: String
+    cn: String
+    nf: String
+    cf: String
+    ff: String
+    pf: String
+    r: String
+    rd: String
+    ds: String!
+    manu: String!
+    ru: String!
+}
+
+type Mutation {
+    setUSDAFood(food: USDAFoodInput!): USDAFoodDescription
+    #setUSDAFood(ndbno: String!): USDAFoodDescription
 }
 scalar Date

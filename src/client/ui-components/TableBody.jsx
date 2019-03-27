@@ -22,7 +22,12 @@ class TableBody extends React.Component {
     this.handleBodyTdActions = this.handleBodyTdActions.bind(this)
   }
   handleDynamicRowComponent(key) {
-    return React.createElement(this.components[key])
+    console.log(key)
+    if (key !== undefined && key !== '') {
+      return React.createElement(this.components[key])
+    } else {
+      return (null)
+    }  
   }
   handleActionClicked (args, action, service, component, index) {
     this.props.dispatch(action(args, service))

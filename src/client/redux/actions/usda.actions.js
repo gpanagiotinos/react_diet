@@ -45,9 +45,10 @@ function usdaSearch (text, offset) {
   }
 }
 
-function usdaNutritionAction (ndbno, service) {
+function usdaNutritionAction(ndbno, service) {
   return dispatch => {
     usdaService.availableServiceMethods[service](ndbno).then((data) => {
+      console.log(data)
       dispatch(success(data))
     }, (error) => {
       dispatch(failureAlert(error))

@@ -3,6 +3,7 @@ import Sequelize from 'sequelize'
 
 const sequelize = new Sequelize(db_user.dbname, db_user.dbusername, db_user.dbpassword, {
     host: db_user.dbhost,
+    logging: false,
     dialect: 'sqlite', 
     pool: {
         max: 5,

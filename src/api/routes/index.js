@@ -9,7 +9,6 @@ import {template} from '../../ssr/template.js'
 const router = express.Router()
 import {router as user} from './user.js'
 
-
 router.use('/assets', express.static(path.resolve(__dirname, '../../../assets')))
 router.use('/graphql', express_graphql({
     schema: schema,
@@ -17,11 +16,9 @@ router.use('/graphql', express_graphql({
     context: {dbModel}
 }))
 router.use('/user', user)
-
 // ssr request
 router.get('*', (req, res) => {
     validateSession(req).then((user) => {
-        console.log('user', user)
         const {content} = render({loggedIn: true, user: user}, {}, req)
         let response = null
         if (process.env.NODE_ENV === 'development') {

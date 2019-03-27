@@ -1,22 +1,23 @@
-import ApolloBoostClient, { Observable } from 'apollo-boost'
+import ApolloBoostClient from 'apollo-boost'
 import gql from 'graphql-tag'
 import fetch from 'isomorphic-fetch'
-import {ApolloLink} from 'apollo-link'
-import {HttpLink} from 'apollo-link-http'
-import {onError} from 'apollo-link-error'
+// import {ApolloLink} from 'apollo-link'
+// import {HttpLink} from 'apollo-link-http'
+// import {onError} from 'apollo-link-error'
 export  const apollo = {
   client,
-  apolloQuery
+  apolloQuery,
+  apolloMutation
 }
-const httpLink = new HttpLink({
-  uri: 'http://localhost:3001/graphql',
-})
-const combineLinks = new ApolloLink.from([
-  httpLink,
-  apolloError
-])
+// const httpLink = new HttpLink({
+//   uri: 'http://localhost:3001/graphql',
+// })
+// const combineLinks = new ApolloLink.from([
+//   httpLink,
+//   apolloError
+// ])
 const client = new ApolloBoostClient({
-  link: combineLinks,
+  uri: 'http://localhost:3001/graphql',
   fetch: fetch
 })
 
@@ -50,6 +51,16 @@ const GET_USDANUTRITION = gql`query getUSDANutritionData($ndbno: String!) {getUS
         desc {
           ndbno
           name
+          sd
+          fg
+          sn
+          cn
+          nf
+          cf
+          ff
+          pf
+          r
+          rd
           ds
           manu
           ru
@@ -99,16 +110,34 @@ function apolloQuery (query) {
     default:
       break;
   }
-
 }
-const apolloError = onError(({graphQLErrors, networkError}) => {
-  console.log('Errors')
-    if(graphQLErrors) {
-      graphQLErrors.map(({message, locations, path}) => {
-        return `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      })
+const SET_USDAFOOD = gql`
+  mutation setUSDAFood($food: USDAFoodInput!){
+    setUSDAFood(food: $food) {
+      ndbno
+      name
     }
-    if (networkError) {
-      return `[Network error]: ${networkError}`
-    }
-})
+  }`
+
+function apolloMutation(mutation) {
+  switch (mutation) {
+    case 'SET_USDAFOOD':
+      return (food) => {
+        return client.mutate({
+          mutation: SET_USDAFOOD,
+          variables: {food: food}
+        })
+      }
+  }
+}
+// const apolloError = onError(({graphQLErrors, networkError}) => {
+//   console.log('Errors')
+//     if(graphQLErrors) {
+//       graphQLErrors.map(({message, locations, path}) => {
+//         return `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+//       })
+//     }
+//     if (networkError) {
+//       return `[Network error]: ${networkError}`
+//     }
+// })
