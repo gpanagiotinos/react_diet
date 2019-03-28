@@ -114,8 +114,10 @@ function apolloQuery (query) {
 const SET_USDAFOOD = gql`
   mutation setUSDAFood($food: USDAFoodInput!){
     setUSDAFood(food: $food) {
-      ndbno
-      name
+      desc {
+        ndbno
+        name
+      }
     }
   }`
 

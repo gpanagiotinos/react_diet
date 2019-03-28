@@ -1,6 +1,7 @@
 import {config} from '../config'
 import {apollo} from './apollo.service.js'
 import {usdaActions, paginationActions} from '../redux/actions'
+import {removeObjectAttribute} from '../redux/helpers'
 
 function search(text, offset) {
   return apollo.apolloQuery('GET_USDADATA')(text, offset)
@@ -73,13 +74,12 @@ const availableServiceMethods = {
     return apollo.apolloQuery('GET_USDANUTRITION')(itemID)
     .then(handleUSDANutritionResponse)
     .then((data) => {
-      const {__typename, ...nutritionData} = data.data.desc
-      console.log('nutritionData', nutritionData)
-      return nutritionData
+      const {...foodDesc} = data.data.desc
+      const [...foodNutrients] = data.data.nutrients
+      return {desc: foodDesc, nutrients: foodNutrients}
     })
     .then((nutrition) => {
-      console.log('set data food', nutrition)
-      return apollo.apolloMutation('SET_USDAFOOD')(nutrition)
+      return apollo.apolloMutation('SET_USDAFOOD')(removeObjectAttribute(nutrition)('__typename'))
     })
     .then((data) => {
       console.log('set food', data)

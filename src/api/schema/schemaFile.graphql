@@ -40,7 +40,7 @@ type USDAFoodData {
     type: String!
     desc: USDAFoodDescription
     ing: USDAFoodIng
-    nutrients: [USDANutientsData]
+    nutrients: [USDANutrientsData]
 }
 type USDAFoodDescription{
     ndbno: String!
@@ -63,7 +63,7 @@ type USDAFoodIng {
     desc: String!
     upd: String!
 }
-type USDANutientsData{
+type USDANutrientsData{
     nutrient_id: String!
     name: String!
     derivation: String!
@@ -73,9 +73,9 @@ type USDANutientsData{
     se: String!
     dp: String!
     sourcecode: String!
-    measures: [USDANutientsMeasuresData]
+    measures: [USDANutrientsMeasuresData]
 }
-type USDANutientsMeasuresData{
+type USDANutrientsMeasuresData{
     label: String!
     eqv: String!
     eunit: String!
@@ -90,6 +90,10 @@ type Query {
 }
 #Inputs and Mutations
 input USDAFoodInput {
+    desc: USDADescriptionInput!
+    nutrients: [USDANutrientsInput]
+}
+input USDADescriptionInput{
     ndbno: String!
     name: String!
     sd: String
@@ -106,9 +110,27 @@ input USDAFoodInput {
     manu: String!
     ru: String!
 }
+input USDANutrientsInput{
+    nutrient_id: String!
+    name: String!
+    derivation: String!
+    group: String!
+    unit: String!
+    value: String!
+    se: String
+    dp: String
+    sourcecode: String
+    measures: [USDANutrientsMeasuresInput]
+}
+input USDANutrientsMeasuresInput{
+    label: String!
+    eqv: String!
+    eunit: String!
+    qty: String!
+    value: String!
+}
 
 type Mutation {
-    setUSDAFood(food: USDAFoodInput!): USDAFoodDescription
-    #setUSDAFood(ndbno: String!): USDAFoodDescription
+    setUSDAFood(food: USDAFoodInput!): USDAFoodData
 }
 scalar Date

@@ -24,7 +24,6 @@ const resolvers = {
         },
         getUSDANutritionData: {
             resolve: async(_, {ndbno}, context) => {
-                console.log('getUSDANutritionData', ndbno)
                 const USDANutritionData = await fetch(config.usdaNutritionSearch(ndbno, 'f', 'json'), {method: 'GET', headers: {'Content-Type': 'application/json'}})
                 const NutritionData = await USDANutritionData.json()
                 return NutritionData
@@ -33,7 +32,10 @@ const resolvers = {
     },
     Mutation: {
         setUSDAFood: (_, {food}, context) => {
-                console.log('mutation resolver', food)
+                const saveUSDAFoodData = context.dbModel.food.findOrCreate({
+                   where: {ndbno: food.ndbno},
+                   defaults: food
+                })
                 return food
             }
         }   
