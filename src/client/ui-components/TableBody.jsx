@@ -22,19 +22,18 @@ class TableBody extends React.Component {
     this.handleBodyTdActions = this.handleBodyTdActions.bind(this)
   }
   handleDynamicRowComponent(key) {
-    console.log(key)
     if (key !== undefined && key !== '') {
       return React.createElement(this.components[key])
-    } else {
-      return (null)
-    }  
+    }
   }
   handleActionClicked (args, action, service, component, index) {
     this.props.dispatch(action(args, service))
-    this.setState((prevState, props) => {
-      return {componentRow: {componentKey: component, componentIndex: index}}
-    })
-    console.log(args, action, service, component, index, this.state.componentRow)
+    console.log(this.props.requestResolved, component)
+    if (this.props.requestResolved && component !== '') {
+      this.setState((prevState, props) => {
+        return {componentRow: {componentKey: component, componentIndex: index}}
+      })
+    }
   }
   handleTableActions (actions = [], index) {
     return <ul className='level-left'>

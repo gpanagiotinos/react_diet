@@ -13,7 +13,6 @@ function search(text, offset) {
 function handleUSDADataResponse (response) {
   let tableData = {}
   let paginationData = {}
-  console.log(response)
   if (response.data.getUSDAData.list !== null) {
     tableData = {...{
       head: ['group', 'name', 'ds', 'manu', 'Actions'],
@@ -66,7 +65,6 @@ const availableServiceMethods = {
     return apollo.apolloQuery('GET_USDANUTRITION')(itemID)
     .then(handleUSDANutritionResponse)
     .then((data) => {
-      console.log(data)
       return data
     })
   },
@@ -82,7 +80,6 @@ const availableServiceMethods = {
       return apollo.apolloMutation('SET_USDAFOOD')(removeObjectAttribute(nutrition)('__typename'))
     })
     .then((data) => {
-      console.log('set food', data)
       return data
     })
   }

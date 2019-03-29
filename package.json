@@ -8,7 +8,7 @@
     "build": "webpack --config build/webpack.config.dev.js --mode development --watch",
     "start": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run build\"",
     "ssr": "cross-env NODE_ENV=development concurrently \"npm run build\" \"npm run server\"",
-    "server": "nodemon ./src/api/server.js --exec babel-node --presets @babel/preset-env",
+    "server": "nodemon ./src/api/server.js --exec babel-node",
     "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --watch"
   },
   "repository": {

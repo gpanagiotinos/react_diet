@@ -33,19 +33,20 @@ async function createNutritions (max = 196) {
 }
 
 async function dbFake () {
+    console.log(dbModel.User)
     // fake data user
     for(const user of createFakeUsers()) {
-        const userCreate = await dbModel.user.create(user)
+        const userCreate = await dbModel.User.create(user)
     }
     
     // fake data roles
     for(const role of createFakeRoles()) {
-        const rolesCreate = await dbModel.role.create(role)
+        const rolesCreate = await dbModel.Role.create(role)
     }
     //USDA data Nutritions
     createNutritions().then(async (data) => {
         for(const nutritionObject of data.list.item) {
-            const nutritionCreate = await dbModel.nutrition.create({nutrition_id: nutritionObject.id, nutrition_name: nutritionObject.name})
+            const nutritionCreate = await dbModel.Nutrition.create({nutrition_id: nutritionObject.id, nutrition_name: nutritionObject.name})
         }
     }).catch((error) => {
         console.log(error)

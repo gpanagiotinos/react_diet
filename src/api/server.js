@@ -14,9 +14,10 @@ dbConnection().then((message) => {
     console.log('Connection with db established')
     return dbSync()
 }).then(() => {
-    return dbFake()
     console.log('Sync functions')
-}).then(() => {
+    return dbFake()
+})
+.then(() => {
     console.log('Add fake data')
 }).catch((error) => {
     console.log('Database Connection failed:' + error)

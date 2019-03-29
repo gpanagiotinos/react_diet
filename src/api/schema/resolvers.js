@@ -31,12 +31,22 @@ const resolvers = {
         }
     },
     Mutation: {
-        setUSDAFood: (_, {food}, context) => {
-                const saveUSDAFoodData = context.dbModel.food.findOrCreate({
-                   where: {ndbno: food.ndbno},
-                   defaults: food
+        setUSDAFood: async (_, {food}, context) => {
+            const saveUSDAFoodData = await context.dbModel.food.findOrCreate({where: {ndbno: food.desc.ndbno}, defaults: food.desc})
+            const saveFoodNutrition = await Promise.all(food.nutrients.map(async (nutrition) => {
+                const createNutrition = await context.dbModel.foodNutrition.create({
+                    foodId: saveUSDAFoodData[0].dataValues.id,
+                    nutritionId: nutrition.nutrient_id,
+                    derivation: nutrition.derivation,
+                    group: nutrition.group,
+                    name: nutrition.name,
+                    unit: nutrition.unit,
+                    value: nutrition.value
                 })
-                return food
+                console.log(createNutrition)
+                return createNutrition
+            }))
+            return saveFoodNutrition
             }
         }   
 }

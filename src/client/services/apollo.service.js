@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import fetch from 'isomorphic-fetch'
 // import {ApolloLink} from 'apollo-link'
 // import {HttpLink} from 'apollo-link-http'
-// import {onError} from 'apollo-link-error'
+import {onError} from 'apollo-link-error'
 export  const apollo = {
   client,
   apolloQuery,
@@ -18,7 +18,8 @@ export  const apollo = {
 // ])
 const client = new ApolloBoostClient({
   uri: 'http://localhost:3001/graphql',
-  fetch: fetch
+  fetch: fetch,
+  onError: (error) => apolloError(error)
 })
 
 const GET_USDADATA = gql`query getUSDAData($text: String!, $offset: Int!) {getUSDAData(text: $text, offset: $offset)
@@ -127,19 +128,20 @@ function apolloMutation(mutation) {
       return (food) => {
         return client.mutate({
           mutation: SET_USDAFOOD,
-          variables: {food: food}
+          variables: {food: food},
+          onError: (error) => {console.log('error', error)}
         })
       }
   }
 }
-// const apolloError = onError(({graphQLErrors, networkError}) => {
-//   console.log('Errors')
-//     if(graphQLErrors) {
-//       graphQLErrors.map(({message, locations, path}) => {
-//         return `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-//       })
-//     }
-//     if (networkError) {
-//       return `[Network error]: ${networkError}`
-//     }
-// })
+const apolloError = ({graphQLErrors, networkError}) => {
+  console.log('Errors')
+    if(graphQLErrors) {
+      graphQLErrors.map(({message, locations, path}) => {
+        return Promise.reject(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+      })
+    }
+    if (networkError) {
+      return Promise.reject(`[Network error]: ${networkError}`)
+    }
+}
