@@ -1,5 +1,4 @@
 import {Model, DataTypes} from 'sequelize'
-import foodNutrition from './foodNutrition'
 export default class FoodNutritionMeasure extends Model {
     static init(sequelize) {
         return super.init({
