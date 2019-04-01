@@ -7,11 +7,11 @@ export default class Nutrition extends Sequelize.Model {
             autoIncrement: true,
             primaryKey: true
           },
-          nutrition_id: {
+          nutrient_id: {
             type: Sequelize.STRING,
             allowNull: true
           },
-          nutrition_name: {
+          nutrient_name: {
             type: Sequelize.STRING,
             allowNull: false
           }

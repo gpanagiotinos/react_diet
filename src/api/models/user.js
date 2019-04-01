@@ -1,4 +1,5 @@
 import {Model, DataTypes} from 'sequelize'
+import bcrypt from 'bcrypt'
 export default class User extends Model {
     static init(sequelize) {
         return super.init({
@@ -19,9 +20,20 @@ export default class User extends Model {
                 type: DataTypes.INTEGER,
                 allowNull: false
             }
-        }, {
+        },
+        {
             tableName: 'user',
+            hooks: {
+                beforeCreate: async(user, options) => {
+                    const hashPassword = await bcrypt.hash(user.password, 10)
+                    user.password = hashPassword
+                    console.log(user.password)
+                }
+            },
             sequelize
         })
+    }
+    static validatePassword (password) {
+        console.log(password, this)
     }
 }

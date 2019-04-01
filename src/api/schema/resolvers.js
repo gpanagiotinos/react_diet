@@ -32,22 +32,41 @@ const resolvers = {
     },
     Mutation: {
         setUSDAFood: async (_, {food}, context) => {
-            const saveUSDAFoodData = await context.dbModel.food.findOrCreate({where: {ndbno: food.desc.ndbno}, defaults: food.desc})
-            const saveFoodNutrition = await Promise.all(food.nutrients.map(async (nutrition) => {
-                const createNutrition = await context.dbModel.foodNutrition.create({
-                    foodId: saveUSDAFoodData[0].dataValues.id,
-                    nutritionId: nutrition.nutrient_id,
-                    derivation: nutrition.derivation,
-                    group: nutrition.group,
-                    name: nutrition.name,
-                    unit: nutrition.unit,
-                    value: nutrition.value
-                })
-                console.log(createNutrition)
-                return createNutrition
-            }))
-            return saveFoodNutrition
+            try {
+                const [saveFood, wasFoodCreated] = await context.dbModel.Food.findOrCreate({where: {ndbno: food.desc.ndbno}, defaults: food.desc})
+                if (wasFoodCreated) {
+                    const createNutrition = await food.nutrients.reduce((previousPromise, nutrition) => {
+                        return previousPromise.then(() => {
+                            return new Promise((resolve, reject) => {
+                                context.dbModel.Nutrition.findOrCreate({where: {nutrient_id: nutrition.nutrient_id}, defaults: {
+                                        nutrient_id: nutrition.nutrient_id,
+                                        nutrient_name: nutrition.name
+                                    }}).then(([data, createdFlag]) => {
+                                        nutrition['nutritionId'] = data.dataValues.id
+                                        return context.dbModel.FoodNutrition.findOrCreate({where: {foodId: saveFood.dataValues.id, nutritionId: nutrition.nutritionId}, defaults: nutrition})
+                                    }).then(([data, createdFlag]) => {
+                                        const bulkArray = nutrition.measures.map((measure) => {
+                                            return {...measure, ...{foodNutritionId: data.dataValues.id}} 
+                                        })
+                                        return context.dbModel.FoodNutritionMeasure.bulkCreate(bulkArray)
+                                    }).then((data) => {
+                                        resolve(data)
+                                    }).catch((error) => {
+                                        reject(error)
+                                    })  
+                            })
+                        })
+                    }, Promise.resolve())
+                    console.log(saveFood)
+                    return saveFood
+                } else {
+                    console.log('Already Saved')
+                    return saveFood
+                }  
+            } catch (error) {
+                return Promise.reject(error)
             }
-        }   
+        }
+    }   
 }
 export{resolvers}
