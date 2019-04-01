@@ -131,13 +131,10 @@ async function createFakeFood () {
 }
 
 async function dbFake () {
-    console.log(dbModel.User)
     // fake data user
     for(const user of createFakeUsers()) {
         const userCreate = await dbModel.User.create(user)
-        dbModel.User.validatePassword('george')
     }
-    
     // fake data roles
     for(const role of createFakeRoles()) {
         const rolesCreate = await dbModel.Role.create(role)

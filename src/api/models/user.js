@@ -1,5 +1,6 @@
 import {Model, DataTypes} from 'sequelize'
 import bcrypt from 'bcrypt'
+import { rejects } from 'assert';
 export default class User extends Model {
     static init(sequelize) {
         return super.init({
@@ -33,7 +34,18 @@ export default class User extends Model {
             sequelize
         })
     }
-    static validatePassword (password) {
-        console.log(password, this)
+    static async validateUsernamePassword (username, password) {
+        try {
+            const userFind = await this.findOne({where: {username: username}})
+            if (userFind) {
+                const passwordCompare = await bcrypt.compare(password, userFind.password)
+                if (passwordCompare) {
+                    return Promise.resolve(userFind)
+                }
+            }
+            return null
+        } catch (error) {
+            return Promise.rejects(error)
+        }
     }
 }
