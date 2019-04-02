@@ -85,7 +85,19 @@ const availableServiceMethods = {
   }
 }
 
+function foodGroupList (lt = 'g', max = 26, offset = 0, sort = 'n', format = 'json') {
+  return apollo.apolloQuery('GET_USDALISTDATA')(lt, max, offset, sort, format)
+  .then(handleList)
+  .then((data) => {
+    return data
+  })
+  function handleList(response) {
+    return response.data.getUSDAListData.list.item
+  }
+}
+
 export const usdaService = {
   search,
+  foodGroupList,
   availableServiceMethods
 }

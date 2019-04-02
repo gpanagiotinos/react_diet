@@ -1,8 +1,9 @@
-import {tableConstants, alertConstants} from '../constants'
+import {tableConstants, alertConstants, dropdownConstants} from '../constants'
 import {usdaService} from '../../services'
 import {paginationActions} from '../actions'
 export const usdaActions = {
   usdaSearch,
+  usdaListDropDown,
   usdaNutritionAction
 }
 
@@ -44,7 +45,47 @@ function usdaSearch (text, offset) {
     }
   }
 }
-
+function usdaListDropDown (listType, id, index) {
+  return dispatch => {
+    dispatch(request({listType}))
+    switch (listType) {
+      case 'groups':
+        usdaService.foodGroupList()
+        .then((data) => {
+          console.log('dropdown', data)
+          dispatch(success(id, data, index))
+        }, (error) => {
+          dispatch(failure())
+          dispatch(failureAlert(error))
+        })
+      break
+    }
+  }
+  function request(data) {
+    return {
+      type: dropdownConstants.REQUEST_DROPDOWN_DATA,
+      data: []
+    }
+  }
+  function success(id, data, index) {
+    return {
+      type: dropdownConstants.ADD_DROPDOWN_DATA,
+      id, data, index
+    }
+  }
+  function failure(data = {}) {
+    return {
+      type: dropdownConstants.FAILURE_DROPDOWN_DATA,
+      data
+    }
+  }
+  function failureAlert(error) {
+    return {
+        type: alertConstants.ERROR,
+        message: error.message
+    }
+  }
+}
 function usdaNutritionAction(ndbno, service) {
   return dispatch => {
     dispatch(request({ndbno}))

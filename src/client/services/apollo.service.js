@@ -91,6 +91,20 @@ const GET_USDANUTRITION = gql`query getUSDANutritionData($ndbno: String!) {getUS
     }
   }
 }`
+const GET_USDALISTDATA = gql`query getUSDAListData($lt: String!, $max: Int!, $offset: Int!, $sort: String!, $format: String!)
+{
+  getUSDAListData(lt: $lt, max: $max, offset: $offset, sort: $sort, format: $format) {
+    list {
+      item
+      {
+        offset
+        id
+        name
+      }
+    }
+  }
+}`
+
 
 function apolloQuery (query) {
   switch (query) {
@@ -106,6 +120,13 @@ function apolloQuery (query) {
           return client.query({
           query: GET_USDANUTRITION,
           variables: {ndbno: ndbno}
+        })
+      }
+    case 'GET_USDALISTDATA': 
+      return (lt, max, offset, sort, format) => {
+        return client.query({
+          query: GET_USDALISTDATA,
+          variables: {lt: lt, max: max, offset: offset, sort: sort, format: format}
         })
       }
     default:

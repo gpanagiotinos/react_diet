@@ -28,6 +28,13 @@ const resolvers = {
                 const NutritionData = await USDANutritionData.json()
                 return NutritionData
             }
+        },
+        getUSDAListData: {
+            resolve: async(_, {lt, max, offset, sort, format}, context) => {
+                const USDAList = await fetch(config.usdaLists(lt, max, offset, sort, format), {method: 'GET', headers: {'Content-Type': 'application/json'}})
+                const ListData = await USDAList.json()
+                return ListData
+            }
         }
     },
     Mutation: {

@@ -82,11 +82,30 @@ type USDANutrientsMeasuresData{
     qty: String!
     value: String!
 }
+# Usda List Search
+type USDALists {
+    list: USDAList
+}
+type USDAList {
+    lt: String!
+    start: Int!
+    end: Int!
+    total: Int!
+    sr: String!
+    sort: String!
+    item: [USDAItem]
+}
+type USDAItem {
+    offset: Int!
+    id: String!
+    name: String!
+}
 type Query {
     getUsers: [UserType],
     getUser(user_id: ID!): UserType,
     getUSDAData(text: String!, offset: Int!): USDAData,
-    getUSDANutritionData(ndbno: String!): USDANutritionData
+    getUSDANutritionData(ndbno: String!): USDANutritionData,
+    getUSDAListData(lt: String!, max: Int!, offset: Int!, sort: String!, format: String!): USDALists
 }
 #Inputs and Mutations
 input USDAFoodInput {
