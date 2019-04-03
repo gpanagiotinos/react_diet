@@ -61,6 +61,7 @@ class Pagination extends React.Component {
   }
   handlePaginationNumbers () {
     const paginationPages = Math.ceil(this.props.paginationData.total/(this.props.paginationData.limit - this.props.paginationData.offset))
+    console.log('number', paginationPages)
     const currentPaginationPages = (paginationPages - this.props.paginationData.currentPagination)
     let paginationButtonsArray = []
     if (currentPaginationPages > 10) {
@@ -76,7 +77,7 @@ class Pagination extends React.Component {
         {index: paginationPages, buttonText: paginationPages, visible: 'number', isCurrent: ''}
       )
     } else {
-      const startPagination = (paginationPages - 10)
+      const startPagination = paginationPages > 10 ? (paginationPages - 10) : 1 
       for (let index = startPagination; index <= paginationPages; index++) {
         const element = {}
         element = {...{index: index, buttonText: index, visible: 'number', isCurrent: ''}, isCurrent: index === this.props.paginationData.currentPagination ? 'is-current' : ''}
@@ -128,7 +129,6 @@ class Pagination extends React.Component {
   handlePaginationOnInputChange(e) {
     const {value} = e.target
     this.setState((prevState, props) => {
-      console.log(value)
       return {paginationInputValue: value}
     })
   }

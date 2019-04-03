@@ -3,8 +3,8 @@ import {apollo} from './apollo.service.js'
 import {usdaActions, paginationActions} from '../redux/actions'
 import {removeObjectAttribute} from '../redux/helpers'
 
-function search(text, offset) {
-  return apollo.apolloQuery('GET_USDADATA')(text, offset)
+function search(text, foodGroup, offset) {
+  return apollo.apolloQuery('GET_USDADATA')(text, foodGroup, offset)
     .then(handleUSDADataResponse)
     .then((data) => {
       return data

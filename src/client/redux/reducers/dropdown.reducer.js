@@ -18,20 +18,30 @@ export function dropdown(state = [], action) {
         dropdownData:  [...state]
       }
       case dropdownConstants.SELECT_DROPDOWN:
-      return {...state, dropdownData: state.dropdownData.map((content) => {
-        if (content.id === action.id) {
-          return content.selectedIndex = action.index
-        }
-      })}
+      return {
+        requestResolved: true,
+        dropdownData: [
+          ...state.dropdownData.map((content) => {
+            if (content.id === action.id) {
+              return {...content, ...{selectedIndex: action.index}}
+            } else {
+              return content
+            }
+          })
+        ]
+      }
       case dropdownConstants.UNSELECT_DROPDOWN:
       return {
         requestResolved: true,
-        dropdownData:  [...state.dropdownData.forEach((content) => {
-          if (content.id === action.id) {
-            console.log(content)
-            return content.selectedIndex = null
-          }
-        })]
+        dropdownData: [
+          ...state.dropdownData.map((content) => {
+            if (content.id === action.id) {
+              return {...content, ...{selectedIndex: null}}
+            } else {
+              return content
+            }
+          })
+        ]
       }
       default: 
         return state

@@ -22,7 +22,7 @@ const client = new ApolloBoostClient({
   onError: (error) => apolloError(error)
 })
 
-const GET_USDADATA = gql`query getUSDAData($text: String!, $offset: Int!) {getUSDAData(text: $text, offset: $offset)
+const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset)
     {
       list 
       { 
@@ -109,10 +109,10 @@ const GET_USDALISTDATA = gql`query getUSDAListData($lt: String!, $max: Int!, $of
 function apolloQuery (query) {
   switch (query) {
     case 'GET_USDADATA':
-      return (text, offset) => {
+      return (text, foodGroup, offset) => {
           return client.query({
           query: GET_USDADATA,
-          variables: {text: text, offset: offset}
+          variables: {text: text, foodGroup: foodGroup, offset: offset}
         })
       }
     case 'GET_USDANUTRITION':

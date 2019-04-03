@@ -1,7 +1,7 @@
 import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
-import {dbConnection} from './db/dbsqlite.js'
+import {dbConnection} from './db/dbConnection.js'
 import {dbSync} from './db/syncmodels.js'
 import {dbFake} from './db/fakerdata.js'
 import {router as routes} from './routes/index.js'

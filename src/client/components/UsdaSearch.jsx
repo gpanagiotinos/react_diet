@@ -11,10 +11,12 @@ class UsdaSearch extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      usdaSearch: ''
+      usdaSearch: '',
+      foodGroup: ''
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleButtonChange = this.handleButtonChange.bind(this)
+    this.handleGroupSelect = this.handleGroupSelect.bind(this)
   }
   componentDidMount () {
     const dispatch = this.props.dispatch
@@ -28,16 +30,27 @@ class UsdaSearch extends React.Component {
   }
   handleButtonChange(e) {
     const dispatch = this.props.dispatch
-    dispatch(usdaActions.usdaSearch(this.state.usdaSearch, 0))
+    dispatch(usdaActions.usdaSearch(this.state.usdaSearch, this.state.foodGroup, 0))
   }
+  handleGroupSelect(e, value) {
+    if (value !== null) {
+      this.setState((prevState, props) => ({
+        foodGroup: value.id.toString(),
+      }))
+    } else {
+      this.setState((prevState, props) => ({
+        foodGroup: '',
+      }))
+    }
 
+  }
   render () {
     return (
       <div className='columns is-multiline is-mobile is-centered'>
         <div className='column is-half'>
             <Input type='search' label={'Search USDA'} name='usdaSearch' value={this.state.searchValue} onInputChange={this.handleInputChange}/>
           <div className='field'>
-            <DropDown dropDownId={'foodGroup'} buttonLabel={'Food Groups'}/>
+            <DropDown onDropDownSelect={this.handleGroupSelect} dropDownId={'foodGroup'} buttonLabel={'Food Groups'}/>
           </div>
           <div className='field'>
             <Button label='Search' bulmaType='link' onButtonClick={this.handleButtonChange}/>

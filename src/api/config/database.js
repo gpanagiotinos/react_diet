@@ -10,4 +10,10 @@ const db_user = {
     db: db,
     storage: db.filename
   }
-  export {db_user}
+  const db_userMySQL = {
+    dbname: 'react_test_db',
+    dbusername: 'georgepan',
+    dbpassword: 'george',
+    dbhost: 'localhost'
+  }
+  export {db_user, db_userMySQL}

@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import {sequelize} from '../db/dbsqlite.js'
-import User from './user.js'
+import {sequelize} from '../db/dbConnection.js'
 
 var dbModel = {}
 

@@ -13,7 +13,8 @@ class DropDown extends React.Component {
       dropDownId: this.props.dropDownId,
       content: this.props.content,
       dropdownActive: false,
-      dropdownSelected: false
+      dropdownSelected: false,
+      onDropDownSelect: this.props.onDropDownSelect
     }
     this.handleDropDownContent = this.handleDropDownContent.bind(this)
     this.handleDropDownActive = this.handleDropDownActive.bind(this)
@@ -32,15 +33,23 @@ class DropDown extends React.Component {
     }
   }
   handleDropDownSelection (e, value) {
-    this.setState((prevState, props) => ({
-      buttonLabel: props.content[value].name,
-      dropdownActive: false,
-      dropdownSelected: !prevState.dropdownSelected
-    }))
+    e.preventDefault()
     const dispatch = this.props.dispatch
     if (this.props.selectedIndex === null || this.props.selectedIndex !== value.toString()) {
+      this.setState((prevState, props) => ({
+        buttonLabel: props.content[value].name,
+        dropdownActive: false,
+        dropdownSelected: !prevState.dropdownSelected
+      }))
       dispatch(dropdownActions.dropdownSelect(value.toString(), this.state.dropDownId, true))
+      this.state.onDropDownSelect(e, this.props.content[value])
     } else {
+      this.setState((prevState, props) => ({
+        buttonLabel: props.buttonLabel,
+        dropdownActive: false,
+        dropdownSelected: !prevState.dropdownSelected
+      }))
+      this.state.onDropDownSelect(e, null)
       dispatch(dropdownActions.dropdownSelect(value.toString(), this.state.dropDownId, false))
     }
   }
@@ -65,7 +74,6 @@ class DropDown extends React.Component {
   }
 }
 function mapStateToProps(state, props) {
-  console.log(state.dropdown)
   if (state.dropdown.requestResolved && state.dropdown.requestResolved !== undefined) {
     const filterData = state.dropdown.dropdownData.filter((data) => {
       return data.id === props.dropDownId

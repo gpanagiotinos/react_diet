@@ -7,10 +7,10 @@ export const usdaActions = {
   usdaNutritionAction
 }
 
-function usdaSearch (text, offset) {
+function usdaSearch (text, foodGroup, offset) {
   return dispatch => {
-    dispatch(request({text, offset}))
-    usdaService.search(text, offset).then((data) => {
+    dispatch(request({text, foodGroup, offset}))
+    usdaService.search(text, foodGroup, offset).then((data) => {
       dispatch(success(data.tableData))
       dispatch(pagination(data.paginationData, {text, offset}))
     }, (error) => {

@@ -103,7 +103,7 @@ type USDAItem {
 type Query {
     getUsers: [UserType],
     getUser(user_id: ID!): UserType,
-    getUSDAData(text: String!, offset: Int!): USDAData,
+    getUSDAData(text: String!, foodGroup: String!, offset: Int!): USDAData,
     getUSDANutritionData(ndbno: String!): USDANutritionData,
     getUSDAListData(lt: String!, max: Int!, offset: Int!, sort: String!, format: String!): USDALists
 }
