@@ -47,12 +47,11 @@ function usdaSearch (text, foodGroup, offset) {
 }
 function usdaListDropDown (listType, id, index) {
   return dispatch => {
-    dispatch(request({listType}))
+    dispatch(request())
     switch (listType) {
       case 'groups':
         usdaService.foodGroupList()
         .then((data) => {
-          console.log('dropdown', data)
           dispatch(success(id, data, index))
         }, (error) => {
           dispatch(failure())
@@ -61,10 +60,9 @@ function usdaListDropDown (listType, id, index) {
       break
     }
   }
-  function request(data) {
+  function request(data = []) {
     return {
-      type: dropdownConstants.REQUEST_DROPDOWN_DATA,
-      data: []
+      type: dropdownConstants.REQUEST_DROPDOWN_DATA, data
     }
   }
   function success(id, data, index) {

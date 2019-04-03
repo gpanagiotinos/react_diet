@@ -12,11 +12,12 @@ class UsdaSearch extends React.Component {
     super(props)
     this.state = {
       usdaSearch: '',
-      foodGroup: ''
+      foodGroup: '',
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleButtonChange = this.handleButtonChange.bind(this)
     this.handleGroupSelect = this.handleGroupSelect.bind(this)
+    this.handleLoadingButton = this.handleLoadingButton.bind(this)
   }
   componentDidMount () {
     const dispatch = this.props.dispatch
@@ -31,6 +32,9 @@ class UsdaSearch extends React.Component {
   handleButtonChange(e) {
     const dispatch = this.props.dispatch
     dispatch(usdaActions.usdaSearch(this.state.usdaSearch, this.state.foodGroup, 0))
+    this.setState((prevState, props) => ({
+      loadingButton: true,
+    }))
   }
   handleGroupSelect(e, value) {
     if (value !== null) {
@@ -42,7 +46,13 @@ class UsdaSearch extends React.Component {
         foodGroup: '',
       }))
     }
-
+  }
+  handleLoadingButton () {
+    if (this.props.requestResolved !== undefined && this.props.requestResolved === false) {
+      return true
+    } else {
+      return false
+    }
   }
   render () {
     return (
@@ -53,7 +63,7 @@ class UsdaSearch extends React.Component {
             <DropDown onDropDownSelect={this.handleGroupSelect} dropDownId={'foodGroup'} buttonLabel={'Food Groups'}/>
           </div>
           <div className='field'>
-            <Button label='Search' bulmaType='link' onButtonClick={this.handleButtonChange}/>
+            <Button key={'searchButton'} label='Search' bulmaType='link' loadingButton = {this.handleLoadingButton()} onButtonClick={this.handleButtonChange}/>
           </div>
         </div>
         <div className='column is-12'>
@@ -66,4 +76,9 @@ class UsdaSearch extends React.Component {
     )
   }
 }
-export default connect()(UsdaSearch)
+function mapStateToProps(state, ownProps) {
+  console.log(ownProps)
+  const {requestResolved} = state.table
+  return {requestResolved}
+}
+export default connect(mapStateToProps)(UsdaSearch)

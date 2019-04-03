@@ -1,11 +1,11 @@
 import {dropdownConstants} from '../constants'
 
-export function dropdown(state = [], action) {
+export function dropdown(state = {requestResolved: false, dropdownData: []}, action) {
+  console.log(state, action.type)
   switch(action.type) {
     case dropdownConstants.REQUEST_DROPDOWN_DATA:
-      return {
-        requestResolved: false,
-        dropdownData: [...state]
+      return { 
+        ...state
       }
     case dropdownConstants.ADD_DROPDOWN_DATA:
       return {
@@ -44,6 +44,6 @@ export function dropdown(state = [], action) {
         ]
       }
       default: 
-        return state
+        return {...state}
   }
 }

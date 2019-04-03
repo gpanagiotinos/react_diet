@@ -12,7 +12,8 @@ export default class Button extends React.Component {
             onButtonClick: this.props.onButtonClick,
             buttonCustomClass: this.props.buttonCustomClass,
             value: this.props.value,
-            disable: this.props.disable !== undefined ? this.props.disable : false
+            disable: this.props.disable !== undefined ? this.props.disable : false,
+            loadingButton: this.props.loadingButton !== undefined ? this.props.loadingButton : false,
         }
         this.handleClick = this.handleClick.bind(this)
         this.handleButtonIcon = this.handleButtonIcon.bind(this)
@@ -39,7 +40,7 @@ export default class Button extends React.Component {
     }
     render () {
         return (
-            <a className={[this.state.buttonCustomClass !== undefined ? this.state.buttonCustomClass :  'button' + ' is-' + this.state.bulmaType]} onClick={this.handleClick}>
+            <a className={[this.state.buttonCustomClass !== undefined ? this.state.buttonCustomClass :  'button' + ' is-' + this.state.bulmaType] + [this.state.loadingButton ? ' is-loading':'']} onClick={this.handleClick}>
             {this.handleButtonIcon('left')}
             <span>{this.state.label}</span>
             {this.handleButtonIcon('right')}
