@@ -1,25 +1,27 @@
 import {dropdownConstants} from '../constants'
 
-export function dropdown(state = {requestResolved: false, dropdownData: []}, action) {
-  console.log(state, action.type)
+export function dropdown(state = {dropdownData: []}, action) {
   switch(action.type) {
     case dropdownConstants.REQUEST_DROPDOWN_DATA:
       return { 
-        ...state
+        dropdownData: [
+          ...state.dropdownData.filter((content) => {
+            if (content.id !== action.id) {
+              return content
+            }
+          })
+        ]
       }
     case dropdownConstants.ADD_DROPDOWN_DATA:
       return {
-        requestResolved: true,
-        dropdownData:  [...state.dropdownData, {id: action.id, data: action.data, selectedIndex: action.selectedIndex}]
+        dropdownData:  [...state.dropdownData, {id: action.id, data: action.data, selectedIndex: action.selectedIndex, requestResolved: true}]
       }
       case dropdownConstants.FAILURE_DROPDOWN_DATA:
       return {
-        requestResolved: true,
         dropdownData:  [...state]
       }
       case dropdownConstants.SELECT_DROPDOWN:
       return {
-        requestResolved: true,
         dropdownData: [
           ...state.dropdownData.map((content) => {
             if (content.id === action.id) {
@@ -32,7 +34,6 @@ export function dropdown(state = {requestResolved: false, dropdownData: []}, act
       }
       case dropdownConstants.UNSELECT_DROPDOWN:
       return {
-        requestResolved: true,
         dropdownData: [
           ...state.dropdownData.map((content) => {
             if (content.id === action.id) {
@@ -43,7 +44,7 @@ export function dropdown(state = {requestResolved: false, dropdownData: []}, act
           })
         ]
       }
-      default: 
-        return {...state}
+      default:
+        return state
   }
 }

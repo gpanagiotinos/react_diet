@@ -63,8 +63,21 @@
 td[colspan="4"] {
   text-align: center;
 }
-
-.nutrition-dropdown {
+// drop down helpers
+.dropdown-content{
+  //height: 100%;
+  // min-width: 400px;
   max-height: 200px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  a.dropdown-item {
+    white-space: normal;
+    max-width: 100%;
+  }
+}
+.dropdown.is-fullwidth {
+  display: flex;
+}
+
+.dropdown.is-fullwidth * {
+   width: 100%;
 }

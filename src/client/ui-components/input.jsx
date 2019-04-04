@@ -2,6 +2,7 @@ import React from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {connect} from 'react-redux'
 import {alertActions} from '../redux/actions'
+import DropDown from './DropDown.jsx'
 class Input extends React.Component {
     constructor (props) {
         super(props)
@@ -97,7 +98,7 @@ class Input extends React.Component {
         return (
             <div className='field'>
                 {this.handleLabel()}
-                <div className={'control' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
+                <div className={'control is-expanded' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
                     <input className='input' size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}

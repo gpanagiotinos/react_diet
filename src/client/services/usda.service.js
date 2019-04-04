@@ -95,9 +95,27 @@ function foodGroupList (lt = 'g', max = 26, offset = 0, sort = 'n', format = 'js
     return response.data.getUSDAListData.list.item
   }
 }
+function foodSearchList (text, foodGroup, offset=0, max=100) {
+  return apollo.apolloQuery('GET_USDASEARCHLIST')(text, foodGroup, offset, max)
+  .then(handlefoodSearchList)
+  .then((data) => {
+    console.log(data)
+    return data
+  })
+  function handlefoodSearchList(response) {
+    return response.data.getUSDAData.list.item.map((item) => {
+      return {
+        id: item.ndbno,
+        name: item.name,
+        offset: item.offset
+      }
+    })
+  }
+}
 
 export const usdaService = {
   search,
   foodGroupList,
+  foodSearchList,
   availableServiceMethods
 }

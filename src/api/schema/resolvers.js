@@ -16,8 +16,9 @@ const resolvers = {
             }
         },
         getUSDAData: {
-            resolve: async(_, {text, foodGroup, offset}, context) => {
-                const usdaData = await fetch(config.usdaUrlSearch('json', text, 'r', 25, offset, foodGroup), {method: 'GET', headers: {'Content-Type': 'application/json'}})
+            resolve: async(_, {text, foodGroup, offset, max}, context) => {
+                console.log(text, foodGroup)
+                const usdaData = await fetch(config.usdaUrlSearch('json', text, 'r', max, offset, foodGroup), {method: 'GET', headers: {'Content-Type': 'application/json'}})
                 const usdaDataJson = await usdaData.json()
                 return usdaDataJson
             }

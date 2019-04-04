@@ -22,7 +22,7 @@ const client = new ApolloBoostClient({
   onError: (error) => apolloError(error)
 })
 
-const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset)
+const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset, max: $max)
     {
       list 
       { 
@@ -104,15 +104,34 @@ const GET_USDALISTDATA = gql`query getUSDAListData($lt: String!, $max: Int!, $of
     }
   }
 }`
-
+const GET_USDASEARCHLIST = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset, max: $max)
+  {
+    list 
+      { 
+        item 
+        {
+          offset
+          ndbno
+          name
+        }
+      }
+  } 
+}`
 
 function apolloQuery (query) {
   switch (query) {
     case 'GET_USDADATA':
-      return (text, foodGroup, offset) => {
+      return (text, foodGroup, offset, max=25) => {
           return client.query({
           query: GET_USDADATA,
-          variables: {text: text, foodGroup: foodGroup, offset: offset}
+          variables: {text: text, foodGroup: foodGroup, offset: offset, max: max}
+        })
+      }
+    case 'GET_USDASEARCHLIST':
+      return (text, foodGroup, offset, max=25) => {
+          return client.query({
+          query: GET_USDASEARCHLIST,
+          variables: {text: text, foodGroup: foodGroup, offset: offset, max: max}
         })
       }
     case 'GET_USDANUTRITION':

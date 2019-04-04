@@ -4,6 +4,7 @@ import Register from '../components/Register.jsx'
 import Home from '../components/Home.jsx'
 import Logout from '../components/Logout.jsx'
 import UsdaSearch from '../components/UsdaSearch.jsx'
+import Diet from '../components/Diet.jsx'
 
 export default (param = '') => ([
     // {
@@ -22,14 +23,14 @@ export default (param = '') => ([
         exact: true,
         main: () => <Login />
     },
-    {
-        name: 'Register',
-        path: '/register',
-        key: 'register',
-        role: ['Super User'],
-        exact: true,
-        main: () => <Register />
-    },
+    // {
+    //     name: 'Register',
+    //     path: '/register',
+    //     key: 'register',
+    //     role: ['Super User'],
+    //     exact: true,
+    //     main: () => <Register />
+    // },
     {
         name: 'USDASearch',
         path: '/usdasearch',
@@ -37,6 +38,14 @@ export default (param = '') => ([
         role: ['Super User', 'Admin'],
         exact: true,
         main: () => <UsdaSearch />
+    },
+    {
+        name: 'Diet',
+        path: '/diet',
+        key: 'diet',
+        role: ['Super User', 'Admin'],
+        exact: true,
+        main: () => <Diet />
     },
     {
         name: 'Logout(' + param + ')',
