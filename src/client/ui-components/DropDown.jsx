@@ -43,22 +43,34 @@ class DropDown extends React.Component {
   handleDropDownSelection (e, value) {
     e.preventDefault()
     const dispatch = this.props.dispatch
-    if (this.props.selectedIndex === null || this.props.selectedIndex !== value.toString()) {
-      this.setState((prevState, props) => ({
-        buttonLabel: props.content[value].name,
-        dropdownActive: false,
-        dropdownSelected: !prevState.dropdownSelected
-      }))
-      dispatch(dropdownActions.dropdownSelect(value.toString(), this.state.dropDownId, true))
-      this.state.onDropDownSelect(e, this.props.content[value])
-    } else {
-      this.setState((prevState, props) => ({
-        buttonLabel: props.buttonLabel,
-        dropdownActive: false,
-        dropdownSelected: !prevState.dropdownSelected
-      }))
-      this.state.onDropDownSelect(e, null)
-      dispatch(dropdownActions.dropdownSelect(value.toString(), this.state.dropDownId, false))
+    switch (this.state.dropdownType) {
+      case 'default':
+        if (this.props.selectedIndex === null || this.props.selectedIndex !== value.toString()) {
+          this.setState((prevState, props) => ({
+            buttonLabel: props.content[value].name,
+            dropdownActive: false,
+            dropdownSelected: !prevState.dropdownSelected
+          }))
+          dispatch(dropdownActions.dropdownSelect(value.toString(), this.state.dropDownId, true))
+          this.state.onDropDownSelect(e, this.props.content[value])
+        } else {
+          this.setState((prevState, props) => ({
+            buttonLabel: props.buttonLabel,
+            dropdownActive: false,
+            dropdownSelected: !prevState.dropdownSelected
+          }))
+          this.state.onDropDownSelect(e, null)
+          dispatch(dropdownActions.dropdownSelect(value.toString(), this.state.dropDownId, false))
+        }
+        break
+      case 'input':
+        this.state.onDropDownSelect(e, this.props.content[value])
+        this.setState((prevState, props) => ({
+          dropdownActive: false,
+        }))
+        break
+      default:
+        break
     }
   }
   handleDropDownActive () {
@@ -82,7 +94,7 @@ class DropDown extends React.Component {
           </div>)
       case 'input':
         return (
-            <Input value={this.state.inputValue} onInputChange={this.handleDropDownInput}/>
+            <Input inputTimer={3000} onInputFocus={this.handleDropDownActive} value={this.state.inputValue} onInputChange={this.handleDropDownInput}/>
         )
     }
   }

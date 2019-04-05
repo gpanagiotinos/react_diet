@@ -29,6 +29,8 @@ class NutritionRow extends React.Component {
         if (this.props.requestResolved) {
                 
             return (<span className='title'>{this.props.rowData.data.desc.name}</span>)
+        } else {
+            return (null)
         }
     }
     handleDropDownButton () {
@@ -107,7 +109,7 @@ class NutritionRow extends React.Component {
         )
     }
 }
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
     const {requestResolved, rowData} = state.tableRow
     return {requestResolved, rowData}
 }

@@ -6,7 +6,7 @@ import DropDown from './DropDown.jsx'
 class Input extends React.Component {
     constructor (props) {
         super(props)
-        // this.InputRef = React.createRef()
+        this.InputRef = React.createRef()
         this.state = {
             placeholder: this.props.placeholder,
             type: this.props.type,
@@ -17,10 +17,14 @@ class Input extends React.Component {
             leftIcon: this.props.leftIcon,
             rightIcon: this.props.rightIcon, 
             onInputChange: this.props.onInputChange,
+            onInputFocus: this.props.onInputFocus,
             required: this.props.required,
-            size: this.props.size
+            size: this.props.size,
+            inputTimer: this.props.inputTimer !== undefined ? this.props.inputTimer : 0,
+            inputTimeout: null
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         this.handleInputClass = this.handleInputClass.bind(this)
         this.handleInputType = this.handleInputType.bind(this)
         this.handleInputLeftIcons = this.handleInputLeftIcons.bind(this)
@@ -31,6 +35,13 @@ class Input extends React.Component {
     }
     handleChange(e) {
         e.persist()
+        clearTimeout(this.state.inputTimeout)
+        this.setState((prevState, props) => ({
+            value: e.target.value,
+            inputTimeout: setTimeout(this.triggerChange.bind(this, e), props.inputTimer)
+        }))
+    }
+    triggerChange(e) {
         this.setState((prevState, props) => ({
             value: e.target.value
         }))
@@ -39,6 +50,12 @@ class Input extends React.Component {
         }
         if (this.state.onInputChange !== undefined) {
             this.state.onInputChange(e)
+        } 
+    }
+    handleClick(e) {
+        this.InputRef.current.focus()
+        if (this.state.onInputFocus !== undefined) {
+            this.state.onInputFocus(e)
         } 
     }
     handleInputClass() {
@@ -99,7 +116,7 @@ class Input extends React.Component {
             <div className='field'>
                 {this.handleLabel()}
                 <div className={'control is-expanded' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
-                    <input className='input' size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
+                    <input className='input' size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange} onClick={this.handleClick}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}
                     {this.handleInputHelpMessage()}

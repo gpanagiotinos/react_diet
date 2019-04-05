@@ -1,12 +1,14 @@
-import {tableConstants, alertConstants, dropdownConstants} from '../constants'
+import {tableConstants, alertConstants, dropdownConstants, mediaObjectConstants} from '../constants'
 import {usdaService} from '../../services'
 import {paginationActions} from '../actions'
 export const usdaActions = {
   usdaSearch,
   usdaListDropDown,
-  usdaNutritionAction
+  usdaNutritionAction,
+  usdaNutritionMediaObject
 }
-
+// Basic Nutrition: Water, Energy(Kcal, Kj), Protein, Fat, Carbohydrate, Fiber, Sugar
+const NutritionArray = ['255', '208', '268', '203', '204', '205', '291', '269']
 function usdaSearch (text, foodGroup, offset) {
   return dispatch => {
     dispatch(request({text, foodGroup, offset}))
@@ -38,7 +40,6 @@ function usdaSearch (text, foodGroup, offset) {
   function pagination(data, args) {
     const intOffset = parseInt(args.offset)
     const intLimit = (parseInt(args.offset) + parseInt(data.limit))
-    console.log(intOffset, intLimit)
     const currentPagination = (intLimit/(intLimit-intOffset))
     return dispatch => {
       dispatch(paginationActions.addPaginationData(intOffset, intLimit, parseInt(data.total), usdaActions.usdaSearch, args, currentPagination))
@@ -59,9 +60,9 @@ function usdaListDropDown (listType, id, index, text, foodGroup) {
         })
         break
         case 'searchFood':
+          dispatch(request(id))
           usdaService.foodSearchList(text, foodGroup)
           .then((data) => {
-            console.log(data)
             dispatch(success(id, data, index))
           }, (error) => {
             dispatch(failure())
@@ -113,6 +114,44 @@ function usdaNutritionAction(ndbno, service) {
     return {
       type: tableConstants.ADD_ROW_DATA,
       data
+    }
+  }
+  function failureAlert(error) {
+    return {
+      type: alertConstants.ERROR,
+      message: error.message
+  }
+  }
+}
+
+function usdaNutritionMediaObject(ndbno) {
+  return dispatch => {
+    dispatch(request(ndbno))
+    usdaService.availableServiceMethods['showNutrition'](ndbno).then((response) => {
+      const dataNutrition = {
+        id: response.rowID,
+        title: response.data.desc.name,
+        subtitle: ' @' + response.data.desc.sd,
+        content: response.data.nutrients.filter((nutrition) => {
+          return NutritionArray.indexOf(nutrition.nutrient_id) > -1
+        })
+      }
+      console.log(dataNutrition)
+      dispatch(success(dataNutrition))
+    }, (error) => {
+      dispatch(failureAlert(error))
+    })
+  }
+  function request(id) {
+    return {
+      type: mediaObjectConstants.REQUEST_MEDIAOBJECT,
+      id
+    }
+  }
+  function success({id, title, subtitle, content}) {
+    return {
+      type: mediaObjectConstants.ADD_MEDIAOBJECT,
+      id, title, subtitle, content
     }
   }
   function failureAlert(error) {
