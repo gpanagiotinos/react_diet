@@ -1,6 +1,6 @@
 import {tableConstants, alertConstants, dropdownConstants, mediaObjectConstants} from '../constants'
 import {usdaService} from '../../services'
-import {paginationActions} from '../actions'
+import {paginationActions, menuActions} from '../actions'
 export const usdaActions = {
   usdaSearch,
   usdaListDropDown,
@@ -136,8 +136,8 @@ function usdaNutritionMediaObject(ndbno) {
           return NutritionArray.indexOf(nutrition.nutrient_id) > -1
         })
       }
-      console.log(dataNutrition)
       dispatch(success(dataNutrition))
+      dispatch(menuActions.addMenuItem(dataNutrition.content, {id: dataNutrition.id, value: 100}))
     }, (error) => {
       dispatch(failureAlert(error))
     })

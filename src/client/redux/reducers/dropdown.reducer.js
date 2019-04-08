@@ -1,7 +1,6 @@
 import {dropdownConstants} from '../constants'
 
 export function dropdown(state = {dropdownData: []}, action) {
-  console.log(state, action)
   switch(action.type) {
     case dropdownConstants.REQUEST_DROPDOWN_DATA:
       return { 

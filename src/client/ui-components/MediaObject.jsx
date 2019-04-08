@@ -1,5 +1,5 @@
 import React from 'react'
-import NutritionRow from './NutritionRow.jsx'
+import Input from './Input.jsx'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {connect} from 'react-redux'
 
@@ -12,12 +12,25 @@ class MediaObject extends React.Component {
     this.handleMediaObjectArray = this.handleMediaObjectArray.bind(this)
     this.handleMediaObjectTitle = this.handleMediaObjectTitle.bind(this)
     this.handleMediaObjectBody = this.handleMediaObjectBody.bind(this)
+    this.handleMediaObjectMeasures = this.handleMediaObjectMeasures.bind(this)
+  }
+  handleMediaObjectMeasures () {
+    return (<div className='field has-addons'>
+    <div className='control'>
+      <Input type={'number'} value={100} onInputChange={this.handleDropDownInput}/>
+    </div>
+    <div className='control'>
+      <a className='button is-static'>
+       g
+      </a>
+    </div>
+  </div>)
   }
   handleMediaObjectArray () {
     if (this.props.mediaObjectArray.length > 0) {
       return this.props.mediaObjectArray.map((object, index) => {
         return (
-        <div className='box'>
+        <div className='box column is-10 is-offset-1'>
           <article key={object.id} className='media'>
             <div className='media-content'>
               <div className='content'>
@@ -41,6 +54,7 @@ class MediaObject extends React.Component {
                       })
                     }
                   </div>
+                    {this.handleMediaObjectMeasures()}
                 </div>
               </div>
             </div>

@@ -12,7 +12,7 @@ class Input extends React.Component {
             type: this.props.type,
             name: this.props.name,
             id: this.props.id,
-            value: '',
+            value: this.props.value !== undefined ? this.props.value : '',
             label: this.props.label,
             leftIcon: this.props.leftIcon,
             rightIcon: this.props.rightIcon, 
@@ -116,7 +116,7 @@ class Input extends React.Component {
             <div className='field'>
                 {this.handleLabel()}
                 <div className={'control is-expanded' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
-                    <input className='input' size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange} onClick={this.handleClick}/>
+                    <input className='input' defaultValue={this.state.value} size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange} onClick={this.handleClick}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}
                     {this.handleInputHelpMessage()}

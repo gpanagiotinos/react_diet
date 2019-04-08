@@ -14,6 +14,8 @@ class Diet extends React.Component {
     this.handleInputSearch = this.handleInputSearch.bind(this)
     this.handleSelectFoodGroup = this.handleSelectFoodGroup.bind(this)
     this.handleSelectFood = this.handleSelectFood.bind(this)
+    this.handleDietMenu = this.handleDietMenu.bind(this)
+    this.handleDietMenuFields = this.handleDietMenuFields.bind(this)
   }
   componentDidMount () {
     const dispatch = this.props.dispatch
@@ -41,22 +43,61 @@ class Diet extends React.Component {
     const dispatch = this.props.dispatch
     dispatch(usdaActions.usdaNutritionMediaObject(value.id))
   }
+  handleDietMenu () {
+    return (<div className='card'>
+    <div className='card-content'>
+      <p className='title is-4'>Menu</p>
+      <div className='column is-12'>
+        <div className='columns is-multiline is-mobile'>
+          {this.handleDietMenuFields()}
+        </div>
+      </div>
+      </div>
+    <div className='content'>
+      <div className='column is-12'>
+        <div className='columns is-multiline'>
+          <MediaObject key={'menu'} />
+        </div>
+      </div>
+    </div>
+  </div>)
+  }
+  handleDietMenuFields () {
+    return this.props.menuItem.map((field, index) => {
+      return (<div key={index} className='column field has-addons'>
+        <p className='control'>
+            <a className='button is-link'>{field.name}</a>
+        </p>
+        <p className='control'>
+            <a className='button is-static'>{field.value}</a>
+        </p>
+        <p className='control'>
+          <a className='button is-link'>{field.measure}</a>
+        </p>
+      </div>)
+    })
+  }
   render () {
     return (
       <div className='columns is-multiline is-mobile'>
         <div className='column is-10 is-offset-1 field has-addons'>
             <div className='control is-expanded'>
-              <DropDown dropDownId={'searchFood'} dropdownType='input' onDropDownInput={this.handleInputSearch} onDropDownSelect={this.handleSelectFood}/>
+              <DropDown key={'searchFood'} dropDownId={'searchFood'} dropdownType='input' onDropDownInput={this.handleInputSearch} onDropDownSelect={this.handleSelectFood}/>
             </div>
             <div className='control'>
-              <DropDown dropDownId={'foodGroup'} buttonLabel={'Food Groups'} onDropDownSelect={this.handleSelectFoodGroup}/>
+              <DropDown key={'foodGroup'} dropDownId={'foodGroup'} buttonLabel={'Food Groups'} onDropDownSelect={this.handleSelectFoodGroup}/>
             </div>
         </div>
-        <div className='column is-6'>
-          <MediaObject />
+        <div className='column is-10 is-offset-1'>
+          {this.handleDietMenu()}
         </div>
       </div>
     )
   }
 }
-export default connect()(Diet)
+function mapStateToProps (state, props) {
+  const {menuItem} = state.menu
+  console.log({menuItem})
+  return {menuItem}
+}
+export default connect(mapStateToProps)(Diet)
