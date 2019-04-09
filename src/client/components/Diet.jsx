@@ -47,12 +47,7 @@ class Diet extends React.Component {
     return (<div className='card'>
     <div className='card-content'>
       <p className='title is-4'>Menu</p>
-      <div className='column is-12'>
-        <div className='columns is-multiline is-mobile'>
-          {this.handleDietMenuFields()}
-        </div>
-      </div>
-      </div>
+    </div>
     <div className='content'>
       <div className='column is-12'>
         <div className='columns is-multiline'>
@@ -63,7 +58,30 @@ class Diet extends React.Component {
   </div>)
   }
   handleDietMenuFields () {
-    return this.props.menuItem.map((field, index) => {
+    let menuContent = [
+      {id: '255', name: 'Water', value: 0, measure: 'g'},
+      {id: '208', name: 'Energy', value: 0, measure: 'kcal'},
+      {id: '268', name: 'Energy', value: 0, measure: 'kj'},
+      {id: '203', name: 'Protein', value: 0, measure: 'g'},
+      {id: '204', name: 'Fat', value: 0, measure: 'g'},
+      {id: '205', name: 'Cardohydrate', value: 0, measure: 'g'},
+      {id: '291', name: 'Fiber', value: 0, measure: 'g'},
+      {id: '269', name: 'Sugar', value: 0, measure: 'g'}
+    ]
+    if (this.props.items !== undefined) {
+      menuContent = [...menuContent.map((field) => {
+         this.props.items.forEach((item) => {
+           item.content.forEach((nutrient) => {
+            if (field.id === nutrient.nutrient_id) {
+              const calculateValue = ((parseFloat(nutrient.value) * item.value) / 100)
+              field = {...field, value: field.value + calculateValue}
+            }
+          })
+        })
+        return field
+      })]
+    }
+    return menuContent.map((field, index) => {
       return (<div key={index} className='column field has-addons'>
         <p className='control'>
             <a className='button is-link'>{field.name}</a>
@@ -88,7 +106,14 @@ class Diet extends React.Component {
               <DropDown key={'foodGroup'} dropDownId={'foodGroup'} buttonLabel={'Food Groups'} onDropDownSelect={this.handleSelectFoodGroup}/>
             </div>
         </div>
-        <div className='column is-10 is-offset-1'>
+        <div className='column is-2'>
+          <div className='column is-12'>
+            <div className='columns is-multiline is-mobile'>
+              {this.handleDietMenuFields()}
+            </div>
+          </div>
+        </div>
+        <div className='column is-9'>
           {this.handleDietMenu()}
         </div>
       </div>
@@ -96,8 +121,8 @@ class Diet extends React.Component {
   }
 }
 function mapStateToProps (state, props) {
-  const {menuItem} = state.menu
-  console.log({menuItem})
-  return {menuItem}
+  console.log(state)
+  const {items} = state.menu
+  return {items}
 }
 export default connect(mapStateToProps)(Diet)

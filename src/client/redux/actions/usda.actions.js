@@ -1,11 +1,12 @@
-import {tableConstants, alertConstants, dropdownConstants, mediaObjectConstants} from '../constants'
+import {tableConstants, alertConstants, dropdownConstants, mediaObjectConstants, menuConstants} from '../constants'
 import {usdaService} from '../../services'
 import {paginationActions, menuActions} from '../actions'
 export const usdaActions = {
   usdaSearch,
   usdaListDropDown,
   usdaNutritionAction,
-  usdaNutritionMediaObject
+  usdaNutritionMediaObject,
+  usdaNutritionMediaObjectRemove
 }
 // Basic Nutrition: Water, Energy(Kcal, Kj), Protein, Fat, Carbohydrate, Fiber, Sugar
 const NutritionArray = ['255', '208', '268', '203', '204', '205', '291', '269']
@@ -137,7 +138,7 @@ function usdaNutritionMediaObject(ndbno) {
         })
       }
       dispatch(success(dataNutrition))
-      dispatch(menuActions.addMenuItem(dataNutrition.content, {id: dataNutrition.id, value: 100}))
+      dispatch(menuActions.addMenuItem({id: dataNutrition.id, value: 100, content: dataNutrition.content}))
     }, (error) => {
       dispatch(failureAlert(error))
     })
@@ -159,5 +160,16 @@ function usdaNutritionMediaObject(ndbno) {
       type: alertConstants.ERROR,
       message: error.message
   }
+  }
+}
+function usdaNutritionMediaObjectRemove (ndbno) {
+  return dispatch => {
+    dispatch(removeMediaObject(ndbno))
+    dispatch(menuActions.removeMenuItem(ndbno))
+  }
+  function removeMediaObject(id) {
+    return {
+      type: mediaObjectConstants.REMOVE_MEDIAOBJECT, id
+    }
   }
 }

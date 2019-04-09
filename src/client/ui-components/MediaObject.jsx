@@ -1,5 +1,7 @@
 import React from 'react'
 import Input from './Input.jsx'
+import Button from './Button.jsx'
+import {usdaActions, menuActions} from '../redux/actions'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {connect} from 'react-redux'
 
@@ -13,18 +15,36 @@ class MediaObject extends React.Component {
     this.handleMediaObjectTitle = this.handleMediaObjectTitle.bind(this)
     this.handleMediaObjectBody = this.handleMediaObjectBody.bind(this)
     this.handleMediaObjectMeasures = this.handleMediaObjectMeasures.bind(this)
+    this.handleNutrientValue = this.handleNutrientValue.bind(this)
+    this.handleNutrientRemove = this.handleNutrientRemove.bind(this)
   }
-  handleMediaObjectMeasures () {
-    return (<div className='field has-addons'>
-    <div className='control'>
-      <Input type={'number'} value={100} onInputChange={this.handleDropDownInput}/>
-    </div>
-    <div className='control'>
-      <a className='button is-static'>
-       g
-      </a>
-    </div>
-  </div>)
+  handleMediaObjectMeasures (nutrient_id) {
+    const nutrientItem = this.props.items.find((object) => {
+      return object.id === nutrient_id
+    })
+    if (nutrientItem !== undefined) {
+      const nutrientValue = nutrientItem.value
+      return (<div className='field has-addons'>
+      <div className='control'>
+        <Input type={'number'} id={nutrientItem.id} value={nutrientValue} onInputChange={this.handleNutrientValue}/>
+      </div>
+      <div className='control'>
+        <a className='button is-static'>
+         g
+        </a>
+      </div>
+    </div>)
+    } else {
+      return (null)
+    }
+  }
+  handleNutrientValue (e, value) {
+    const dispatch = this.props.dispatch
+    dispatch(menuActions.increaseMenuItem(e.target.id, value))
+  }
+  handleNutrientRemove(e, value) {
+    const dispatch = this.props.dispatch
+    dispatch(usdaActions.usdaNutritionMediaObjectRemove(value))
   }
   handleMediaObjectArray () {
     if (this.props.mediaObjectArray.length > 0) {
@@ -54,11 +74,18 @@ class MediaObject extends React.Component {
                       })
                     }
                   </div>
-                    {this.handleMediaObjectMeasures()}
                 </div>
               </div>
             </div>
           </article>
+          <footer className='card-footer'>
+            <div className='card-footer-item'>
+              {this.handleMediaObjectMeasures(object.id)}
+            </div>
+            <div className='card-footer-item'>
+              <Button label='Remove' value={object.id} bulmaType='danger' onButtonClick={this.handleNutrientRemove}/>
+            </div>
+          </footer>
         </div>
         )
       })
@@ -84,6 +111,7 @@ class MediaObject extends React.Component {
 }
 function mapStateToProps(state, props) {
   const {mediaObjectArray} = state.mediaObject
-  return {mediaObjectArray}
+  const {items} = state.menu
+  return {mediaObjectArray, items}
 }
 export default connect(mapStateToProps)(MediaObject)

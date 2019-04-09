@@ -49,7 +49,7 @@ class Input extends React.Component {
             this.props.dispatch(alertActions.clearInput(this.state.type))
         }
         if (this.state.onInputChange !== undefined) {
-            this.state.onInputChange(e)
+            this.state.onInputChange(e, e.target.value)
         } 
     }
     handleClick(e) {
