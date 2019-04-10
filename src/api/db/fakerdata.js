@@ -1,6 +1,6 @@
 import fake from 'faker'
 import {dbModel} from '../models/init.js'
-import {config} from '../../client/config'
+import {config} from '../config.js'
 import fetch from 'isomorphic-fetch'
 function createFakeUsers () {
     let fakeUserArray = []

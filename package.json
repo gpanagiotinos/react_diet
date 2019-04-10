@@ -6,10 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config build/webpack.config.dev.js --mode development --watch",
+    "production": "webpack --config build/webpack.config.dev.js --mode production",
     "start": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run build\"",
-    "ssr": "cross-env NODE_ENV=development concurrently \"npm run build\" \"npm run server\"",
+    "ssr": "cross-env NODE_ENV=production concurrently \"npm run build\" \"npm run server\"",
     "server": "nodemon ./src/api/server.js --exec babel-node",
+    "herokuStart": "node ./dist/server.js",
+    "serverStart": "cross-env NODE_ENV=production node ./dist/server.js",
+    "serverBuild": "webpack --display-error-details --config build/webpack.config.server.prod.js --mode production",
+    "serverBuildOld": "babel ./src/api/ -d dist/api",
     "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --watch"
+  },
+  "engines": {
+    "node": "8.10.0"
   },
   "repository": {
     "type": "git",
@@ -35,6 +43,7 @@
     "connect-redis": "^3.4.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "graphql-import": "^0.7.1",
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.4",
     "isomorphic-fetch": "^2.2.1",
@@ -53,13 +62,15 @@
     "sqlite3": "^4.0.6",
     "uuid": "^3.3.2",
     "webpack": "^4.29.1",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.1.14",
+    "webpack-graphql-loader": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.2",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
@@ -68,6 +79,7 @@
     "css-loader": "^2.1.0",
     "express-graphql": "^0.7.1",
     "faker": "^4.1.0",
+    "file-loader": "^3.0.1",
     "graphql": "^14.1.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
@@ -77,6 +89,7 @@
     "react-hot-loader": "^4.6.5",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "webpack-node-externals": "^1.7.2"
   }
 }

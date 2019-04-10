@@ -43,20 +43,5 @@ module.exports = {
                 }]
               }
         ]
-    },
-    // devServer: {
-    //     historyApiFallback: true,
-    //     port: 8090,
-    //     open: true,
-    //     proxy: {
-    //         '/api': 'http://localhost:8091'
-    //     }
-    // },
-    plugins: [
-        // new HtmlWebPackPlugin({
-        //     template: './src/index.html',
-        //     filename: './index.html',
-        //     excludeChunks: ['server']
-        // })
-    ]
+    }
 }
