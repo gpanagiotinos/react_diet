@@ -16,7 +16,7 @@
     "build": "npm run production && npm run serverBuild",
     "serverBuildOld": "babel ./src/api/ -d dist/api",
     "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --watch",
-    "heroku-postbuild": "npm run production && npm run serverBuild"
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "engines": {
     "node": "8.10.0"

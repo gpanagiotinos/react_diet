@@ -33,7 +33,7 @@ app.use(express.static(DIST_DIR))
 app.use(session)
 app.use('/', routes)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
     console.log(`App listening to ${PORT}`)

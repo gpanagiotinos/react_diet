@@ -3,7 +3,6 @@ src/client/config.js
 src/api/dbsqlite/*
 package-lock.json
 /assets/
-dist/
 !client/assets/
 /.env
 /*.env
