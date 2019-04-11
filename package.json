@@ -15,7 +15,8 @@
     "serverBuild": "webpack --display-error-details --config build/webpack.config.server.prod.js --mode production",
     "build": "npm run production && npm run serverBuild",
     "serverBuildOld": "babel ./src/api/ -d dist/api",
-    "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --watch"
+    "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --watch",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "engines": {
     "node": "8.10.0"
@@ -94,5 +95,6 @@
     "style-loader": "^0.23.1",
     "webpack-cli": "^3.2.3",
     "webpack-node-externals": "^1.7.2"
-  }
+  },
+  "heroku-run-build-script": true
 }
