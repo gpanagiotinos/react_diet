@@ -5,7 +5,7 @@
   "main": "./dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config build/webpack.config.dev.js --mode development --watch",
+    "serverProd": "webpack --config build/webpack.config.dev.js --mode development --watch",
     "production": "webpack --config build/webpack.config.prod.js --mode production",
     "start": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run build\"",
     "ssr": "cross-env NODE_ENV=production concurrently \"npm run build\" \"npm run server\"",
@@ -13,7 +13,7 @@
     "herokuStart": "node ./dist/server.js",
     "serverStart": "cross-env NODE_ENV=production node ./dist/server.js",
     "serverBuild": "webpack --display-error-details --config build/webpack.config.server.prod.js --mode production",
-    "serverProd": "npm run production && npm run serverBuild",
+    "build": "npm run production && npm run serverBuild",
     "serverBuildOld": "babel ./src/api/ -d dist/api",
     "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --watch"
   },
