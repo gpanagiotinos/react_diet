@@ -2,7 +2,7 @@
   "name": "react_diet",
   "version": "0.0.1",
   "description": "React App",
-  "main": "./dist/server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serverProd": "webpack --config build/webpack.config.dev.js --mode development --watch",
