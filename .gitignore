@@ -1,6 +1,5 @@
 node_modules/
 src/client/config.js
-src/api/config.js
 src/api/dbsqlite/*
 package-lock.json
 /assets/

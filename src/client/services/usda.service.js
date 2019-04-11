@@ -1,4 +1,3 @@
-import {config} from '../config'
 import {apollo} from './apollo.service.js'
 import {usdaActions, paginationActions} from '../redux/actions'
 import {removeObjectAttribute} from '../redux/helpers'
