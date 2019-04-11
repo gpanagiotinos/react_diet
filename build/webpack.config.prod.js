@@ -1,11 +1,19 @@
 const path = require('path')
+const webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        }),
+    ],
     entry: {
-        client: './src/client/client.js',
-        bundle: './src/client/bundle.js'
+        client: './src/client/client.js'
     },
+    // devtool: 'source-map',
     output: {
-        path: path.join(__dirname, '../assets'),
+        path: path.join(__dirname, '../dist/assets'),
         filename: '[name].js',
         publicPath: '/'
     },
@@ -26,22 +34,19 @@ module.exports = {
                 }
             },
             {
+                test:/\.json$/,
+                use: {
+                    loader: 'json-loader'
+                }
+            },
+            {
                 test: /\.html$/,
                 use: [{loader: 'html-loader'}]
             },
             {
                 test: /\.(scss|sass)$/,
-                use: [{
-                  loader: 'style-loader'
-                }, {
-                  loader: 'css-loader'
-                }, {
-                  loader: 'sass-loader',
-                  options: {
-                    includePaths: [path.resolve('../node_modules')]
-                  }
-                }]
-              }
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+            }
         ]
     }
 }

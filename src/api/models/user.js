@@ -28,7 +28,6 @@ export default class User extends Model {
                 beforeCreate: async(user, options) => {
                     const hashPassword = await bcrypt.hash(user.password, 10)
                     user.password = hashPassword
-                    console.log(user.password)
                 }
             },
             sequelize

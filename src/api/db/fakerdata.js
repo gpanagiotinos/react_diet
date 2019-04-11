@@ -4,10 +4,10 @@ import {config} from '../config.js'
 import fetch from 'isomorphic-fetch'
 function createFakeUsers () {
     let fakeUserArray = []
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 2; index++) {
         fakeUserArray.push({
-            username: 'george',
-            password: '123456',
+            username: index === 0 ? 'george' : 'georgepounis',
+            password: index === 0 ? 'george1991' : 'georgepounis',
             createdAt: fake.date.recent(),
             updatedAt: fake.date.recent(),
             role: index === 0 ? '1000' : '1001'

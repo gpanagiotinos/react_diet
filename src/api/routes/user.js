@@ -10,7 +10,6 @@ const checkUser = async (username, password, session) => {
            return Promise.reject({status: 401, message: 'The username and password you entered did not match our records. Please double-check and try again.'})
         } else {
             sessionSave(session, user.dataValues)
-            console.log(session)
             return session.data
         }
     } catch (error) {

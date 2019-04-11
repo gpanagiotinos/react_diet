@@ -6,7 +6,7 @@ module.exports = {
     entry: {
         server: './src/api/server.js'
     },
-    devtool: 'source-map',
+    // devtool: 'source-map',
     output: {
         path: path.join(__dirname, '../dist'),
         filename: '[name].js',

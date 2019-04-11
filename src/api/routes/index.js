@@ -8,7 +8,6 @@ import {render} from '../ssr/index.js'
 import {template} from '../ssr/template.js'
 const router = express.Router()
 import {router as user} from './user.js'
-
 router.use('/assets', express.static(path.resolve(__dirname, 'assets')))
 router.use('/graphql', express_graphql({
     schema: schema,
@@ -24,7 +23,6 @@ router.get('*', (req, res) => {
         if (process.env.NODE_ENV === 'development') {
             response = template('Development SSR', {loggedIn: true, user: user}, content)
         } else {
-            console.log(content)
             response = template("Deploy React Diet", {loggedIn: true, user: user}, content)
         }
         res.setHeader('Cache-Control', 'assets, max-age=604800')

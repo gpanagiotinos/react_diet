@@ -6,6 +6,7 @@ import {dbSync} from './db/syncmodels.js'
 import {dbFake} from './db/fakerdata.js'
 import {router as routes} from './routes/index.js'
 import session from './config/session.js'
+import open from 'open'
 
 
 
@@ -32,10 +33,12 @@ app.use(express.static(DIST_DIR))
 app.use(session)
 app.use('/', routes)
 
-
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
     console.log(`App listening to ${PORT}`)
+    if (process.env.NODE_ENV === 'development') {
+        open(`http:localhost:${PORT}`)
+    }
     console.log('Press Ctrl+C to quit')
 })

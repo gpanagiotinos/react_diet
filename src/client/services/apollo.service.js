@@ -1,6 +1,7 @@
 import ApolloBoostClient from 'apollo-boost'
 import gql from 'graphql-tag'
 import fetch from 'isomorphic-fetch'
+import {config} from '../config.js'
 // import {ApolloLink} from 'apollo-link'
 // import {HttpLink} from 'apollo-link-http'
 import {onError} from 'apollo-link-error'
@@ -17,7 +18,7 @@ export  const apollo = {
 //   apolloError
 // ])
 const client = new ApolloBoostClient({
-  uri: 'http://localhost:3001/graphql',
+  uri: `${config.apiUrl}/graphql`,
   fetch: fetch,
   onError: (error) => apolloError(error)
 })
