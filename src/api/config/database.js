@@ -11,9 +11,9 @@ const db_user = {
     storage: db.filename
   }
   const db_userMySQL = {
-    dbname: 'react_test_db',
-    dbusername: 'georgepan',
-    dbpassword: 'george',
-    dbhost: 'localhost'
+    dbname: process.env.DB_NAME,
+    dbusername: process.env.DB_USERNAME,
+    dbpassword: process.env.DB_PASSWORD,
+    dbhost: process.env.DB_HOST
   }
   export {db_user, db_userMySQL}

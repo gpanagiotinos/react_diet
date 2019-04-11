@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const nodeExternals = require('webpack-node-externals')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 module.exports = {
     entry: {
         server: './src/api/server.js'
@@ -45,11 +46,11 @@ module.exports = {
         ]
     },
     stats: { children: false },
-    // plugins: [
-    //     new HtmlWebPackPlugin({
-    //         template: "./src/index.html",
-    //         filename: "./index.html",
-    //         excludeChunks: [ 'server' ]
-    //     })
-    //   ]
+    plugins: [
+        new Dotenv({
+           path: path.resolve(__dirname, '../prod.env'),
+           safe: true,
+           systemvars: true 
+        })
+      ]
 }

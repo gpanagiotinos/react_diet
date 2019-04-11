@@ -8,7 +8,7 @@ export default session ({
   genid: function(req) {
     return uuidv4()
   },
-  secret: 'simpleSecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {

@@ -78,6 +78,7 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
+    "dotenv-webpack": "^1.7.0",
     "express-graphql": "^0.7.1",
     "faker": "^4.1.0",
     "file-loader": "^3.0.1",
