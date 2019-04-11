@@ -13,17 +13,18 @@ import Sequelize from 'sequelize'
 //       },
 //       storage: db_user.storage
 // })
-const sequelize = new Sequelize(db_userMySQL.dbname, db_userMySQL.dbusername, db_userMySQL.dbpassword, {
-    host: db_userMySQL.dbhost,
-    logging: false,
-    dialect: 'mysql', 
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-      }
-})
+// const sequelize = new Sequelize(db_userMySQL.dbname, db_userMySQL.dbusername, db_userMySQL.dbpassword, {
+//     host: db_userMySQL.dbhost,
+//     logging: false,
+//     dialect: 'mysql', 
+//     pool: {
+//         max: 5,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000
+//       }
+// })
+const sequelize = new Sequelize(process.env.JAWSDB_URL)
 
 async function dbConnection () {
     return await sequelize.authenticate
