@@ -1,14 +1,17 @@
+import fetch from 'isomorphic-fetch'
 export const userService = {
     login,
     logout
 }
+
 function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password})
     }
-    return fetch(`${process.env.API_URL}/user/login`, requestOptions)
+    console.log(process.env.API_URL, process.env)
+    return fetch(`/user/login`, requestOptions)
         .then(handleResponse)
         .then((user) => {
             return user
@@ -20,7 +23,7 @@ function logout () {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'}
     }
-    return fetch(`${process.env.API_URL}/user/logout`, requestOptions)
+    return fetch(`/user/logout`, requestOptions)
             .then(handleResponse)
             .then((response) => {
                 return response

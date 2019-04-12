@@ -8,7 +8,12 @@ import {render} from '../ssr/index.js'
 import {template} from '../ssr/template.js'
 const router = express.Router()
 import {router as user} from './user.js'
-router.use('/assets', express.static(path.resolve(__dirname, 'assets')))
+if (process.env.NODE_ENV === 'development') {
+    router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/assets')))
+    router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))
+} else {
+    router.use('/assets', express.static(path.resolve(__dirname, 'assets')))
+}
 router.use('/graphql', express_graphql({
     schema: schema,
     graphiql: true,
@@ -28,11 +33,10 @@ router.get('*', (req, res) => {
         res.setHeader('Cache-Control', 'assets, max-age=604800')
         res.send(response)
     }).catch((error) => {
-        console.log(error)
         let response = null
         const {content} = render({}, {}, req)
         if (process.env.NODE_ENV === 'development') {
-            response = template('Development SSR', {loggedIn: false, user: null}, content)
+            response = template('Development Error SSR', {loggedIn: false, user: null}, content)
         } else {
             response = template("SSR", {}, content)
         }

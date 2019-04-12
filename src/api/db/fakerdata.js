@@ -131,29 +131,23 @@ async function createFakeFood () {
 }
 
 async function dbFake () {
-    // fake data user
-    for(const user of createFakeUsers()) {
-        const userCreate = await dbModel.User.create(user)
-    }
-    // fake data roles
-    for(const role of createFakeRoles()) {
-        const rolesCreate = await dbModel.Role.create(role)
-    }
-    //USDA data Nutritions
-    createNutritions().then(async (data) => {
-        for(const nutritionObject of data.list.item) {
-            const nutritionCreate = await dbModel.Nutrition.create({nutrient_id: nutritionObject.id, nutrient_name: nutritionObject.name})
+    if (process.env.NODE_ENV === 'development') {
+        // fake data user
+        for(const user of createFakeUsers()) {
+            const userCreate = await dbModel.User.create(user)
         }
-    }).catch((error) => {
-        console.log(error)
-    })
-    // createFakeFood().then((data) => {
-    //     return dbModel.FoodNutritionMeasure.findAll()
-    // }).then((data) => {
-    //     console.log(data) 
-    // })
-    // .catch((error) => {
-    //     console.log('Error', error)
-    // })
+        // fake data roles
+        for(const role of createFakeRoles()) {
+            const rolesCreate = await dbModel.Role.create(role)
+        }
+        //USDA data Nutritions
+        createNutritions().then(async (data) => {
+            for(const nutritionObject of data.list.item) {
+                const nutritionCreate = await dbModel.Nutrition.create({nutrient_id: nutritionObject.id, nutrient_name: nutritionObject.name})
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 }
 export {dbFake}

@@ -8,6 +8,11 @@ module.exports = {
             filename: '[name].css',
             chunkFilename: '[id].css'
         }),
+        new Dotenv({
+            path: path.resolve(__dirname, '../prod.env'),
+            safe: true,
+            systemvars: true 
+         })
     ],
     entry: {
         client: './src/client/client.js'
@@ -50,12 +55,4 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-      new MiniCssExtractPlugin(),
-      new Dotenv({
-         path: path.resolve(__dirname, '../prod.env'),
-         safe: true,
-         systemvars: true 
-      })
-    ]
 }
