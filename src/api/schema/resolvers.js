@@ -1,4 +1,4 @@
-import {config} from '../../client/config'
+import {config} from '../config.js'
 import fetch from 'isomorphic-fetch'
 const resolvers = {
     Query: {

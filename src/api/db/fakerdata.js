@@ -1,13 +1,13 @@
 import fake from 'faker'
 import {dbModel} from '../models/init.js'
-import {config} from '../../client/config'
+import {config} from '../config.js'
 import fetch from 'isomorphic-fetch'
 function createFakeUsers () {
     let fakeUserArray = []
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 2; index++) {
         fakeUserArray.push({
-            username: 'george',
-            password: '123456',
+            username: index === 0 ? 'george' : 'georgepounis',
+            password: index === 0 ? 'george1991' : 'georgepounis',
             createdAt: fake.date.recent(),
             updatedAt: fake.date.recent(),
             role: index === 0 ? '1000' : '1001'
@@ -131,29 +131,23 @@ async function createFakeFood () {
 }
 
 async function dbFake () {
-    // fake data user
-    for(const user of createFakeUsers()) {
-        const userCreate = await dbModel.User.create(user)
-    }
-    // fake data roles
-    for(const role of createFakeRoles()) {
-        const rolesCreate = await dbModel.Role.create(role)
-    }
-    //USDA data Nutritions
-    createNutritions().then(async (data) => {
-        for(const nutritionObject of data.list.item) {
-            const nutritionCreate = await dbModel.Nutrition.create({nutrient_id: nutritionObject.id, nutrient_name: nutritionObject.name})
+    if (process.env.NODE_ENV === 'development') {
+        // fake data user
+        for(const user of createFakeUsers()) {
+            const userCreate = await dbModel.User.create(user)
         }
-    }).catch((error) => {
-        console.log(error)
-    })
-    // createFakeFood().then((data) => {
-    //     return dbModel.FoodNutritionMeasure.findAll()
-    // }).then((data) => {
-    //     console.log(data) 
-    // })
-    // .catch((error) => {
-    //     console.log('Error', error)
-    // })
+        // fake data roles
+        for(const role of createFakeRoles()) {
+            const rolesCreate = await dbModel.Role.create(role)
+        }
+        //USDA data Nutritions
+        createNutritions().then(async (data) => {
+            for(const nutritionObject of data.list.item) {
+                const nutritionCreate = await dbModel.Nutrition.create({nutrient_id: nutritionObject.id, nutrient_name: nutritionObject.name})
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 }
 export {dbFake}

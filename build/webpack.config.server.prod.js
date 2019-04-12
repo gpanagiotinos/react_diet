@@ -1,28 +1,24 @@
 const path = require('path')
 const webpack = require('webpack')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const nodeExternals = require('webpack-node-externals')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 module.exports = {
-    plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css'
-        }),
-        new Dotenv({
-            path: path.resolve(__dirname, '../prod.env'),
-            safe: true,
-            systemvars: true 
-         })
-    ],
     entry: {
-        client: './src/client/client.js'
+        server: './src/api/server.js'
     },
     // devtool: 'source-map',
     output: {
-        path: path.join(__dirname, '../dist/assets'),
+        path: path.join(__dirname, '../dist'),
         filename: '[name].js',
         publicPath: '/'
     },
+    target: 'node',
+    node: {
+        __dirname: false,
+        __filename: false
+    },
+    externals: [nodeExternals()],
     module: {
         rules: [
             {
@@ -40,19 +36,21 @@ module.exports = {
                 }
             },
             {
-                test:/\.json$/,
-                use: {
-                    loader: 'json-loader'
-                }
-            },
-            {
                 test: /\.html$/,
                 use: [{loader: 'html-loader'}]
             },
             {
-                test: /\.(scss|sass)$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+              test: /\.graphql?$/,
+              use: [{loader: 'webpack-graphql-loader'}]
             }
         ]
     },
+    stats: { children: false },
+    plugins: [
+        new Dotenv({
+           path: path.resolve(__dirname, '../prod.env'),
+           safe: true,
+           systemvars: true 
+        })
+      ]
 }
