@@ -28,18 +28,18 @@ class TableBody extends React.Component {
   }
   handleActionClicked (args, action, service, component, index) {
     this.props.dispatch(action(args, service))
-    console.log(this.props.requestResolved, component)
     if (this.props.requestResolved && component !== '') {
       this.setState((prevState, props) => {
         return {componentRow: {componentKey: component, componentIndex: index}}
       })
     }
+    
   }
   handleTableActions (actions = [], index) {
     return <ul className='level-left'>
       {
-        actions.map((object) => {
-          return <li key={object.label} className='level-item'><span className='icon'><a onClick={() => this.handleActionClicked(object.args, object.action, object.service, object.component, index)}><FontAwesomeIcon icon={['fas', object.icon]}/></a></span></li>
+        actions.map((object, actionIndex) => {
+          return <li key={object.label} className='level-item'><span className='icon'><a  onClick={() => this.handleActionClicked(object.args, object.action, object.service, object.component, index)}><FontAwesomeIcon icon={['fas', object.icon]}/></a></span></li>
         })
       }
     </ul>
@@ -87,6 +87,7 @@ class TableBody extends React.Component {
 }
 function mapStateToProps(state) {
   const {requestResolved, tableData} = state.table
-  return {requestResolved, tableData}
+  const requestRowResolved = state.tableRow.requestResolved
+  return {requestResolved, requestRowResolved, tableData}
 }
 export default connect(mapStateToProps)(TableBody)

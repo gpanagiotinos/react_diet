@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "production": "webpack --config build/webpack.config.prod.js --mode production",
-    "development": "webpack --config build/webpack.config.dev.js --mode development",
+    "development": "webpack --config build/webpack.config.dev.js --mode development --watch",
     "start": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run development\"",
     "server": "nodemon --exec node -r @babel/register -r dotenv/config ./src/api/server.js dotenv_config_path=dev.env",
     "herokuStart": "node ./dist/server.js",
@@ -75,6 +75,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.0",
     "babel-loader": "^8.0.5",
+    "clean-webpack-plugin": "^2.0.1",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",

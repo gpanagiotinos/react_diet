@@ -13,7 +13,7 @@ const client = new ApolloBoostClient({
   onError: (error) => apolloError(error)
 })
 
-const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset, max: $max)
+const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $texxt, foodGroup: $foodGroup, offset: $offset, max: $max)
     {
       list 
       { 
@@ -115,7 +115,7 @@ function apolloQuery (query) {
       return (text, foodGroup, offset, max=25) => {
           return client.query({
           query: GET_USDADATA,
-          variables: {text: text, foodGroup: foodGroup, offset: offset, max: max}
+          variables: {text: text, foodGroup: foodGroup, offset: offset, max: max},
         })
       }
     case 'GET_USDASEARCHLIST':
@@ -166,13 +166,13 @@ function apolloMutation(mutation) {
   }
 }
 const apolloError = ({graphQLErrors, networkError}) => {
-  console.log('Errors')
+  console.log('apollo Error')
     if(graphQLErrors) {
       graphQLErrors.map(({message, locations, path}) => {
-        return Promise.reject(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+        return `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       })
     }
     if (networkError) {
-      return Promise.reject(`[Network error]: ${networkError}`)
+      return `[Network error]: ${networkError}`
     }
 }

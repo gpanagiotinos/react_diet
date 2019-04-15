@@ -84,3 +84,20 @@ td[colspan="4"] {
 .dropdown.is-fullwidth * {
    width: 100%;
 }
+
+.element {
+  &.is-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.5;
+      &:after {
+          @include loader;
+          position: absolute;
+          top: calc(50% - 1.125em);
+          left: calc(50% - 1.125em);
+          width: 2.25em;
+          height: 2.25em;
+          border-width: 0.25em;
+      }
+  }
+}

@@ -6,7 +6,10 @@ function search(text, foodGroup, offset) {
   return apollo.apolloQuery('GET_USDADATA')(text, foodGroup, offset)
     .then(handleUSDADataResponse)
     .then((data) => {
+      console.log('data', data)
       return data
+    }, (error) => {
+      console.error('My Error', error)
     })
 }
 function handleUSDADataResponse (response) {
@@ -98,7 +101,6 @@ function foodSearchList (text, foodGroup, offset=0, max=100) {
   return apollo.apolloQuery('GET_USDASEARCHLIST')(text, foodGroup, offset, max)
   .then(handlefoodSearchList)
   .then((data) => {
-    console.log(data)
     return data
   })
   function handlefoodSearchList(response) {

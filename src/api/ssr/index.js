@@ -4,7 +4,6 @@ import App from '../../client/components/App.jsx'
 
 import {Provider} from 'react-redux'
 import configureStore from '../../client/redux/configureStore.js'
-
 import {StaticRouter} from 'react-router-dom'
 
 const render = (initialState, context, req) => {

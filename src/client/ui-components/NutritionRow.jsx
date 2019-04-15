@@ -26,11 +26,10 @@ class NutritionRow extends React.Component {
         }
     }
     handleNutritionHeading() {
-        if (this.props.requestResolved) {
-                
+        if (this.props.requestResolved) { 
             return (<span className='title'>{this.props.rowData.data.desc.name}</span>)
         } else {
-            return (null)
+            return ((<span className='title'><a className='element is-loading'></a></span>))
         }
     }
     handleDropDownButton () {

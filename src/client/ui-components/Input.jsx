@@ -93,7 +93,7 @@ class Input extends React.Component {
     }
     handleShowPassword() {
         this.setState((prevState, props) => ({
-            rightIcon: prevState.rightIcon === 'eye-slash' ? 'eye' : 'eye-slash',
+            rightIcon: prevState.rightIcon === 'eye' ? 'eye-slash' : 'eye',
             type: prevState.type === 'password' ? 'text' : 'password'
         }))
     }

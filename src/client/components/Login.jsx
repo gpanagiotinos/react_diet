@@ -34,7 +34,6 @@ class Login extends React.Component {
         } else {
             ['username', 'password'].map((value) => {
                 if(this.state[value] === '') {
-                    console.log(value)
                     dispatch(alertActions.errorInput(capitalize(value) + ' is Required', value))
                 }
             })
@@ -52,8 +51,8 @@ class Login extends React.Component {
                         Log in
                     </p>
                     <Input type='username' label='Username' name='username' value={this.state.username} onInputChange={this.handleChange} leftIcon='user'/>
-                    <Input type='password' label='Password' name='password' value={this.state.password} onInputChange={this.handleChange} leftIcon='lock' rightIcon = 'eye'/>
-                    <Button label='Log in' bulmaType='link' onButtonClick={this.handleLoggedIn}/>
+                    <Input type='password' label='Password' name='password' value={this.state.password} onInputChange={this.handleChange} leftIcon='lock' rightIcon = 'eye-slash'/>
+                    <Button key={'logIn'} label='Log in' bulmaType='link' loadingButton={this.state.submitted} onButtonClick={this.handleLoggedIn}/>
                 </div>
             </div>
         )

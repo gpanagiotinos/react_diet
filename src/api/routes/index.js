@@ -9,7 +9,8 @@ import {template} from '../ssr/template.js'
 const router = express.Router()
 import {router as user} from './user.js'
 if (process.env.NODE_ENV === 'development') {
-    router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/assets')))
+    console.log(path.resolve(__dirname, '../../../dist/assets'))
+    router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/')))
     router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))
 } else {
     router.use('/assets', express.static(path.resolve(__dirname, 'assets')))
@@ -26,9 +27,9 @@ router.get('*', (req, res) => {
         let response = null
         const {content} = render({loggedIn: true, user: user}, {}, req)
         if (process.env.NODE_ENV === 'development') {
-            response = template('Development SSR', {loggedIn: true, user: user}, content)
+            response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
         } else {
-            response = template("Deploy React Diet", {loggedIn: true, user: user}, content)
+            response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
         }
         res.setHeader('Cache-Control', 'assets, max-age=604800')
         res.send(response)
@@ -36,9 +37,9 @@ router.get('*', (req, res) => {
         let response = null
         const {content} = render({}, {}, req)
         if (process.env.NODE_ENV === 'development') {
-            response = template('Development Error SSR', {loggedIn: false, user: null}, content)
+            response = template("Nutrition Informatics", {loggedIn: false, user: null}, content)
         } else {
-            response = template("SSR", {}, content)
+            response = template("Nutrition Informatics", {loggedIn: false, user: null}, content)
         }
         res.setHeader('Cache-Control', 'assets, max-age=604800')
         res.send(response)

@@ -18,6 +18,13 @@ export default class Button extends React.Component {
         this.handleClick = this.handleClick.bind(this)
         this.handleButtonIcon = this.handleButtonIcon.bind(this)
     }
+    componentDidUpdate (prevProps) {
+        if (prevProps.loadingButton !== this.props.loadingButton) {
+            this.setState((prevState, props) => ({
+                loadingButton: !prevState.loadingButton
+            }))
+        }
+    }
     handleClick (e) {
         e.preventDefault()
         this.state.onButtonClick(e, this.state.value)
