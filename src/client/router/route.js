@@ -2,6 +2,7 @@ import React from 'react'
 import Login from '../components/Login.jsx'
 import Register from '../components/Register.jsx'
 import Home from '../components/Home.jsx'
+import UserManagement from '../components/UserManagement.jsx'
 import Logout from '../components/Logout.jsx'
 import UsdaSearch from '../components/UsdaSearch.jsx'
 import Diet from '../components/Diet.jsx'
@@ -31,6 +32,14 @@ export default (param = '') => ([
     //     exact: true,
     //     main: () => <Register />
     // },
+    {
+        name: 'User Management',
+        path: '/usermanagement',
+        key: 'usermanagement',
+        role: ['Super Admin'],
+        exact: true,
+        main: () => <UserManagement />
+    },
     {
         name: 'USDASearch',
         path: '/usdasearch',

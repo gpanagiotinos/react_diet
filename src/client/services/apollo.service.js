@@ -1,19 +1,70 @@
 import ApolloBoostClient from 'apollo-boost'
+import React from 'react'
 import gql from 'graphql-tag'
 import fetch from 'isomorphic-fetch'
+import { Query } from 'react-apollo'
+import InfinityScroll from '../help-components/InfinityScroll.jsx'
 
-export  const apollo = {
-  client,
+export const apollo = {
   apolloQuery,
   apolloMutation
 }
-const client = new ApolloBoostClient({
+export const client = new ApolloBoostClient({
   uri: `/graphql`,
   fetch: fetch,
   onError: (error) => apolloError(error)
 })
 
-const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $texxt, foodGroup: $foodGroup, offset: $offset, max: $max)
+export const GetUSDAData = (text, foodGroup, offset, max) => {
+  return (<Query query={GET_USDADATA} variables={{text, foodGroup, offset, max}}fetchPolicy="cache-and-network">
+  {
+    ({loading, error, data, fetchMore, networkStatus}) => {
+      if (!loading && !error) {
+        console.log(data.getUSDAData.list.item.length)
+      return (
+        <>
+        <InfinityScroll onLoadMore = {
+          () => fetchMore({
+            variables: {
+              offset: parseInt(data.getUSDAData.list.item.length)
+            }, 
+            updateQuery: (prev, { fetchMoreResult }) => {
+              if (!loading) {
+                console.log('waiting data')
+                return prev
+              } 
+              return {...prev, getUSDAData: {
+                ...prev.getUSDAData, list: {
+                  ...prev.getUSDAData.list, item: [
+                    ...prev.getUSDAData.list.item, ...fetchMoreResult.getUSDAData.list.item
+                  ]
+                }
+              }}
+            }})
+        }/>
+        {data.getUSDAData.list.item.map((item, index) => {
+          return (<tr>{Object.keys(item).map((key) => {
+            if (key !== '__typename') {
+              return (<td key={key}>{item[key]}</td>)
+            } else if (key !== 'offset') {
+              return (<td key={index}>{index}</td>)
+            }
+          })}</tr>)
+        })}
+        </>
+        )
+      } else if (loading && Object.keys(data).length < 1) {
+        return (<div className='column is-12 element is-loading'></div>)
+      } else if (error) {
+        return (<div className='column is-12'>{error}</div>)
+      }
+      return (null)
+    }
+  }
+  </Query>)
+}
+
+const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset, max: $max)
     {
       list 
       { 

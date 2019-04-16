@@ -3,6 +3,7 @@ import DropDown from '../ui-components/DropDown.jsx'
 import MediaObject from '../ui-components/MediaObject.jsx'
 import {connect} from 'react-redux'
 import {usdaActions} from '../redux/actions'
+import {GetUSDAData} from '../services/apollo.service.js'
 
 class Diet extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class Diet extends React.Component {
     const dispatch = this.props.dispatch
     if (value.length > 2) {
       dispatch(usdaActions.usdaListDropDown('searchFood', 'searchFood', null, value, this.state.foodGroupID))
+      GetUSDAData('searchFood', 'searchFood', null, value, this.state.foodGroupID)
       this.setState((prevState, props) => ({
         inputSearchValue: value
       }))
