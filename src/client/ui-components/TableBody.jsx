@@ -7,6 +7,7 @@ class TableBody extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      bodyData: this.props.bodyData !== undefined ? this.props.bodyData : null,
       componentRow: {
         componentKey: null,
         componentIndex: null
@@ -60,36 +61,25 @@ class TableBody extends React.Component {
      })
   }
   handleBodyTr () {
-    if (this.props.requestResolved) {
-      return this.props.tableData.body.map((item, index) => {
-        if (this.state.componentRow.componentIndex !== null && this.state.componentRow.componentIndex === index) {
-          return ( <tr key={index}>
-          {this.handleDynamicRowComponent(this.state.componentRow.componentKey)}
-          {this.handleBodyTdActions(item, index)}
-          </tr> )
-        } else {
-          return (<tr key={index}>
-          {this.handleBodyTd(item)}
-          {this.handleBodyTdActions(item, index)}
-          </tr>)
-        }
-        })
-    } else {
+    console.log(Object.keys(this.props.tableBody).length === 0 && this.props.tableBody.constructor === Object)
+    if (Object.keys(this.props.tableBody).length === 0 && this.props.tableBody.constructor === Object) {
       return null
+    } else {
+      console.log('run')
+      return this.props.tableBody.action.apply(null, this.props.tableBody.data)
     }
   }
   render () {
     return (
       <tbody>
-         {GetUSDAData('butter', '', 0, 100)}
         {this.handleBodyTr()}
       </tbody>
     )
   }
 }
 function mapStateToProps(state) {
-  const {requestResolved, tableData} = state.table
-  const requestRowResolved = state.tableRow.requestResolved
-  return {requestResolved, requestRowResolved, tableData}
+  const {tableBody} = state.table
+  console.log({tableBody})
+  return {tableBody}
 }
 export default connect(mapStateToProps)(TableBody)

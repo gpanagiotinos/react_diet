@@ -3,10 +3,12 @@ import React from 'react'
 export default class InfinityScroll extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      scrollTopPrevious: 0
+    }
     this.handleOnScroll = this.handleOnScroll.bind(this)
   }
   componentDidMount () {
-    console.log('mount')
     window.addEventListener("scroll", this.handleOnScroll)
   }
   componentWillUnmount () {
@@ -22,9 +24,11 @@ export default class InfinityScroll extends React.Component {
     var clientHeight =
     document.documentElement.clientHeight || window.innerHeight;
     var scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight
-    console.log(scrolledToBottom)
-    if (scrolledToBottom) {
-    this.props.onLoadMore()
+    if (scrolledToBottom && (this.state.scrollTopPrevious < scrollTop)) {
+      this.setState((prevState, props) => {
+        return {scrollTopPrevious: scrollTop}
+      })
+      this.props.onLoadMore()
     }
   }
   render() {

@@ -9,17 +9,14 @@ class Table extends React.Component{
     this.handleTableActions = this.handleTableActions.bind(this)
   }
   handleTableHead () {
-    if (this.props.requestResolved) {
-      return <thead>
-          <tr>
-            {this.props.tableData.head.map((value, index) => {
-              return <th key={index}>{value}</th>
-            })}
-          </tr>
-        </thead>
-    } else {
-      return null
-    }
+    return (<thead>
+    <tr>
+      {this.props.tableHead.map((value, index) => {
+        console.log(value)
+        return <th key={index}>{value}</th>
+      })}
+    </tr>
+  </thead>)
   }
   handleTableActions (actions = []) {
     return <ul className='level-left'>
@@ -34,13 +31,14 @@ class Table extends React.Component{
     return (
       <table className='table is-bordered is-fullwidth'>
         {this.handleTableHead()}
-        <TableBody/>
+        <TableBody />
       </table>
     )
   }
 }
 function mapStateToProps(state) {
-  const {requestResolved, tableData} = state.table
-  return {requestResolved, tableData}
+  console.log(state.table)
+  const {tableHead} = state.table
+  return {tableHead}
 }
 export default connect(mapStateToProps)(Table)
