@@ -61,12 +61,15 @@ class TableBody extends React.Component {
      })
   }
   handleBodyTr () {
-    console.log(Object.keys(this.props.tableBody).length === 0 && this.props.tableBody.constructor === Object)
     if (Object.keys(this.props.tableBody).length === 0 && this.props.tableBody.constructor === Object) {
       return null
     } else {
-      console.log('run')
-      return this.props.tableBody.action.apply(null, this.props.tableBody.data)
+      const tableBodyData = [...this.props.tableBody.data]
+      if (this.props.tableActions.length > 0) {
+        tableBodyData.push(this.props.tableActions)
+      }
+      const display = this.props.tableBody.action.apply(null, tableBodyData)
+      return display
     }
   }
   render () {
@@ -78,8 +81,7 @@ class TableBody extends React.Component {
   }
 }
 function mapStateToProps(state) {
-  const {tableBody} = state.table
-  console.log({tableBody})
-  return {tableBody}
+  const {tableBody, tableActions} = state.table
+  return {tableBody, tableActions}
 }
 export default connect(mapStateToProps)(TableBody)

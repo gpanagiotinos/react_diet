@@ -12,7 +12,6 @@ class Table extends React.Component{
     return (<thead>
     <tr>
       {this.props.tableHead.map((value, index) => {
-        console.log(value)
         return <th key={index}>{value}</th>
       })}
     </tr>

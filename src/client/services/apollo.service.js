@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import fetch from 'isomorphic-fetch'
 import { Query } from 'react-apollo'
 import InfinityScroll from '../help-components/InfinityScroll.jsx'
-import {TableBodyRow} from '../ui-components/TableBodyRow.jsx'
+import TableBodyRow from '../ui-components/TableBodyRow.jsx'
 
 export const apollo = {
   apolloQuery,
@@ -21,9 +21,9 @@ const QueryComponents = {
   'TableBodyRow': TableBodyRow
 }
 
-export const GetUSDAData = (text, foodGroup, offset, max, componentKey) => {
+export const GetUSDAData = (text, foodGroup, offset, max, componentKey, actions = []) => {
   let itemsArray = []
-  return (<Query query={GET_USDADATA} variables={{text, foodGroup, offset, max}}fetchPolicy="cache-and-network">
+  return (<Query query={GET_USDADATA} variables={{text, foodGroup, offset, max}} fetchPolicy="cache-and-network">
   {
     ({loading, error, data, fetchMore, networkStatus}) => {
         if (data.getUSDAData !== undefined) {
@@ -36,7 +36,7 @@ export const GetUSDAData = (text, foodGroup, offset, max, componentKey) => {
         return (
           <>
           {itemsArray.map((item) => {
-            return React.createElement(QueryComponents[componentKey], {key: item.ndbno, itemObject: item})
+            return React.createElement(QueryComponents[componentKey], {key: item.ndbno, itemObject: item, itemActions: actions})
           })}
           <InfinityScroll onLoadMore = {
             () => fetchMore({
@@ -69,6 +69,65 @@ export const GetUSDAData = (text, foodGroup, offset, max, componentKey) => {
     }
   }
   </Query>)
+}
+
+export const GetUSDANutritionData = (ndbno) => {
+  console.log(ndbno)
+  return (
+    <Query query={GET_USDANUTRITION} variables={{ndbno}} fetchPolicy="cache-and-network">
+      {
+        ({loading, error, data, networkStatus}) => {
+          if (!loading && !error) {
+            const {desc, nutrients} = data.getUSDANutritionData.foods[0].food
+            return (
+              <td colSpan='5'>
+                <div className='box section'>
+                  <div className='columns is-multiline is-mobile'>
+                    <div className='column is-12'>
+                      <p>
+                        <span className='title is-bold'>{desc.name}</span>
+                      </p>
+                      <p className='tagline'>
+                        {desc.sd}
+                      </p>
+                    </div>
+                    <div className='column is-12'>
+                    <div className='panel-block'>
+                      <div className='columns is-multiline'> 
+                        {
+                          nutrients.map((nutrition) => {
+                            return (
+                              <div className='column is-3 field'>
+                                <div className='control'>
+                                  <span key={nutrition.nutrient_id} className='tags are-medium has-addons'>
+                                    <span className='tag is-info'>{nutrition.name}</span>
+                                    <span className='tag is-light'>{nutrition.value}</span>
+                                  </span>
+                                </div>
+                              </div>
+                            )
+                          })
+                        }
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            )
+          } else {
+            return (loading ? (<div className='section'>
+            <div className='container'>
+              <div className='columns is-multiline is-mobile'>
+                <div className='is-fullwidth'><div className='element is-loading'></div></div>
+              </div>
+            </div>
+          </div>) : null)
+          }
+        }
+      }
+    </Query>
+  )
 }
 
 const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset, max: $max)

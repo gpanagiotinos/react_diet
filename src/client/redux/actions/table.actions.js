@@ -4,7 +4,8 @@ export const tableActions = {
   addTableData,
   addRowData,
   addTableHead,
-  addTableBody
+  addTableBody,
+  addTableActions
 }
 
 function addTableData (data) {
@@ -26,5 +27,10 @@ function addTableHead (tableHead) {
 function addTableBody (tableBody) {
   return {
     type: tableConstants.ADD_TABLE_BODY, tableBody
+  }
+}
+function addTableActions (tableActions) {
+  return {
+    type: tableConstants.ADD_TABLE_ACTIONS, tableActions
   }
 }

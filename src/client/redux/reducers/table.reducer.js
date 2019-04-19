@@ -22,17 +22,25 @@ export function tableTest(state = {}, action) {
   }
 }
 
-export function table(state = {tableHead: [], tableBody: {}}, action) {
+export function table(state = {tableHead: [], tableBody: {}, tableActions: []}, action) {
   switch(action.type) {
     case tableConstants.ADD_TABLE_HEAD:
       return {
         tableHead: action.tableHead,
-        tableBody: {...state.tableBody}
+        tableBody: {...state.tableBody},
+        tableActions: [...state.tableActions]
       }
     case tableConstants.ADD_TABLE_BODY:
     return {
       tableHead: [...state.tableHead],
-      tableBody: action.tableBody
+      tableBody: action.tableBody,
+      tableActions: [...state.tableActions]
+    }
+    case tableConstants.ADD_TABLE_ACTIONS:
+    return {
+      tableHead: [...state.tableHead],
+      tableBody: {...state.tableBody},
+      tableActions: action.tableActions
     }
     default: 
       return state
