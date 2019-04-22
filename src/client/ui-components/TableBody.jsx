@@ -2,10 +2,12 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import NutritionRow from './NutritionRow.jsx'
+import {GetUSDAData} from '../services/apollo.service.js'
 class TableBody extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      bodyData: this.props.bodyData !== undefined ? this.props.bodyData : null,
       componentRow: {
         componentKey: null,
         componentIndex: null
@@ -59,22 +61,15 @@ class TableBody extends React.Component {
      })
   }
   handleBodyTr () {
-    if (this.props.requestResolved) {
-      return this.props.tableData.body.map((item, index) => {
-        if (this.state.componentRow.componentIndex !== null && this.state.componentRow.componentIndex === index) {
-          return ( <tr key={index}>
-          {this.handleDynamicRowComponent(this.state.componentRow.componentKey)}
-          {this.handleBodyTdActions(item, index)}
-          </tr> )
-        } else {
-          return (<tr key={index}>
-          {this.handleBodyTd(item)}
-          {this.handleBodyTdActions(item, index)}
-          </tr>)
-        }
-        })
-    } else {
+    if (Object.keys(this.props.tableBody).length === 0 && this.props.tableBody.constructor === Object) {
       return null
+    } else {
+      const tableBodyData = [...this.props.tableBody.data]
+      if (this.props.tableActions.length > 0) {
+        tableBodyData.push(this.props.tableActions)
+      }
+      const display = this.props.tableBody.action.apply(null, tableBodyData)
+      return display
     }
   }
   render () {
@@ -86,8 +81,7 @@ class TableBody extends React.Component {
   }
 }
 function mapStateToProps(state) {
-  const {requestResolved, tableData} = state.table
-  const requestRowResolved = state.tableRow.requestResolved
-  return {requestResolved, requestRowResolved, tableData}
+  const {tableBody, tableActions} = state.table
+  return {tableBody, tableActions}
 }
 export default connect(mapStateToProps)(TableBody)

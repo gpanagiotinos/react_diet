@@ -18,6 +18,7 @@ class Input extends React.Component {
             rightIcon: this.props.rightIcon, 
             onInputChange: this.props.onInputChange,
             onInputFocus: this.props.onInputFocus,
+            onEnterPress: this.props.onEnterPress,
             required: this.props.required,
             size: this.props.size,
             inputTimer: this.props.inputTimer !== undefined ? this.props.inputTimer : 0,
@@ -32,6 +33,7 @@ class Input extends React.Component {
         this.handleShowPassword = this.handleShowPassword.bind(this)
         this.handleInputHelpMessage = this.handleInputHelpMessage.bind(this)
         this.handleLabel = this.handleLabel.bind(this)
+        this.handleOnKeyPress = this.handleOnKeyPress.bind(this)
     }
     handleChange(e) {
         e.persist()
@@ -40,6 +42,12 @@ class Input extends React.Component {
             value: e.target.value,
             inputTimeout: setTimeout(this.triggerChange.bind(this, e), props.inputTimer)
         }))
+    }
+    handleOnKeyPress(e) {
+        console.log(e.key === 'Enter', this.state.onEnterPress)
+        if (this.state.onEnterPress !== undefined && e.key === 'Enter') {
+            this.state.onEnterPress(e, e.target.value) 
+        }   
     }
     triggerChange(e) {
         this.setState((prevState, props) => ({
@@ -116,7 +124,7 @@ class Input extends React.Component {
             <div className='field'>
                 {this.handleLabel()}
                 <div className={'control is-expanded' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
-                    <input className='input' defaultValue={this.state.value} size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange} onClick={this.handleClick}/>
+                    <input className='input' defaultValue={this.state.value} size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange} onClick={this.handleClick} onKeyPress={this.handleOnKeyPress}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}
                     {this.handleInputHelpMessage()}

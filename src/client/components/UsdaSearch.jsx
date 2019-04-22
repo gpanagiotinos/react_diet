@@ -5,7 +5,8 @@ import Button from '../ui-components/Button.jsx'
 import Table from '../ui-components/Table.jsx'
 import Pagination from '../ui-components/Pagination.jsx'
 import {connect} from 'react-redux'
-import {usdaActions} from '../redux/actions'
+import {usdaActions, tableActions} from '../redux/actions'
+import {GetUSDAData, GetUSDANutritionData} from '../services/apollo.service.js'
 
 class UsdaSearch extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class UsdaSearch extends React.Component {
     this.state = {
       usdaSearch: '',
       foodGroup: '',
+      queryData: null
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleButtonChange = this.handleButtonChange.bind(this)
@@ -30,10 +32,14 @@ class UsdaSearch extends React.Component {
   })
   }
   handleButtonChange(e) {
+    console.log(e)
     const dispatch = this.props.dispatch
-    dispatch(usdaActions.usdaSearch(this.state.usdaSearch, this.state.foodGroup, 0))
+    dispatch(tableActions.addTableHead(['Name', 'Group', 'Description', 'Food ID', 'Manufacture', 'Actions']))
+    dispatch(tableActions.addTableBody({action: GetUSDAData, data: [this.state.usdaSearch, this.state.foodGroup, 0, 25 ,'TableBodyRow'
+    ]}))
+    dispatch(tableActions.addTableActions([{icon: 'info', action: GetUSDANutritionData, actionArgs: ['ndbno']}]))
     this.setState((prevState, props) => ({
-      loadingButton: true,
+      loadingButton: true
     }))
   }
   handleGroupSelect(e, value) {
@@ -58,7 +64,7 @@ class UsdaSearch extends React.Component {
     return (
       <div className='columns is-multiline is-mobile is-centered'>
         <div className='column is-half'>
-            <Input type='search' label={'Search USDA'} name='usdaSearch' value={this.state.searchValue} onInputChange={this.handleInputChange}/>
+            <Input type='search' label={'Search USDA'} name='usdaSearch' value={this.state.searchValue} onEnterPress={this.handleButtonChange} onInputChange={this.handleInputChange}/>
           <div className='field'>
             <DropDown onDropDownSelect={this.handleGroupSelect} dropDownId={'foodGroup'} buttonLabel={'Food Groups'}/>
           </div>
@@ -67,17 +73,13 @@ class UsdaSearch extends React.Component {
           </div>
         </div>
         <div className='column is-12'>
-          <Table/>
-        </div>
-        <div className='column is-12'>
-          <Pagination/>
+          <Table />
         </div>
       </div>
     )
   }
 }
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps)
   const {requestResolved} = state.table
   return {requestResolved}
 }

@@ -27,6 +27,7 @@ router.get('*', (req, res) => {
         let response = null
         const {content} = render({loggedIn: true, user: user}, {}, req)
         if (process.env.NODE_ENV === 'development') {
+            console.log('success')
             response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
         } else {
             response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
@@ -34,6 +35,7 @@ router.get('*', (req, res) => {
         res.setHeader('Cache-Control', 'assets, max-age=604800')
         res.send(response)
     }).catch((error) => {
+        console.log(error)
         let response = null
         const {content} = render({}, {}, req)
         if (process.env.NODE_ENV === 'development') {
