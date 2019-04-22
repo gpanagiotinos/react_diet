@@ -36,10 +36,17 @@ const resolvers = {
                 const ListData = await USDAList.json()
                 return ListData
             }
+        },
+        getLocalFoodData: {
+            resolve: async(_, {}, context) => {
+                const LocalFood = await context.dbModel.Food.findAll({raw: true})
+                return LocalFood
+            }
         }
     },
     Mutation: {
         setUSDAFood: async (_, {food}, context) => {
+            console.log('run mutation')
             try {
                 const [saveFood, wasFoodCreated] = await context.dbModel.Food.findOrCreate({where: {ndbno: food.desc.ndbno}, defaults: food.desc})
                 if (wasFoodCreated) {
@@ -65,12 +72,13 @@ const resolvers = {
                             })
                         })
                     }, Promise.resolve())
-                    return saveFood
+                    return {desc: saveFood, nutrients: createNutrition}
                 } else {
                     console.log('Already Saved')
-                    return saveFood
+                    return {desc: saveFood, nutrients: createNutrition}
                 }  
             } catch (error) {
+                console.log(error)
                 return Promise.reject(error)
             }
         }

@@ -13,6 +13,7 @@ export default class TableBodyRow extends React.Component {
     this.handleTableBodyRowTemplate = this.handleTableBodyRowTemplate.bind(this)
   }
   handleTableBodyRowAction (action, args, object) {
+    console.log(object)
     const argsArray = args.map((key) => {
       return object[key]
     })
@@ -22,7 +23,6 @@ export default class TableBodyRow extends React.Component {
         template: action.apply(null, argsArray)
       }
     })
-    console.log(action.apply(null, argsArray))
   }
   handleTableBodyRowTemplate () {
     switch (this.state.templateActionLoad) {

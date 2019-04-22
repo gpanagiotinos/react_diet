@@ -2,10 +2,10 @@ import React from 'react'
 import Login from '../components/Login.jsx'
 import Register from '../components/Register.jsx'
 import Home from '../components/Home.jsx'
-import UserManagement from '../components/UserManagement.jsx'
 import Logout from '../components/Logout.jsx'
 import UsdaSearch from '../components/UsdaSearch.jsx'
 import Diet from '../components/Diet.jsx'
+import LocalFoodDatabase from '../components/LocalFoodDatabase.jsx';
 
 export default (param = '') => ([
     // {
@@ -33,12 +33,12 @@ export default (param = '') => ([
     //     main: () => <Register />
     // },
     {
-        name: 'User Management',
-        path: '/usermanagement',
-        key: 'usermanagement',
-        role: ['Super Admin'],
+        name: 'Local Food Data',
+        path: '/localfooddata',
+        key: 'localfooddata',
+        role: ['Super User'],
         exact: true,
-        main: () => <UserManagement />
+        main: () => <LocalFoodDatabase />
     },
     {
         name: 'USDASearch',

@@ -44,7 +44,6 @@ class Input extends React.Component {
         }))
     }
     handleOnKeyPress(e) {
-        console.log(e.key === 'Enter', this.state.onEnterPress)
         if (this.state.onEnterPress !== undefined && e.key === 'Enter') {
             this.state.onEnterPress(e, e.target.value) 
         }   

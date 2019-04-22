@@ -10,7 +10,6 @@ function login(username, password) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password})
     }
-    console.log(process.env.API_URL, process.env)
     return fetch(`/user/login`, requestOptions)
         .then(handleResponse)
         .then((user) => {

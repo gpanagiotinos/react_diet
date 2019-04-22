@@ -6,7 +6,7 @@ import Table from '../ui-components/Table.jsx'
 import Pagination from '../ui-components/Pagination.jsx'
 import {connect} from 'react-redux'
 import {usdaActions, tableActions} from '../redux/actions'
-import {GetUSDAData, GetUSDANutritionData} from '../services/apollo.service.js'
+import {GetUSDAData, GetUSDANutritionData, SetUSDAFood} from '../services/apollo.service.js'
 
 class UsdaSearch extends React.Component {
   constructor(props) {
@@ -32,12 +32,11 @@ class UsdaSearch extends React.Component {
   })
   }
   handleButtonChange(e) {
-    console.log(e)
     const dispatch = this.props.dispatch
     dispatch(tableActions.addTableHead(['Name', 'Group', 'Description', 'Food ID', 'Manufacture', 'Actions']))
     dispatch(tableActions.addTableBody({action: GetUSDAData, data: [this.state.usdaSearch, this.state.foodGroup, 0, 25 ,'TableBodyRow'
     ]}))
-    dispatch(tableActions.addTableActions([{icon: 'info', action: GetUSDANutritionData, actionArgs: ['ndbno']}]))
+    dispatch(tableActions.addTableActions([{icon: 'info', action: GetUSDANutritionData, actionArgs: ['ndbno']}, {icon: 'save', action: SetUSDAFood, actionArgs: ['ndbno']}]))
     this.setState((prevState, props) => ({
       loadingButton: true
     }))

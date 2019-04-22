@@ -36,7 +36,6 @@ class Table extends React.Component{
   }
 }
 function mapStateToProps(state) {
-  console.log(state.table)
   const {tableHead} = state.table
   return {tableHead}
 }

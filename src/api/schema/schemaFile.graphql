@@ -100,12 +100,18 @@ type USDAItem {
     id: String!
     name: String!
 }
+
+#Test SimpleList
+type SimpleList {
+    list: String!
+}
 type Query {
     getUsers: [UserType],
     getUser(user_id: ID!): UserType,
     getUSDAData(text: String!, foodGroup: String!, offset: Int!, max: Int!): USDAData,
     getUSDANutritionData(ndbno: String!): USDANutritionData,
-    getUSDAListData(lt: String!, max: Int!, offset: Int!, sort: String!, format: String!): USDALists
+    getUSDAListData(lt: String!, max: Int!, offset: Int!, sort: String!, format: String!): USDALists,
+    getLocalFoodData: [USDAFoodDescription]
 }
 #Inputs and Mutations
 input USDAFoodInput {
