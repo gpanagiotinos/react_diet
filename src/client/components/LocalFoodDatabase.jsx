@@ -1,5 +1,5 @@
 import React from 'react'
-import {GetLocalFoodData} from '../services/apollo.service.js'
+import {GetLocalFoodData} from '../apollo/apollo.service.js'
 export default class LocalFoodDataBase extends React.Component {
   constructor(props) {
     super(props)

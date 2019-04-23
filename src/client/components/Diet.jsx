@@ -3,7 +3,7 @@ import DropDown from '../ui-components/DropDown.jsx'
 import MediaObject from '../ui-components/MediaObject.jsx'
 import {connect} from 'react-redux'
 import {usdaActions} from '../redux/actions'
-import {GetUSDAData} from '../services/apollo.service.js'
+import {GetUSDAData} from '../apollo/apollo.service.js'
 
 class Diet extends React.Component {
   constructor(props) {

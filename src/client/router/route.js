@@ -5,7 +5,8 @@ import Home from '../components/Home.jsx'
 import Logout from '../components/Logout.jsx'
 import UsdaSearch from '../components/UsdaSearch.jsx'
 import Diet from '../components/Diet.jsx'
-import LocalFoodDatabase from '../components/LocalFoodDatabase.jsx';
+import LocalFoodDatabase from '../components/LocalFoodDatabase.jsx'
+import ComputeDiet from '../components/ComputeDiet.jsx'
 
 export default (param = '') => ([
     // {
@@ -39,6 +40,14 @@ export default (param = '') => ([
         role: ['Super User'],
         exact: true,
         main: () => <LocalFoodDatabase />
+    },
+    {
+        name: 'Compute Diet',
+        path: '/computediet',
+        key: 'computediet',
+        role: ['Super User'],
+        exact: true,
+        main: () => <ComputeDiet />
     },
     {
         name: 'USDASearch',

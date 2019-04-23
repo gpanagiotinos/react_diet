@@ -1,13 +1,12 @@
 import ApolloBoostClient from 'apollo-boost'
 import React from 'react'
-import gql from 'graphql-tag'
 import fetch from 'isomorphic-fetch'
-import { Query, Mutation } from 'react-apollo'
-import {removeObjectAttribute} from '../redux/helpers'
+import { Query } from 'react-apollo'
 import InfinityScroll from '../help-components/InfinityScroll.jsx'
 import TableBodyRow from '../ui-components/TableBodyRow.jsx'
 import NutritionBox from '../ui-components/NutritionBox.jsx'
-import {alertActions} from '../redux/actions'
+
+import {GET_USDADATA, GET_USDANUTRITION, GET_USDALISTDATA, GET_USDASEARCHLIST, GET_LOCALFOODDATA} from './apollo.tags.js'
 
 export const apollo = {
   apolloQuery,
@@ -38,10 +37,12 @@ export const GetUSDAData = (text, foodGroup, offset, max, componentKey, actions 
   {
     ({loading, error, data, fetchMore, networkStatus}) => {
         if (data.getUSDAData !== undefined) {
-          itemsArray = [...data.getUSDAData.list.item.map((item) => {
-            delete item['__typename']
-            return {...item}
-          })]
+          if (data.getUSDAData.list !== null) {
+            itemsArray = [...data.getUSDAData.list.item.map((item) => {
+              delete item['__typename']
+              return {...item}
+            })]
+          }
         }
         if (!error) {
         return (
@@ -71,10 +72,12 @@ export const GetUSDAData = (text, foodGroup, offset, max, componentKey, actions 
               }})
           }/>
           {
-            (loading ? <div className='is-fullwidth'><div className='element is-loading'></div></div> : null)
+            (loading ? <td colSpan='6'><div className='container is-fullwidth has-text-centered'><div className='notification has-background-white element is-loading'></div></div></td> : null)
           }
           </>
           )
+        } else if (error) {
+          <td colSpan='6'><div className='container is-fullwidth has-text-centered'><div className='notification is-danger'>Something Went Wrong</div></div></td>
         }
       return (null)
     }
@@ -93,14 +96,10 @@ export const GetUSDANutritionData = (ndbno) => {
           if (!loading && !error) {
             const {desc, nutrients} = data.getUSDANutritionData.foods[0].food
             return (<NutritionBox foodDesc={desc} foodNutrients={nutrients} />)
+          } else if (error) {
+            <td colSpan='6'><div className='container is-fullwidth has-text-centered'><div className='notification is-danger'>Something Went Wrong</div></div></td>
           } else {
-            return (loading ? (<div className='section'>
-            <div className='container'>
-              <div className='columns is-multiline is-mobile'>
-                <div className='is-fullwidth'><div className='element is-loading'></div></div>
-              </div>
-            </div>
-          </div>) : null)
+            return (loading ? (<td colSpan='5'><div className='container is-fullwidth has-text-centered'><div className='notification has-background-white element is-loading'></div></div></td>) : null)
           }
         }
       }
@@ -132,121 +131,6 @@ export const GetLocalFoodData = () => {
   }
   </Query>)
 }
-
-const GET_USDADATA = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset, max: $max)
-    {
-      list 
-      { 
-        start
-        end
-        total
-        item 
-        {
-          name
-          group
-          ds
-          ndbno
-          manu
-        }
-      }
-    }
-}`
-const GET_USDANUTRITION = gql`query getUSDANutritionData($ndbno: String!) {getUSDANutritionData(ndbno: $ndbno)
-  {
-    foods 
-    { 
-      food
-      {
-        sr
-        type
-        desc {
-          ndbno
-          name
-          sd
-          fg
-          sn
-          cn
-          nf
-          cf
-          ff
-          pf
-          r
-          rd
-          ds
-          manu
-          ru
-        }
-        ing {
-          desc
-          upd
-        }
-        nutrients 
-        {
-          nutrient_id
-          name
-          derivation
-          group
-          unit
-          value
-          measures 
-          {
-            label
-            eqv
-            eunit
-            qty
-            value
-          }
-        }
-      }
-    }
-  }
-}`
-const GET_USDALISTDATA = gql`query getUSDAListData($lt: String!, $max: Int!, $offset: Int!, $sort: String!, $format: String!)
-{
-  getUSDAListData(lt: $lt, max: $max, offset: $offset, sort: $sort, format: $format) {
-    list {
-      item
-      {
-        offset
-        id
-        name
-      }
-    }
-  }
-}`
-const GET_USDASEARCHLIST = gql`query getUSDAData($text: String!, $foodGroup: String!, $offset: Int!, $max: Int!) {getUSDAData(text: $text, foodGroup: $foodGroup, offset: $offset, max: $max)
-  {
-    list 
-      { 
-        item 
-        {
-          offset
-          ndbno
-          name
-        }
-      }
-  } 
-}`
-
-const GET_LOCALFOODDATA = gql `query getLocalFoodData{getLocalFoodData
-{
-  ndbno
-  name
-  sd 
-  fg 
-  sn 
-  cn 
-  nf 
-  cf 
-  ff 
-  pf 
-  r 
-  rd 
-  ds
-  manu
-  ru
-}
-}`
 
 function apolloQuery (query) {
   switch (query) {
@@ -282,53 +166,6 @@ function apolloQuery (query) {
       break;
   }
 }
-
-// Apollo Client Mutations
-export const SetUSDAFood = (ndbno) => {
-  return (
-  <Query query={GET_USDANUTRITION} variables={{ndbno}}>
-    {({loading, error, data}) => {
-      console.log(data)
-      if (!loading && !error) {
-        return data.getUSDANutritionData.foods.map((foodsObject) => {
-          const {desc, nutrients} = foodsObject.food
-          console.log({desc, nutrients})
-          const food = {...{desc, nutrients}}
-          return(<Mutation mutation={SET_USDAFOOD}>
-                {(setUSDAFood, {data, loading, error, called}) => {
-                  if (!data && !called) {
-                    setUSDAFood({variables: {food: removeObjectAttribute(food)('__typename')}})
-                    return (loading ? <div className='is-fullwidth'><div className='element is-loading'></div></div> : null)
-                  } else {
-                    return (<NutritionBox foodDesc={food.desc} foodNutrients={food.nutrients} />)
-                  }
-
-                }}
-            </Mutation>)
-          })
-        } else {
-          return (loading ? (<div className='section'>
-          <div className='container'>
-            <div className='columns is-multiline is-mobile'>
-              <div className='is-fullwidth'><div className='element is-loading'></div></div>
-            </div>
-          </div>
-        </div>) : null)
-        }
-      }
-    }
-  </Query>
-  )
-}
-const SET_USDAFOOD = gql`
-  mutation setUSDAFood($food: USDAFoodInput!){
-    setUSDAFood(food: $food) {
-      desc {
-        ndbno
-        name
-      }
-    }
-  }`
 
 function apolloMutation(mutation) {
   switch (mutation) {

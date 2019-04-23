@@ -86,6 +86,7 @@ td[colspan="4"] {
 }
 
 .element {
+  margin: auto;
   &.is-loading {
       position: relative;
       pointer-events: none;
@@ -98,6 +99,10 @@ td[colspan="4"] {
           width: 2.25em;
           height: 2.25em;
           border-width: 0.25em;
+          border-top-color:   hsl(204, 86%, 53%);
+          border-left-color:  hsl(204, 86%, 53%);
+          border-bottom-color:  transparent;
+          border-right-color:  transparent;
       }
   }
 }

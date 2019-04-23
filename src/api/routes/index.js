@@ -8,6 +8,7 @@ import {render} from '../ssr/index.js'
 import {template} from '../ssr/template.js'
 const router = express.Router()
 import {router as user} from './user.js'
+import {router as diet} from './diet.js'
 if (process.env.NODE_ENV === 'development') {
     console.log(path.resolve(__dirname, '../../../dist/assets'))
     router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/')))
@@ -21,6 +22,7 @@ router.use('/graphql', express_graphql({
     context: {dbModel}
 }))
 router.use('/user', user)
+router.use('/diet', diet)
 // ssr request
 router.get('*', (req, res) => {
     validateSession(req).then((user) => {

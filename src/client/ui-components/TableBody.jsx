@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import NutritionRow from './NutritionRow.jsx'
-import {GetUSDAData} from '../services/apollo.service.js'
+import {GetUSDAData} from '../apollo/apollo.service.js'
 class TableBody extends React.Component {
   constructor(props) {
     super(props)

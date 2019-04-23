@@ -5,7 +5,7 @@ import App from '../../client/components/App.jsx'
 import {Provider} from 'react-redux'
 import configureStore from '../../client/redux/configureStore.js'
 import {StaticRouter} from 'react-router-dom'
-import {client} from '../../client/services/apollo.service.js'
+import {client} from '../../client/apollo/apollo.service.js'
 import {ApolloProvider} from 'react-apollo'
 
 const render = (initialState, context, req) => {

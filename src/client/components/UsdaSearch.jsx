@@ -6,8 +6,8 @@ import Table from '../ui-components/Table.jsx'
 import Pagination from '../ui-components/Pagination.jsx'
 import {connect} from 'react-redux'
 import {usdaActions, tableActions} from '../redux/actions'
-import {GetUSDAData, GetUSDANutritionData, SetUSDAFood} from '../services/apollo.service.js'
-
+import {GetUSDAData, GetUSDANutritionData} from '../apollo/apollo.service.js'
+import {SetUSDAFood} from '../apollo/apollo.mutation.js'
 class UsdaSearch extends React.Component {
   constructor(props) {
     super(props)
