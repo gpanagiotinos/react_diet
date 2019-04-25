@@ -81,14 +81,14 @@ const ComputeFoods = async () => {
     return redisData
   } catch (error) {
     Promise.reject(error)
-  }
-  
+  } 
 }
 const keysAsync = promisify(redisOptions.client.keys).bind(redisOptions.client)
 const hgetallAsync =  promisify(redisOptions.client.hgetall).bind(redisOptions.client)
 const filterData = (item) => {
   return (parseFloat(item.cardo) <= 50) && (parseFloat(item.fat) <= 30) && (parseFloat(item.protein) <= 20) && (parseFloat(item.sugar) <= 5)
 }
+
 const shuffleData = (array) => {
   let j, temp
   let arrayLength = array.length
