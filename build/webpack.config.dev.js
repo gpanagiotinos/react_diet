@@ -11,7 +11,7 @@ module.exports = {
             chunkFilename: '[id].css'
         }),
         new Dotenv({
-            path: path.resolve(__dirname, '../prod.env'),
+            path: path.resolve(__dirname, '../dev.env'),
             safe: true,
             systemvars: true 
          }),

@@ -8,19 +8,8 @@ const router = express.Router()
 
 const ComputeFoods = async () => {
   try {
-    const availableGroups = ['1800']
-    const FoodSearch = await fetch(config.usdaGroup100Foods('0900'), {method: 'GET', headers: {'Content-Type': 'application/json'}})
-    const FoodList = await FoodSearch.json()
     let arrayData = []
-    for(const item of FoodList.list.item) {
-      try {
-        const response = await fetch(config.usdaNutritionSearch(item.ndbno, 'b', 'json'))
-        const data = await response.json()
-        arrayData.push(data.foods[0].food)
-      } catch (error) {
-        Promise.reject(error)
-      }
-    }
+    //const dataDBFood = dbModel.Food.findAll({})
     let redisData = []
     for(const item of arrayData) {
       let gram320 = 100
@@ -116,7 +105,7 @@ const Calculate = async () => {
   return dietFinal
 }
 router.post('/compute_foods', (req, res) => {
-  ComputeFoods().then((response) => {
+  dbModel.Food.findAll({include: [{model: dbModel.FoodNutrition, include: [dbModel.FoodNutritionMeasure]}]}).then((response) => {
     res.status(200)
     res.json({
       FoodList: response,

@@ -16,7 +16,10 @@ var dbModel = {
     Role: Role.init(sequelize),
     Nutrition: Nutrition.init(sequelize)
 }
-
+//Associations
+Food.hasMany(FoodNutrition, {foreignKey: 'foodId', sourceKey: 'id'})
+FoodNutrition.hasMany(FoodNutritionMeasure, {foreignKey: 'foodNutritionId', sourceKey: 'id'})
+FoodNutrition.hasOne(Nutrition,  {foreignKey: 'id', sourceKey: 'nutritionId'})
 // fs
 //     .readdirSync('src/api/models')
 //     .filter((file) => {
