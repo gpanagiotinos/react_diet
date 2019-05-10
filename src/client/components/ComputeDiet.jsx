@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Button from '../ui-components/Button.jsx'
+import Input from '../ui-components/Input.jsx'
 import fetch from 'isomorphic-fetch'
 
 class ComputeDiet extends React.Component {
@@ -9,7 +10,14 @@ class ComputeDiet extends React.Component {
     this.state = {
       dietFoods: [],
       template: null,
-      clickedIndex: null
+      clickedIndex: null,
+      energy: 1200,
+      cardo: 50,
+      protein: 20,
+      sugar: 5,
+      fat: 30,
+      snack: 5,
+      lunch: 30
     }
     this.handleComputeDiet = this.handleComputeDiet.bind(this)
     this.handleCalculate = this.handleCalculate.bind(this)
@@ -39,27 +47,27 @@ class ComputeDiet extends React.Component {
     fetch(`/diet/calculate`, requestOptions).then((response) => {
       return response.json()
     }).then((data) => {
-      const dietFoods = data.Keys.slice(0, 5).map((item, index) => {
-        if(!(index%2)) {
-          return {...item, 
-            cardo: ((item.cardo * item.gram320)/100).toFixed(2),
-            protein: ((item.protein * item.gram320)/100).toFixed(2),
-            sugar: ((item.sugar * item.gram320)/100).toFixed(2),
-            fat: ((item.fat * item.gram320)/100).toFixed(2)
-          }
-        } else {
-          return {...item, 
-            cardo: ((item.cardo * item.gram60)/100).toFixed(2),
-            protein: ((item.protein * item.gram60)/100).toFixed(2),
-            sugar: ((item.sugar * item.gram60)/100).toFixed(2),
-            fat: ((item.fat * item.gram60)/100).toFixed(2)
-          }
-        }
-      })
-      console.log(dietFoods)
+      // const dietFoods = data.Keys.slice(0, 5).map((item, index) => {
+      //   if(!(index%2)) {
+      //     return {...item, 
+      //       cardo: ((item.cardo * item.gram320)/100).toFixed(2),
+      //       protein: ((item.protein * item.gram320)/100).toFixed(2),
+      //       sugar: ((item.sugar * item.gram320)/100).toFixed(2),
+      //       fat: ((item.fat * item.gram320)/100).toFixed(2)
+      //     }
+      //   } else {
+      //     return {...item, 
+      //       cardo: ((item.cardo * item.gram60)/100).toFixed(2),
+      //       protein: ((item.protein * item.gram60)/100).toFixed(2),
+      //       sugar: ((item.sugar * item.gram60)/100).toFixed(2),
+      //       fat: ((item.fat * item.gram60)/100).toFixed(2)
+      //     }
+      //   }
+      // })
+      console.log(data)
       this.setState((prevState, props) => {
         return {
-          dietFoods: dietFoods
+          dietFoods:  data.Keys.slice(0, 5)
         }
       })
     }).catch((error) => {
@@ -98,18 +106,18 @@ class ComputeDiet extends React.Component {
     return this.state.dietFoods.map((item, index) => {
       let report = null
       if (index === 0) {
-        report = `Breakfast, Name: ${item.name} ${item.gram320}(g)`
+        report = `Breakfast, Name: ${item.name} ${parseFloat((this.state.lunch * this.state.energy)/parseFloat(item.energy)).toFixed(2)}(g)`
       } else if (index === 1) {
-        report = `Brunch, Name: ${item.name} ${item.gram60}(g)`
+        report = `Brunch, Name: ${item.name} ${parseFloat((this.state.snack * this.state.energy)/parseFloat(item.energy)).toFixed(2)}(g)`
       }
       else if (index === 2) {
-        report = `Dinner, Name: ${item.name} ${item.gram320}(g)`
+        report = `Dinner, Name: ${item.name} ${parseFloat((this.state.lunch * this.state.energy)/parseFloat(item.energy)).toFixed(2)}(g)`
       }
       else if (index === 3) {
-        report = `Supper,  Name: ${item.name} ${item.gram60}(g)`
+        report = `Supper,  Name: ${item.name} ${parseFloat((this.state.snack * this.state.energy)/parseFloat(item.energy)).toFixed(2)}(g)`
       }
       else if (index === 4) {
-        report = `Lunch, Name: ${item.name} ${item.gram320}(g)`
+        report = `Lunch, Name: ${item.name} ${parseFloat((this.state.lunch * this.state.energy)/parseFloat(item.energy)).toFixed(2)}(g)`
       }
       return (<a className='list-item' onClick={(e) => (this.handleFoodReport(e, index))}>
       {report}
@@ -131,46 +139,47 @@ class ComputeDiet extends React.Component {
     }
     this.state.dietFoods.map((item, index) => {
       if (index === 0) {
-        reportSum.qty += parseFloat(item.gram320)
+        reportSum.qty += parseFloat((this.state.lunch * this.state.energy)/parseFloat(item.energy)).toFixed(2)
         reportSum.Protein += parseFloat(item.protein)
         reportSum.Carbohydrate += parseFloat(item.cardo)
         reportSum.Sugar += parseFloat(item.sugar)
         reportSum.Fat += parseFloat(item.fat)
       } else if (index === 1) {
-        reportSum.qty += parseFloat(item.gram60)
+        reportSum.qty += parseFloat((this.state.snack * this.state.energy)/parseFloat(item.energy)).toFixed(2)
         reportSum.Protein += parseFloat(item.protein)
         reportSum.Carbohydrate += parseFloat(item.cardo)
         reportSum.Sugar += parseFloat(item.sugar)
         reportSum.Fat += parseFloat(item.fat)
       }
       else if (index === 2) {
-        reportSum.qty += parseFloat(item.gram320)
+        reportSum.qty += parseFloat((this.state.lunch * this.state.energy)/parseFloat(item.energy)).toFixed(2)
         reportSum.Protein += parseFloat(item.protein)
         reportSum.Carbohydrate += parseFloat(item.cardo)
         reportSum.Sugar += parseFloat(item.sugar)
         reportSum.Fat += parseFloat(item.fat)
       }
       else if (index === 3) {
-        reportSum.qty += parseFloat(item.gram60)
+        reportSum.qty += parseFloat((this.state.snack * this.state.energy)/parseFloat(item.energy)).toFixed(2)
         reportSum.Protein += parseFloat(item.protein)
         reportSum.Carbohydrate += parseFloat(item.cardo)
         reportSum.Sugar += parseFloat(item.sugar)
         reportSum.Fat += parseFloat(item.fat)
       }
       else if (index === 4) {
-        reportSum.qty += parseFloat(item.gram320)
+        reportSum.qty += parseFloat((this.state.lunch * this.state.energy)/parseFloat(item.energy)).toFixed(2)
         reportSum.Protein += parseFloat(item.protein)
         reportSum.Carbohydrate += parseFloat(item.cardo)
         reportSum.Sugar += parseFloat(item.sugar)
         reportSum.Fat += parseFloat(item.fat)
       }
     })
+    console.log(reportSum)
     return (<div className='field is-grouped'>
       {Object.keys(reportSum).map((keys) => {
         return (<div className="control">
         <div className="tags has-addons">
           <span className="tag is-dark">{keys}</span>
-          <span className="tag is-success">{reportSum[keys].toFixed(2) + '(g)'}</span>
+          <span className="tag is-success">{reportSum[keys] + '(g)'}</span>
         </div>
       </div>)
       })
@@ -188,7 +197,42 @@ class ComputeDiet extends React.Component {
           <div className='column is-12'>
             <div className="field has-addons">
               <p className="control">
-                <input className="input" value='1200' type="text" placeholder="Your email" disabled/>
+                <a className="button is-static">
+                Lunch
+                </a>
+              </p>
+              <p className="control">
+                <Input type='text' name='lunch' value={this.state.lunch}></Input>
+              </p>
+              <p className="control">
+                <a className="button is-static">
+                %
+                </a>
+              </p>
+              <p className="control">
+                <a className="button is-static">
+                Snack
+                </a>
+              </p>
+              <p className="control">
+                <Input type='text' name='lunch' value={this.state.snack}></Input>
+              </p>
+              <p className="control">
+                <a className="button is-static">
+                %
+                </a>
+              </p>
+            </div>
+          </div>
+          <div className='column is-12'>
+            <div className="field has-addons">
+              <p className="control">
+                <a className="button is-static">
+                Energy
+                </a>
+              </p>
+              <p className="control">
+                <Input type='text' name='energy' value={this.state.energy}></Input>
               </p>
               <p className="control">
                 <a className="button is-static">
@@ -199,8 +243,13 @@ class ComputeDiet extends React.Component {
           </div>
           <div className='column is-12'>
             <div className="field has-addons">
-            <p className="control">
-                <input className="input" value='50' type="text" placeholder="Your email" disabled/>
+              <p className="control">
+                <a className="button is-static">
+                Carbohydrate
+                </a>
+              </p>
+              <p className="control">
+                <Input type='text' name='Carbohydrate' value={this.state.cardo}></Input>
               </p>
               <p className="control">
                 <a className="button is-static">
@@ -211,8 +260,13 @@ class ComputeDiet extends React.Component {
           </div>
           <div className='column is-12'>
             <div className="field has-addons">
-            <p className="control">
-                <input className="input" value='30' type="text" placeholder="Your email" disabled/>
+              <p className="control">
+                <a className="button is-static">
+                Fat
+                </a>
+              </p>
+              <p className="control">
+                <Input type='text' name='Fat' value={this.state.fat}></Input>
               </p>
               <p className="control">
                 <a className="button is-static">
@@ -223,8 +277,13 @@ class ComputeDiet extends React.Component {
           </div>
           <div className='column is-12'>
             <div className="field has-addons">
-            <p className="control">
-                <input className="input" value='20' type="text" placeholder="Your email" disabled/>
+              <p className="control">
+                <a className="button is-static">
+                Protein
+                </a>
+              </p>
+              <p className="control">
+                <Input type='text' name='Protein' value={this.state.protein}></Input>
               </p>
               <p className="control">
                 <a className="button is-static">
@@ -236,7 +295,12 @@ class ComputeDiet extends React.Component {
           <div className='column is-12'>
             <div className="field has-addons">
               <p className="control">
-                <input className="input" value='5' type="text" placeholder="Your email" disabled/>
+                <a className="button is-static">
+                Sugar
+                </a>
+              </p>
+              <p className="control">
+                <Input type='text' name='Sugar' value={this.state.sugar}></Input>
               </p>
               <p className="control">
                 <a className="button is-static">

@@ -6,6 +6,68 @@ import {redisOptions} from '../config/redis.js'
 import {promisify} from 'util'
 const router = express.Router()
 
+const CreateCacheDB = async (ndbnoArray) => {
+  let arrayData = []
+  let redisData = []
+  for(const item of ndbnoArray) {
+    try {
+      const response = await fetch(config.usdaNutritionSearch(item.dataValues.ndbno, 'b', 'json'))
+      const data = await response.json()
+      arrayData.push(data.foods[0].food)
+    } catch (error) {
+      Promise.reject(error)
+    }
+  }
+  for(const item of arrayData) {
+    let NutrientLimits = {
+      ndbno: item.desc.ndbno,
+      name: item.desc.name,
+      energy: 0,
+      cardo: 0,
+      fat: 0,
+      protein: 0,
+      sugar: 0
+    }
+    for(const nutrient of item.nutrients) {
+      switch (nutrient.nutrient_id) {
+        case '205':
+          NutrientLimits.cardo = nutrient.value
+        break
+        case '203':
+          NutrientLimits.protein = nutrient.value
+        break
+        case '269':
+          NutrientLimits.sugar = nutrient.value
+        break
+        case '204':
+          NutrientLimits.fat = nutrient.value
+        break
+        case '208':
+          NutrientLimits.energy = nutrient.value
+        break
+      }
+    }
+    redisData.push(NutrientLimits)
+  }
+  const redisStringData = redisData.map((item) => {
+    let hashKey = `ndbno${item.ndbno}`
+    Object.keys(item).map((key) => {
+      if (key !== 'ndbno') {
+       redisOptions.client.hset(hashKey,  `${key}`, `${item[key]}`, (error, reply) => {
+         if (error) {
+           console.log('Error', error)
+         } else {
+          console.log(reply.toString())
+         }
+         
+       })
+      } 
+    })
+    return hashKey
+  })
+  return redisStringData
+}
+
 const ComputeFoods = async () => {
   try {
     let arrayData = []
@@ -95,17 +157,19 @@ const Calculate = async () => {
   let keysData = []
   for(const key of shuffleKeys) {
     try {
-      const data = await hgetallAsync(key)
+      let data = await hgetallAsync(key)
+      data['ndbno'] = key
       keysData.push(data)
     } catch (error) {
       Promise.reject(error)
     }
   }
-  const dietFinal = keysData.filter(filterData)
-  return dietFinal
+  return keysData
 }
 router.post('/compute_foods', (req, res) => {
-  dbModel.Food.findAll({include: [{model: dbModel.FoodNutrition, include: [dbModel.FoodNutritionMeasure]}]}).then((response) => {
+  dbModel.Food.findAll({attributes: ['ndbno'], limit: 10}).then((response) => {
+    return CreateCacheDB(response)
+  }).then((response) => {
     res.status(200)
     res.json({
       FoodList: response,
