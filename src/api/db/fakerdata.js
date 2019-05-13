@@ -297,13 +297,13 @@ async function dbFake () {
             const rolesCreate = await dbModel.Role.create(role)
         }
         //USDA data Nutritions
-        createNutritions().then(async (data) => {
-            for(const nutritionObject of data.list.item) {
-                const nutritionCreate = await dbModel.Nutrition.create({nutrient_id: nutritionObject.id, nutrient_name: nutritionObject.name})
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
+        // createNutritions().then(async (data) => {
+        //     for(const nutritionObject of data.list.item) {
+        //         const nutritionCreate = await dbModel.Nutrition.create({nutrient_id: nutritionObject.id, nutrient_name: nutritionObject.name})
+        //     }
+        // }).catch((error) => {
+        //     console.log(error)
+        // })
         // ComputeFoods().then((response) => {
         //     console.log(response)
         // }).catch((error) => {

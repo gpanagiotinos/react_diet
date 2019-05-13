@@ -48,6 +48,7 @@ const CreateCacheDB = async (ndbnoArray) => {
       }
     }
     redisData.push(NutrientLimits)
+    console.log(redisData.length)
   }
   const redisStringData = redisData.map((item) => {
     let hashKey = `ndbno${item.ndbno}`
@@ -151,15 +152,20 @@ const shuffleData = (array) => {
   }
   return array
 }
-const Calculate = async () => {
+const Calculate = async (request) => {
   const keys = await keysAsync('ndbno*')
   const shuffleKeys = [...shuffleData(keys)]
   let keysData = []
   for(const key of shuffleKeys) {
     try {
       let data = await hgetallAsync(key)
-      data['ndbno'] = key
-      keysData.push(data)
+      if(data.cardo <= request.cardo && data.protein <= request.protein && data.sugar <= request.sugar && data.fat <= request.fat) {
+        data['ndbno'] = key
+        keysData.push(data)
+      }
+      if (keysData.length >= 5 ) {
+        return keysData
+      }
     } catch (error) {
       Promise.reject(error)
     }
@@ -167,7 +173,7 @@ const Calculate = async () => {
   return keysData
 }
 router.post('/compute_foods', (req, res) => {
-  dbModel.Food.findAll({attributes: ['ndbno'], limit: 10}).then((response) => {
+  dbModel.Food.findAll({attributes: ['ndbno']}).then((response) => {
     return CreateCacheDB(response)
   }).then((response) => {
     res.status(200)
@@ -185,7 +191,7 @@ router.post('/compute_foods', (req, res) => {
 })
 
 router.post('/calculate', (req, res) => {
-  Calculate().then((response) => {
+  Calculate(req.body).then((response) => {
     res.status(200)
     res.json({
       Keys: response,
