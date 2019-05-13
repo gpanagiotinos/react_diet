@@ -267,7 +267,7 @@ class ComputeDiet extends React.Component {
       <div className='column is-6'>
         <div className='columns is-multiline'>
           <div className='column is-12'>
-          <Button key={'computeDiet'} label='Import Data' bulmaType='link' onButtonClick={this.handleComputeDiet}/>
+          {/* <Button key={'computeDiet'} label='Import Data' bulmaType='link' onButtonClick={this.handleComputeDiet}/> */}
           <Button key={'calculate'} label='Calculate' bulmaType='info' onButtonClick={this.handleCalculate}/>
           </div>
           <div className='column is-12'>
