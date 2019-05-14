@@ -38,7 +38,6 @@ router.get('*', (req, res) => {
         let response = null
         const {content} = render({loggedIn: true, user: user}, {}, req)
         if (process.env.NODE_ENV === 'development') {
-            console.log('success')
             response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
         } else {
             response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
