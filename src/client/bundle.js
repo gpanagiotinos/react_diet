@@ -5,7 +5,7 @@ import {Router} from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 const browserHistory = createBrowserHistory({basename: '/'})
 // import {history} from '../client/redux/helpers'
-import { BrowserRouter } from "react-router-dom"
+import { BrowserRouter } from 'react-router-dom'
 import {Provider} from 'react-redux'
 import configureStore from './redux/configureStore'
 import './assets/scss/main.scss'
