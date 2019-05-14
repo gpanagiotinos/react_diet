@@ -8,12 +8,12 @@ import { userActions, alertActions } from '../redux/actions'
 class Login extends React.Component {
     constructor(props) {
         super(props)
+        this.InputReferences = {}
         this.state = {
             username: '',
             password: '',
-            submitted: false
+            submitted: false,
         }
-        console.log(this.props)
         this.handleChange = this.handleChange.bind(this)
         this.handleLoggedIn = this.handleLoggedIn.bind(this)
     }
@@ -25,16 +25,16 @@ class Login extends React.Component {
     }
     handleLoggedIn(e) {
         e.preventDefault()
-
-        this.setState({ submitted: true })
         const {username, password} = this.state
         const dispatch = this.props.dispatch
         if (username && password) {
+            this.setState({ submitted: true })
             dispatch(userActions.login(username, password, this.props.history))
         } else {
             ['username', 'password'].map((value) => {
                 if(this.state[value] === '') {
                     dispatch(alertActions.errorInput(capitalize(value) + ' is Required', value))
+                    this.InputReferences[value].InputRef.current.focus()
                 }
             })
         }
@@ -46,14 +46,14 @@ class Login extends React.Component {
     render () {
         return (
             <div className='columns is-mobile is-centered'>
-                <div className='column is-half'>
+                <form className='column is-half'>
                     <p className='title is-1'>
                         Log in
                     </p>
-                    <Input type='username' label='Username' name='username' value={this.state.username} onInputChange={this.handleChange} leftIcon='user'/>
-                    <Input type='password' label='Password' name='password' value={this.state.password} onInputChange={this.handleChange} leftIcon='lock' rightIcon = 'eye-slash'/>
+                    <Input ref={(ref) => (this.InputReferences['username'] = ref)} type='username' label='Username' name='username' value={this.state.username} onInputChange={this.handleChange} onEnterPress={this.handleLoggedIn} leftIcon='user'/>
+                    <Input ref={(ref) => (this.InputReferences['password'] = ref)} type='password' label='Password' name='password' value={this.state.password} onInputChange={this.handleChange} onEnterPress={this.handleLoggedIn} leftIcon='lock' rightIcon = 'eye-slash'/>
                     <Button key={'logIn'} label='Log in' bulmaType='link' loadingButton={this.state.submitted} onButtonClick={this.handleLoggedIn}/>
-                </div>
+                </form>
             </div>
         )
     }

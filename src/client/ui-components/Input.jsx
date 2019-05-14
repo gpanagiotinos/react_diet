@@ -139,4 +139,4 @@ function mapStateToProps(state, props) {
     // const helpMessage = {type: state.alertInput.type, message: state.alertInput.message, input: state.alertInput.input}
     return {helpMessage}
 }
-export default connect(mapStateToProps)(Input)
+export default connect(mapStateToProps, null, null, {forwardRef : true})(Input)

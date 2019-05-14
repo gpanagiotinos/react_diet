@@ -123,7 +123,6 @@ class Diet extends React.Component {
   }
 }
 function mapStateToProps (state, props) {
-  console.log(state)
   const {items} = state.menu
   return {items}
 }

@@ -11,6 +11,9 @@
 .navbar-item {
   display: flex;
   align-items: center;
+  img {
+    max-height: 100%;
+  }
 }
 .container {
   display: flex;

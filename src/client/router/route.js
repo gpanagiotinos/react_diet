@@ -23,6 +23,7 @@ export default (param = '') => ([
         key: 'login',
         role: ['all'],
         exact: true,
+        active: false,
         main: () => <Login />
     },
     // {
@@ -39,6 +40,7 @@ export default (param = '') => ([
         key: 'localfooddata',
         role: ['Super User'],
         exact: true,
+        active: false,
         main: () => <LocalFoodDatabase />
     },
     {
@@ -47,6 +49,7 @@ export default (param = '') => ([
         key: 'computediet',
         role: ['Super User'],
         exact: true,
+        active: false,
         main: () => <ComputeDiet />
     },
     {
@@ -55,6 +58,7 @@ export default (param = '') => ([
         key: 'usdaSearch',
         role: ['Super User', 'Admin'],
         exact: true,
+        active: false,
         main: () => <UsdaSearch />
     },
     {
@@ -63,6 +67,7 @@ export default (param = '') => ([
         key: 'diet',
         role: ['Super User', 'Admin'],
         exact: true,
+        active: false,
         main: () => <Diet />
     },
     {
@@ -71,6 +76,7 @@ export default (param = '') => ([
         key: 'logout',
         role: ['all'],
         exact: true,
+        active: false,
         main: () => <Logout />
     }
 ])

@@ -19,9 +19,9 @@ const store = configureStore(state)
 render(
     <Provider store= {store}>
         <ApolloProvider client={client}>
-            <Router history={browserHistory}>
+            <BrowserRouter>
                 <App/>
-            </Router>
+            </BrowserRouter>
         </ApolloProvider>
     </Provider>,
     document.getElementById('app')

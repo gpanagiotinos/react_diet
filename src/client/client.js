@@ -9,6 +9,8 @@ import {Provider} from 'react-redux'
 import configureStore from './redux/configureStore'
 import './assets/scss/main.scss'
 import App from './components/App.jsx'
+import {client} from './apollo/apollo.service.js'
+import {ApolloProvider} from 'react-apollo'
 
 const state = window.__STATE__
 delete window.__STATE__
@@ -17,9 +19,11 @@ const store = configureStore(state)
 
 hydrate(
     <Provider store= {store}>
-        <Router history={browserHistory}>
-            <App/>
-        </Router>
+        <ApolloProvider client={client}>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </ApolloProvider>
     </Provider>,
     document.getElementById('app')
 )
