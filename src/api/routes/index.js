@@ -20,6 +20,10 @@ if (process.env.NODE_ENV === 'development') {
 } else {
     router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))
     router.use('/assets', express.static(path.resolve(__dirname, 'assets')))
+    router.use('/static/img/:file', function (req, res) {
+        var imgfile = path.join(__dirname, '../../', '/client/assets/img/' + req.params.file)
+        res.sendFile(imgfile)
+      })
 }
 router.use('/graphql', express_graphql({
     schema: schema,
