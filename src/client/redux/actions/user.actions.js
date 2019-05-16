@@ -10,14 +10,12 @@ export const userActions = {
 
 function login (username, password, history) {
     return dispatch => {
-        console.log(history)
         dispatch(request({ username }))
         userService.login(username, password)
             .then((response) => {
                 dispatch(success(response.user))
                 history.push('/')
             }, (error) => {
-                console.log(error)
                 dispatch(failure(error.toString()))
                 dispatch(failureAlert(error))
             })

@@ -18,12 +18,12 @@ delete window.__STATE__
 const store = configureStore(state)
 
 hydrate(
-    <Provider store= {store}>
-        <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+        <Provider store= {store}>
             <BrowserRouter>
                 <App/>
             </BrowserRouter>
-        </ApolloProvider>
-    </Provider>,
+        </Provider>
+    </ApolloProvider>,
     document.getElementById('app')
 )

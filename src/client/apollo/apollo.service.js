@@ -2,9 +2,11 @@ import ApolloBoostClient from 'apollo-boost'
 import React from 'react'
 import fetch from 'isomorphic-fetch'
 import { Query } from 'react-apollo'
+import ApolloQuery from './ApolloQuery.jsx'
 import InfinityScroll from '../help-components/InfinityScroll.jsx'
 import TableBodyRow from '../ui-components/TableBodyRow.jsx'
 import NutritionBox from '../ui-components/NutritionBox.jsx'
+
 
 import {GET_USDADATA, GET_USDANUTRITION, GET_USDALISTDATA, GET_USDASEARCHLIST, GET_LOCALFOODDATA} from './apollo.tags.js'
 
@@ -14,8 +16,7 @@ export const apollo = {
 }
 export const client = new ApolloBoostClient({
   uri: `/graphql`,
-  fetch: fetch,
-  onError: (error) => apolloError(error)
+  fetch: fetch
 })
 
 const QueryComponents = {
@@ -33,7 +34,7 @@ const QueryComponents = {
  */
 export const GetUSDAData = (text, foodGroup, offset, max, componentKey, actions = []) => {
   let itemsArray = []
-  return (<Query query={GET_USDADATA} variables={{text, foodGroup, offset, max}} fetchPolicy="cache-and-network">
+  return (<ApolloQuery query={GET_USDADATA} variables={{text, foodGroup, offset, max}} fetchPolicy="cache-and-network">
   {
     ({loading, error, data, fetchMore, networkStatus}) => {
         if (data.getUSDAData !== undefined) {
@@ -76,13 +77,11 @@ export const GetUSDAData = (text, foodGroup, offset, max, componentKey, actions 
           }
           </>
           )
-        } else if (error) {
-          <td colSpan='6'><div className='container is-fullwidth has-text-centered'><div className='notification is-danger'>Something Went Wrong</div></div></td>
         }
       return (null)
     }
   }
-  </Query>)
+  </ApolloQuery>)
 }
 /**
  * Get Nutrition Report for A USDA Food ndbno
@@ -90,29 +89,26 @@ export const GetUSDAData = (text, foodGroup, offset, max, componentKey, actions 
  */
 export const GetUSDANutritionData = (ndbno) => {
   return (
-    <Query query={GET_USDANUTRITION} variables={{ndbno}} fetchPolicy="cache-and-network">
+    <ApolloQuery query={GET_USDANUTRITION} variables={{ndbno}} fetchPolicy="cache-and-network">
       {
         ({loading, error, data, networkStatus}) => {
           if (!loading && !error) {
             const {desc, nutrients} = data.getUSDANutritionData.foods[0].food
             return (<NutritionBox foodDesc={desc} foodNutrients={nutrients} />)
-          } else if (error) {
-            <td colSpan='6'><div className='container is-fullwidth has-text-centered'><div className='notification is-danger'>Something Went Wrong</div></div></td>
           } else {
             return (loading ? (<td colSpan='5'><div className='container is-fullwidth has-text-centered'><div className='notification has-background-white element is-loading'></div></div></td>) : null)
           }
         }
       }
-    </Query>
+    </ApolloQuery>
   )
 }
 
 export const GetLocalFoodData = () => {
-  return (<Query query={GET_LOCALFOODDATA} fetchPolicy="cache-and-network">
+  return (<ApolloQuery query={GET_LOCALFOODDATA} fetchPolicy="cache-and-network">
   {
     ({loading, error, data, fetchMore, networkStatus}) => {
       if (!loading && !error) {
-        console.log(data)
         return (<div className='list is-hoverable'>
           {data.getLocalFoodData.map((item) => {
             return <a className='list-item'>{item.name}</a>
@@ -129,7 +125,7 @@ export const GetLocalFoodData = () => {
       }
     }
   }
-  </Query>)
+  </ApolloQuery>)
 }
 
 function apolloQuery (query) {
@@ -177,14 +173,4 @@ function apolloMutation(mutation) {
         })
       }
   }
-}
-const apolloError = ({graphQLErrors, networkError}) => {
-    if(graphQLErrors) {
-      graphQLErrors.map(({message, locations, path}) => {
-        return `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      })
-    }
-    if (networkError) {
-      return `[Network error]: ${networkError}`
-    }
 }

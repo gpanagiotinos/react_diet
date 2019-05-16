@@ -12,9 +12,9 @@ class App extends Component {
     render () {
        return ( 
        <div>
-           <TopNavBar/>
-           <Notification/>
-           <Main/>
+            <TopNavBar/>
+            <Notification/>
+            <Main/>
         </div>
        )
     }

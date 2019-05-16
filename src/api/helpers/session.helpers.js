@@ -24,9 +24,6 @@ const  userHasSession = (session)  => {
       let flag = access.indexOf(databaseRoles.find((value) => {
         return parseInt(Object.keys(value)) === req.session.data.role
       }).values())
-      console.log(flag)
-    } else {
-      console.log(req.session, req.cookies)
     }
     next()
   }

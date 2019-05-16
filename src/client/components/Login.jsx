@@ -42,7 +42,6 @@ class Login extends React.Component {
             return string.charAt(0).toUpperCase() + string.slice(1)
          }
     }
-
     render () {
         return (
             <div className='columns is-mobile is-centered'>

@@ -4,6 +4,7 @@ import {dbModel} from '../models/init.js'
 import express from 'express'
 import path from 'path'
 import {validateSession} from '../helpers/session.helpers.js'
+import {graphQLAuthentication} from '../helpers/auth.helpers.js'
 import {render} from '../ssr/index.js'
 import {template} from '../ssr/template.js'
 const router = express.Router()
@@ -25,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
         res.sendFile(imgfile)
       })
 }
-router.use('/graphql', express_graphql({
+router.use('/graphql', graphQLAuthentication, express_graphql({
     schema: schema,
     graphiql: true,
     context: {dbModel}
