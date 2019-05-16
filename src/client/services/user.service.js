@@ -1,4 +1,4 @@
-import {config} from '../config'
+import fetch from 'isomorphic-fetch'
 export const userService = {
     login,
     logout
@@ -10,7 +10,7 @@ function login(username, password) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password})
     }
-    return fetch(`${config.apiUrl}/user/login`, requestOptions)
+    return fetch(`/user/login`, requestOptions)
         .then(handleResponse)
         .then((user) => {
             return user
@@ -22,7 +22,7 @@ function logout () {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'}
     }
-    return fetch(`${config.apiUrl}/user/logout`, requestOptions)
+    return fetch(`/user/logout`, requestOptions)
             .then(handleResponse)
             .then((response) => {
                 return response

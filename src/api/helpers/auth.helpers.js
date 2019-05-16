@@ -1,11 +1,11 @@
 import {dbModel} from '../models/init.js'
-import {userHasSession} from './session.helpers.js'
-const user  = dbModel.user
-export const authHelpers = {
-  localAuthentication
+import {userHasSession, validateSession} from './session.helpers.js'
+export {
+  localAuthentication,
+  graphQLAuthentication
 }
 
-async function localAuthentication(req, username, password) {
+const localAuthentication = async (req, username, password) => {
   if (userHasSession(req)) {
     return req.session.user
   }
@@ -18,5 +18,14 @@ async function localAuthentication(req, username, password) {
     }
   } catch (error) {
     return Promise.reject(error)
+  }
+}
+
+const graphQLAuthentication = async (req, res, next) => {
+  try {
+    const session = await validateSession(req)
+    next()
+  } catch (error) {
+    next(error)
   }
 }

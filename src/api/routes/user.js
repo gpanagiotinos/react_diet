@@ -5,16 +5,17 @@ import {errorHandler} from '../helpers/error.helpers.js'
 const router = express.Router()
 const checkUser = async (username, password, session) => {
     try {
-        const user = await dbModel.user.findOne({where: {username: username, password: password}})
+        const user = await dbModel.User.validateUsernamePassword(username, password)
         if (!user) {
-           return Promise.reject({status: 401, message: 'The username and password you entered did not match our records. Please double-check and try again.'})
+            return Promise.reject({status: 401, message: 'The username and password you entered did not match our records. Please double-check and try again.'})
+        } else if (!session) {
+            return Promise.reject({status: 500, message: 'Oops! Something went wrong! Help us improve your experience by sending an error report'})
         } else {
             sessionSave(session, user.dataValues)
-            console.log(session)
             return session.data
         }
     } catch (error) {
-        throw new Error(error)
+        return Promise.reject(error)
     }
     
 }

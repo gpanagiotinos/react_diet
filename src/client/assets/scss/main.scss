@@ -1,4 +1,7 @@
 @import '~bulma/bulma';
+#app {
+  padding: 5px;
+}
 .has-items-centered {
   margin: 0 auto !important;
   div {
@@ -8,6 +11,9 @@
 .navbar-item {
   display: flex;
   align-items: center;
+  img {
+    max-height: 100%;
+  }
 }
 .container {
   display: flex;
@@ -58,4 +64,48 @@
 
 .notification .is-danger{
     background-color: rgba(255, 56, 96, 0.1);
+}
+
+td[colspan="4"] {
+  text-align: center;
+}
+// drop down helpers
+.dropdown-content{
+  //height: 100%;
+  // min-width: 400px;
+  max-height: 200px;
+  overflow-y: auto;
+  a.dropdown-item {
+    white-space: normal;
+    max-width: 100%;
+  }
+}
+.dropdown.is-fullwidth {
+  display: flex;
+}
+
+.dropdown.is-fullwidth * {
+   width: 100%;
+}
+
+.element {
+  margin: auto;
+  &.is-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.5;
+      &:after {
+          @include loader;
+          position: absolute;
+          top: calc(50% - 1.125em);
+          left: calc(50% - 1.125em);
+          width: 2.25em;
+          height: 2.25em;
+          border-width: 0.25em;
+          border-top-color:   hsl(204, 86%, 53%);
+          border-left-color:  hsl(204, 86%, 53%);
+          border-bottom-color:  transparent;
+          border-right-color:  transparent;
+      }
+  }
 }

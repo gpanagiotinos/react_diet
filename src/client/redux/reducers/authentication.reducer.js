@@ -4,7 +4,7 @@ export function authentication (state = {loggedIn: false, user: {}}, action) {
     switch (action.type) {
         case userConstants.LOGIN_REQUEST:
             return {
-                loggingIn: true,
+                loggingIn: false,
                 user: action.user
             }
         case userConstants.LOGIN_SUCCESS:
@@ -18,7 +18,9 @@ export function authentication (state = {loggedIn: false, user: {}}, action) {
                 user: action.user
             }  
         case userConstants.LOGIN_FAILURE:
-            return {}
+            return {
+                loggingIn: false
+            }
         case userConstants.LOGOUT:
             return {}
         default:

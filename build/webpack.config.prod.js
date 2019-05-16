@@ -1,11 +1,25 @@
 const path = require('path')
+const webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const Dotenv = require('dotenv-webpack')
 module.exports = {
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        }),
+        new Dotenv({
+            path: path.resolve(__dirname, '../prod.env'),
+            safe: true,
+            systemvars: true 
+         })
+    ],
     entry: {
-        client: './src/client/client.js',
-        bundle: './src/client/bundle.js'
+        client: './src/client/client.js'
     },
+    // devtool: 'source-map',
     output: {
-        path: path.join(__dirname, '../assets'),
+        path: path.join(__dirname, '../dist/assets'),
         filename: '[name].js',
         publicPath: '/'
     },
@@ -26,37 +40,19 @@ module.exports = {
                 }
             },
             {
+                test:/\.json$/,
+                use: {
+                    loader: 'json-loader'
+                }
+            },
+            {
                 test: /\.html$/,
                 use: [{loader: 'html-loader'}]
             },
             {
                 test: /\.(scss|sass)$/,
-                use: [{
-                  loader: 'style-loader'
-                }, {
-                  loader: 'css-loader'
-                }, {
-                  loader: 'sass-loader',
-                  options: {
-                    includePaths: [path.resolve('../node_modules')]
-                  }
-                }]
-              }
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+            }
         ]
     },
-    // devServer: {
-    //     historyApiFallback: true,
-    //     port: 8090,
-    //     open: true,
-    //     proxy: {
-    //         '/api': 'http://localhost:8091'
-    //     }
-    // },
-    plugins: [
-        // new HtmlWebPackPlugin({
-        //     template: './src/index.html',
-        //     filename: './index.html',
-        //     excludeChunks: ['server']
-        // })
-    ]
 }

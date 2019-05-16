@@ -2,39 +2,68 @@ import React from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {connect} from 'react-redux'
 import {alertActions} from '../redux/actions'
+import DropDown from './DropDown.jsx'
 class Input extends React.Component {
     constructor (props) {
         super(props)
-        // this.InputRef = React.createRef()
+        this.InputRef = React.createRef()
         this.state = {
             placeholder: this.props.placeholder,
             type: this.props.type,
             name: this.props.name,
             id: this.props.id,
-            value: '',
+            value: this.props.value !== undefined ? this.props.value : '',
             label: this.props.label,
             leftIcon: this.props.leftIcon,
             rightIcon: this.props.rightIcon, 
             onInputChange: this.props.onInputChange,
-            required: this.props.required
+            onInputFocus: this.props.onInputFocus,
+            onEnterPress: this.props.onEnterPress,
+            required: this.props.required,
+            size: this.props.size,
+            inputTimer: this.props.inputTimer !== undefined ? this.props.inputTimer : 0,
+            inputTimeout: null
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         this.handleInputClass = this.handleInputClass.bind(this)
         this.handleInputType = this.handleInputType.bind(this)
         this.handleInputLeftIcons = this.handleInputLeftIcons.bind(this)
         this.handleInputRightIcons = this.handleInputRightIcons.bind(this)
         this.handleShowPassword = this.handleShowPassword.bind(this)
         this.handleInputHelpMessage = this.handleInputHelpMessage.bind(this)
+        this.handleLabel = this.handleLabel.bind(this)
+        this.handleOnKeyPress = this.handleOnKeyPress.bind(this)
     }
     handleChange(e) {
         e.persist()
+        clearTimeout(this.state.inputTimeout)
+        this.setState((prevState, props) => ({
+            value: e.target.value,
+            inputTimeout: setTimeout(this.triggerChange.bind(this, e), props.inputTimer)
+        }))
+    }
+    handleOnKeyPress(e) {
+        if (this.state.onEnterPress !== undefined && e.key === 'Enter') {
+            this.state.onEnterPress(e, e.target.value) 
+        }   
+    }
+    triggerChange(e) {
         this.setState((prevState, props) => ({
             value: e.target.value
         }))
         if (e.target.value.length ===  1) {
             this.props.dispatch(alertActions.clearInput(this.state.type))
         }
-        this.state.onInputChange(e)
+        if (this.state.onInputChange !== undefined) {
+            this.state.onInputChange(e, e.target.value)
+        } 
+    }
+    handleClick(e) {
+        this.InputRef.current.focus()
+        if (this.state.onInputFocus !== undefined) {
+            this.state.onInputFocus(e)
+        } 
     }
     handleInputClass() {
         switch (this.state.type) {
@@ -52,6 +81,9 @@ class Input extends React.Component {
             case 'password':
                 return 'password'
             break
+            case 'number':
+                return 'number'
+            break
         }
     }
     handleInputLeftIcons() {
@@ -68,7 +100,7 @@ class Input extends React.Component {
     }
     handleShowPassword() {
         this.setState((prevState, props) => ({
-            rightIcon: prevState.rightIcon === 'eye-slash' ? 'eye' : 'eye-slash',
+            rightIcon: prevState.rightIcon === 'eye' ? 'eye-slash' : 'eye',
             type: prevState.type === 'password' ? 'text' : 'password'
         }))
     }
@@ -79,12 +111,19 @@ class Input extends React.Component {
             return null
         }
     }
+    handleLabel() {
+        if (this.state.label !== undefined) {
+            return (<label className='label'>{this.state.label}</label>)
+        } else {
+            return (null)
+        }
+    }
     render () {
         return (
             <div className='field'>
-                <label className='label'>{this.state.label}</label>
-                <div className={'control' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
-                    <input className='input' type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange}/>
+                {this.handleLabel()}
+                <div className={'control is-expanded' + (this.state.leftIcon ? ' has-icons-left': '') + (this.state.rightIcon  ? ' has-icons-right': '')}>
+                    <input className='input' defaultValue={this.state.value} size={this.state.size} type={this.handleInputType()} ref={this.InputRef} name={this.state.name} id= {this.state.id} placeholder={this.state.placeholder} onChange={this.handleChange} onClick={this.handleClick} onKeyPress={this.handleOnKeyPress}/>
                     {this.handleInputLeftIcons()}
                     {this.handleInputRightIcons()}
                     {this.handleInputHelpMessage()}
@@ -100,4 +139,4 @@ function mapStateToProps(state, props) {
     // const helpMessage = {type: state.alertInput.type, message: state.alertInput.message, input: state.alertInput.input}
     return {helpMessage}
 }
-export default connect(mapStateToProps)(Input)
+export default connect(mapStateToProps, null, null, {forwardRef : true})(Input)

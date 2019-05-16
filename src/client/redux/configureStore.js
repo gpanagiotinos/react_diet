@@ -1,10 +1,9 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import {authentication, alert, alertInput, table} from './reducers'
-export default function configureStore(preloadedState) {
-    
+import {authentication, alert, alertInput, table, tableRow, pagination, dropdown, mediaObject, menu} from './reducers'
+export default function configureStore(preloadedState = {loggedIn: false, user: null}) {
     const store = createStore(
-        combineReducers({authentication, alert, alertInput, table}),
+        combineReducers({authentication, alert, alertInput, table, tableRow, pagination, dropdown, mediaObject, menu}),
         applyMiddleware(
             thunkMiddleware
         )

@@ -1,20 +1,28 @@
 const path = require('path')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const Dotenv = require('dotenv-webpack')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
 module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css'
         }),
+        new Dotenv({
+            path: path.resolve(__dirname, '../dev.env'),
+            safe: true,
+            systemvars: true 
+         }),
+         new CleanWebpackPlugin()
     ],
     entry: {
-        client: './src/client/client.js',
         bundle: './src/client/bundle.js'
     },
     devtool: 'source-map',
     output: {
-        path: path.join(__dirname, '../assets'),
+        path: path.join(__dirname, '../dist'),
         filename: '[name].js',
         publicPath: '/'
     },
@@ -47,7 +55,7 @@ module.exports = {
             {
                 test: /\.(scss|sass)$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-            }
+            },
         ]
-    }
+    },
 }
