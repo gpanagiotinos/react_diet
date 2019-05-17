@@ -6,9 +6,6 @@ import {dbSync} from './db/syncmodels.js'
 import {dbFake} from './db/fakerdata.js'
 import {router as routes} from './routes/index.js'
 import session from './config/session.js'
-import open from 'open'
-
-
 
 // db connection instance
 if (process.env.NODE_ENV !== 'test') {

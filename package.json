@@ -15,7 +15,7 @@
     "serverBuildOld": "babel ./src/api/ -d dist/api",
     "client": "webpack-dev-server --config build/webpack.config.dev.js --mode development --watch",
     "heroku-postbuild": "npm run production && npm run serverBuild",
-    "testAPI": "cross-env NODE_ENV=test mocha --require @babel/register --require @babel/polyfill tests/*.js --exit"
+    "testAPI": "mocha --slow 500 --require @babel/register --require @babel/polyfill tests/*.js --exit"
   },
   "engines": {
     "node": "8.10.0"

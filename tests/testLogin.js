@@ -1,7 +1,6 @@
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 import {app} from '../src/api/server.js'
-import {config} from '../src/client/config'
 import {dbConnection} from '../src/api/db/dbsqlite.js'
 import {dbSync} from '../src/api/db/syncmodels.js'
 import {dbFake} from '../src/api/db/fakerdata.js'
@@ -11,7 +10,7 @@ chai.should()
 
 let successfulLogin = {
   'username': 'george',
-  'password': '123456'
+  'password': 'george1991'
 }
 let errorLogin = {
   'username': 'wrongusername',

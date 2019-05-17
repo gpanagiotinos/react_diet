@@ -2,8 +2,8 @@ import {db_user, db_userMySQL} from '../config/database.js'
 import Sequelize from 'sequelize'
 
 let sequelize = null
-if (process.env.NODE_ENV === 'development') {
-     sequelize = new Sequelize(db_userMySQL.dbname, db_userMySQL.dbusername, db_userMySQL.dbpassword, {
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' ) {
+    sequelize = new Sequelize(db_userMySQL.dbname, db_userMySQL.dbusername, db_userMySQL.dbpassword, {
         host: db_userMySQL.dbhost,
         logging: false,
         dialect: 'mysql', 
