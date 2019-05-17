@@ -10,8 +10,11 @@ import {template} from '../ssr/template.js'
 const router = express.Router()
 import {router as user} from './user.js'
 import {router as diet} from './diet.js'
+
+const cookieMaxAge = process.env.NODE_ENV === 'development' ? '432000000' : '86400000'
+
+
 if (process.env.NODE_ENV === 'development') {
-    console.log(path.resolve(__dirname, '../../../dist/assets'))
     router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/')))
     router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))
     router.use('/static/img/:file', function (req, res) {
@@ -43,7 +46,7 @@ router.get('*', (req, res) => {
         } else {
             response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
         }
-        res.setHeader('Cache-Control', 'assets, max-age=604800')
+        res.setHeader('Cache-Control', `assets, max-age=${cookieMaxAge}`)
         res.send(response)
     }).catch((error) => {
         console.log(error)
