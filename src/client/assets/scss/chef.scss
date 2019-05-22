@@ -1,0 +1,25 @@
+.addNewDietButton {
+  align-items: center;
+  justify-content: center;
+  border: 2px solid hsl(204, 86%, 53%);
+  border-radius: 5px;
+  padding: 10rem 5rem;
+  display: inline-block;
+  transition: background-color 300ms ease;
+  background-color: transparent;
+  span {
+    color: #209cee;
+    font-size: 5em;
+  }
+}
+.addNewDietButton:active {
+  background-color: hsl(204, 86%, 60%);
+}
+
+.NewMenu {
+  border: 2px solid hsl(204, 86%, 53%);
+  border-radius: 5px;
+  h1 {
+    color: #209cee;
+  }
+}

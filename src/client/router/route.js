@@ -7,6 +7,7 @@ import UsdaSearch from '../components/UsdaSearch.jsx'
 import Diet from '../components/Diet.jsx'
 import LocalFoodDatabase from '../components/LocalFoodDatabase.jsx'
 import ComputeDiet from '../components/ComputeDiet.jsx'
+import Chef from '../components/Chef.jsx'
 
 export default (param = '') => ([
     // {
@@ -69,6 +70,15 @@ export default (param = '') => ([
         exact: true,
         active: false,
         main: () => <Diet />
+    },
+    {
+        name: 'Chef',
+        path: '/chef',
+        key: 'chef',
+        role: ['Super User', 'Admin'],
+        exact: true,
+        active: false,
+        main: () => <Chef />
     },
     {
         name: 'Logout(' + param + ')',

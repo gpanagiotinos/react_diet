@@ -1,7 +1,8 @@
 import {dropdownConstants} from '../constants'
 
 export const dropdownActions = {
-  dropdownSelect
+  dropdownSelect,
+  dropdownQuery
 }
 
 function dropdownSelect (index, id, flag) {
@@ -17,5 +18,16 @@ function dropdownSelect (index, id, flag) {
   }
   function unselect (id) {
     return {type: dropdownConstants.UNSELECT_DROPDOWN, id}
+  }
+}
+
+function dropdownQuery (QueryObject, id) {
+  return dispatch => {
+    dispatch(addQuery(QueryObject, id))
+  }
+  function addQuery (QueryObject) {
+    return {
+      type: dropdownConstants.ADD_DROPDOWN_QUERY, QueryObject, id
+    }
   }
 }

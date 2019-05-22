@@ -7,6 +7,7 @@ import {validateSession} from '../helpers/session.helpers.js'
 import {graphQLAuthentication} from '../helpers/auth.helpers.js'
 import {render} from '../ssr/index.js'
 import {template} from '../ssr/template.js'
+import {sessionSave} from '../helpers/session.helpers.js'
 const router = express.Router()
 import {router as user} from './user.js'
 import {router as diet} from './diet.js'
@@ -14,7 +15,7 @@ import {router as diet} from './diet.js'
 const cookieMaxAge = process.env.NODE_ENV === 'development' ? '432000000' : '86400000'
 
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/')))
     router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))
     router.use('/static/img/:file', function (req, res) {
@@ -38,28 +39,45 @@ router.use('/user', user)
 router.use('/diet', diet)
 // ssr request
 router.get('*', (req, res) => {
-    validateSession(req).then((user) => {
+    if (process.env.NODE_ENV === 'test') {
         let response = null
+        const user = {
+            role: 'Super User',
+            username: 'test_user'
+        }
+        const user_session = {
+            role: '1000',
+            username: 'test_user'
+        }
+        sessionSave(req.session, user_session)
         const {content} = render({loggedIn: true, user: user}, {}, req)
-        if (process.env.NODE_ENV === 'development') {
-            response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
-        } else {
-            response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
-        }
-        res.setHeader('Cache-Control', `assets, max-age=${cookieMaxAge}`)
+        response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
+        res.setHeader('Cache-Control', 'assets, max-age=432000000')
         res.send(response)
-    }).catch((error) => {
-        console.log(error)
-        let response = null
-        const {content} = render({}, {}, req)
-        if (process.env.NODE_ENV === 'development') {
-            response = template("Nutrition Informatics", {loggedIn: false, user: null}, content)
-        } else {
-            response = template("Nutrition Informatics", {loggedIn: false, user: null}, content)
-        }
-        res.setHeader('Cache-Control', 'assets, max-age=604800')
-        res.send(response)
-    })
+    } else {
+        validateSession(req).then((user) => {
+            let response = null
+            const {content} = render({loggedIn: true, user: user}, {}, req)
+            if (process.env.NODE_ENV === 'development') {
+                response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
+            } else {
+                response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
+            }
+            res.setHeader('Cache-Control', `assets, max-age=${cookieMaxAge}`)
+            res.send(response)
+        }).catch((error) => {
+            console.log(error)
+            let response = null
+            const {content} = render({}, {}, req)
+            if (process.env.NODE_ENV === 'development') {
+                response = template("Nutrition Informatics", {loggedIn: false, user: null}, content)
+            } else {
+                response = template("Nutrition Informatics", {loggedIn: false, user: null}, content)
+            }
+            res.setHeader('Cache-Control', 'assets, max-age=604800')
+            res.send(response)
+        })
+    }
 })
 
 export {router}

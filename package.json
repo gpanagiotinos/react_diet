@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "teste2e": "node_modules/.bin/cypress open",
+    "test_start": "cross-env NODE_ENV=test concurrently \"npm run testing_server\" \"npm run testing\"",
+    "testing": "webpack --config build/webpack.config.test.js --mode development --watch",
+    "testing_server": "nodemon --exec node -r @babel/register -r dotenv/config ./src/api/server.js dotenv_config_path=test.env",
     "production": "webpack --config build/webpack.config.prod.js --mode production",
     "development": "webpack --config build/webpack.config.dev.js --mode development --watch",
     "start": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run development\"",
@@ -79,6 +83,7 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
+    "cypress": "^3.3.0",
     "dotenv": "^7.0.0",
     "dotenv-webpack": "^1.7.0",
     "express-graphql": "^0.7.1",

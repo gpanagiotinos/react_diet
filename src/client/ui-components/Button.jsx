@@ -8,15 +8,18 @@ export default class Button extends React.Component {
             label: this.props.label,
             rightIcon: this.props.rightIcon,
             leftIcon: this.props.leftIcon,
+            labelIcon: this.props.labelIcon,
             bulmaType: this.props.bulmaType,
             onButtonClick: this.props.onButtonClick,
             buttonCustomClass: this.props.buttonCustomClass,
             value: this.props.value,
             disable: this.props.disable !== undefined ? this.props.disable : false,
             loadingButton: this.props.loadingButton !== undefined ? this.props.loadingButton : false,
+            buttonId: this.props.buttonId
         }
         this.handleClick = this.handleClick.bind(this)
         this.handleButtonIcon = this.handleButtonIcon.bind(this)
+        this.handleLabel = this.handleLabel.bind(this)
     }
     componentDidUpdate (prevProps) {
         if (prevProps.loadingButton !== this.props.loadingButton) {
@@ -45,11 +48,20 @@ export default class Button extends React.Component {
             }
         }
     }
+    handleLabel () {
+        if (this.state.label !== undefined) {
+            return (<span>{this.state.label}</span>)
+        } else if (this.state.labelIcon !== undefined) {
+            return (<span className='icon'><FontAwesomeIcon icon={['fas', this.state.labelIcon]} /></span>)
+        } else {
+            return (null)
+        }
+    }
     render () {
         return (
-            <a className={[this.state.buttonCustomClass !== undefined ? this.state.buttonCustomClass :  'button' + ' is-' + this.state.bulmaType] + [this.state.loadingButton ? ' is-loading':'']} onClick={this.handleClick}>
+            <a id={this.state.buttonId} className={[this.state.buttonCustomClass !== undefined ? this.state.buttonCustomClass :  'button' + ' is-' + this.state.bulmaType] + [this.state.loadingButton ? ' is-loading':'']} onClick={this.handleClick}>
             {this.handleButtonIcon('left')}
-            <span>{this.state.label}</span>
+            {this.handleLabel()}
             {this.handleButtonIcon('right')}
             </a>
         )
