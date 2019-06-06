@@ -31,11 +31,12 @@ export const DropDownQuery = (query, args, id) => {
     <ApolloQuery query={query} variables={args} fetchPolicy="cache-and-network">
       {
         ({loading, error, data, fetchMore, networkStatus}) => {
-          if (data.getUSDAData !== undefined) {
+          console.log(data)
+          if (data.getUSDAData !== undefined && data.getUSDAData !== null) {
             if (data.getUSDAData.list !== null) {
               itemsArray = [...data.getUSDAData.list.item.map((item) => {
                 delete item['__typename']
-                return {...item}
+                return {...item, id: item.ndbno}
               })]
             }
           }

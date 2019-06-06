@@ -16,7 +16,7 @@ type USDADataList {
     start: String!
     end: String!
     total: String!
-    groud: String!
+    group: String!
     sort: String!
     item: [USDADataItem]
 }

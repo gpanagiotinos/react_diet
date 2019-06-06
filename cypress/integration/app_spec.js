@@ -33,5 +33,15 @@ describe("Base Application", () => {
     .scrollTo('bottom')
     .children().should('have.length', 50)
   })
+  it ("Add Item To Menu", function () {
+    cy.get("#search-input-dropdown-content")
+    .children('a').each(($el, index, $list) => {
+      cy.wrap($el).should('have.class', 'dropdown-item')
+      if (index === 5 || index === 10 || index === 30 || index === 35) {
+        cy.wrap($el).click()
+      }
+    })
+    cy.get('#new-diet-0').children('div').children('div').should('have.class', 'field is-grouped is-grouped-multiline')
+  })
 
 })

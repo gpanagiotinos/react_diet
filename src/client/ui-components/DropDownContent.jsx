@@ -11,14 +11,14 @@ class DropDownContent extends React.Component {
     }
     this.handleDropDownSelection = this.handleDropDownSelection.bind(this)
   }
-  handleDropDownSelection() {
-
+  handleDropDownSelection(e) {
+    console.log(e)
   }
   handleDropDownContent () {
     console.log(this.props.content)
     if (this.props.content.length > 0) {
       return this.props.content.map((item, index) => {
-        return (<Button buttonCustomClass={'dropdown-item'} key={item.id} onButtonClick={this.handleDropDownSelection} value={index} label={item.name}/>)
+        return (<Button buttonCustomClass={'dropdown-item'} buttonId={item.id} key={item.id} onButtonClick={this.handleDropDownSelection} value={index} label={item.name}/>)
       })
     } else {
       return (<Button buttonCustomClass={'dropdown-item button'} loadingButton={true} key={'loading'}/>)

@@ -1,5 +1,7 @@
 import {schema} from '../schema/schema.js'
 import express_graphql from 'express-graphql'
+import {addMockFunctionsToSchema, MockList} from 'graphql-tools'
+import mocks from '../db/mockGraphql.js'
 import {dbModel} from '../models/init.js'
 import express from 'express'
 import path from 'path'
@@ -14,7 +16,7 @@ import {router as diet} from './diet.js'
 
 const cookieMaxAge = process.env.NODE_ENV === 'development' ? '432000000' : '86400000'
 
-
+console.log(mocks)
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/')))
     router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))
@@ -22,6 +24,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         var imgfile = path.join(__dirname, '../../', '/client/assets/img/' + req.params.file)
         res.sendFile(imgfile)
       })
+    addMockFunctionsToSchema({schema, mocks, preserveResolvers: false})
 } else {
     router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))
     router.use('/assets', express.static(path.resolve(__dirname, 'assets')))
@@ -49,11 +52,15 @@ router.get('*', (req, res) => {
             role: '1000',
             username: 'test_user'
         }
-        sessionSave(req.session, user_session)
-        const {content} = render({loggedIn: true, user: user}, {}, req)
-        response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
-        res.setHeader('Cache-Control', 'assets, max-age=432000000')
-        res.send(response)
+        try {
+            sessionSave(req.session, user_session)
+            const {content} = render({loggedIn: true, user: user}, {}, req)
+            response = template("Nutrition Informatics", {loggedIn: true, user: user}, content)
+            res.setHeader('Cache-Control', 'assets, max-age=432000000')
+            res.send(response)   
+        } catch (error) {
+            errorHandler(error, res)
+        }
     } else {
         validateSession(req).then((user) => {
             let response = null
