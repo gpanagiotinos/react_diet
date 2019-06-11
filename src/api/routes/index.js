@@ -10,13 +10,13 @@ import {graphQLAuthentication} from '../helpers/auth.helpers.js'
 import {render} from '../ssr/index.js'
 import {template} from '../ssr/template.js'
 import {sessionSave} from '../helpers/session.helpers.js'
+import {errorHandler} from '../helpers/error.helpers.js'
 const router = express.Router()
 import {router as user} from './user.js'
 import {router as diet} from './diet.js'
 
 const cookieMaxAge = process.env.NODE_ENV === 'development' ? '432000000' : '86400000'
 
-console.log(mocks)
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     router.use('/assets', express.static(path.resolve(__dirname, '../../../dist/')))
     router.use('/favicon.ico', express.static(path.resolve(__dirname,'../../client/assets/img/favicon.ico')))

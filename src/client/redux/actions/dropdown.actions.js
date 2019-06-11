@@ -2,7 +2,8 @@ import {dropdownConstants} from '../constants'
 
 export const dropdownActions = {
   dropdownSelect,
-  dropdownQuery
+  dropdownQuery,
+  dropdownSelectItem
 }
 
 function dropdownSelect (index, id, flag) {
@@ -18,6 +19,16 @@ function dropdownSelect (index, id, flag) {
   }
   function unselect (id) {
     return {type: dropdownConstants.UNSELECT_DROPDOWN, id}
+  }
+}
+
+function dropdownSelectItem (id, item) {
+  return dispatch => {
+    dispatch(select(id, item))
+  }
+
+  function select (id, item) {
+    return {type: dropdownConstants.SELECT_DROPDOWN_ITEM, id, item}
   }
 }
 

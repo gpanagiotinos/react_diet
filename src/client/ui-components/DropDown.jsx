@@ -99,7 +99,7 @@ class DropDown extends React.Component {
           </div>)
       case 'input':
         return (
-            <Input id={this.state.dropDownId} inputTimer={3000} onInputFocus={this.handleDropDownActive} value={this.state.inputValue} onInputChange={this.handleDropDownInput}/>
+            <Input id={this.state.dropDownId} inputTimer={500} onInputFocus={this.handleDropDownActive} value={this.state.inputValue} onInputChange={this.handleDropDownInput}/>
         )
     }
   }

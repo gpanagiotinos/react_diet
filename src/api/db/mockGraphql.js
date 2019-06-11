@@ -24,6 +24,7 @@ export default {
     group: '100',
     name: fake.random.word(),
     ndbno: () => (fake.random.number({min: 10000, max: 99999}).toString()),
+    __typename: 'USDADataItem' 
   }),
   USDAData: () => ({
     list: () => new MockList(1)

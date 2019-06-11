@@ -79,4 +79,9 @@ class Chef extends React.Component {
   }
 }
 
-export default connect()(Chef)
+function mapStateToProps (state, props) {
+  console.log(state)
+  return {}
+}
+
+export default connect(mapStateToProps)(Chef)

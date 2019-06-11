@@ -41,7 +41,10 @@ describe("Base Application", () => {
         cy.wrap($el).click()
       }
     })
-    cy.get('#new-diet-0').children('div').children('div').should('have.class', 'field is-grouped is-grouped-multiline')
+    cy.get('#new-diet-0').children('div').children('div')
+    .should('have.class', 'field is-grouped is-grouped-multiline')
+    .children('div').should('have.class', 'control')
+    .children('div').should('have.class', 'tags has-addons')
   })
 
 })

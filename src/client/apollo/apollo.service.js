@@ -24,7 +24,12 @@ export const client = new ApolloBoostClient({
 const QueryComponents = {
   'TableBodyRow': TableBodyRow
 }
-
+/**
+ * Apollo Query with DropDown Component Response
+ * @param {GraphQL Query} query 
+ * @param {Query Arguments} args 
+ * @param {Element ID} id 
+ */
 export const DropDownQuery = (query, args, id) => {
   let itemsArray = []
   return (

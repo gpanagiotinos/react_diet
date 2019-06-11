@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '../ui-components/Button.jsx'
 import { connect } from 'react-redux'
+import {dropdownActions} from '../redux/actions'
 
 class DropDownContent extends React.Component {
   constructor(props) {
@@ -11,8 +12,9 @@ class DropDownContent extends React.Component {
     }
     this.handleDropDownSelection = this.handleDropDownSelection.bind(this)
   }
-  handleDropDownSelection(e) {
-    console.log(e)
+  handleDropDownSelection(e, value) {
+    const dispatch = this.props.dispatch
+    dispatch(dropdownActions.dropdownSelectItem(this.state.DropDownContentID, this.props.content[value]))
   }
   handleDropDownContent () {
     console.log(this.props.content)
