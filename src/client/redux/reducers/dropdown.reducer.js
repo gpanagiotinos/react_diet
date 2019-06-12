@@ -6,20 +6,12 @@ export function dropdown(state = {dropdownQuery: [], dropdownData: []}, action) 
     case dropdownConstants.ADD_DROPDOWN_QUERY:
       return {
         dropdownQuery: [...state.dropdownQuery, {id: action.id, QueryObject: action.QueryObject}],
-        dropdownData: [...state.dropdownData]
+        dropdownData: {...state.dropdownData}
       }
     case dropdownConstants.SELECT_DROPDOWN_ITEM: 
       return {
         dropdownQuery: [...state.dropdownQuery],
-        dropdownData: [...state.dropdownData.filter((object) => {
-          if (object.id !== action.id) {
-            return object
-          } else {
-            return {...object, itemsArray: [...object.itemsArray.filter((item) => {
-              return item.id !== action.item.id
-            }), action.item]}
-          }
-        }), {id: action.id, itemsArray: [action.item]}]
+        dropdownData: []
       }
     default:
       return state

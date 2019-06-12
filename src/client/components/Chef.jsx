@@ -80,7 +80,7 @@ class Chef extends React.Component {
 }
 
 function mapStateToProps (state, props) {
-  console.log(state)
+  console.log(state.dropdown)
   return {}
 }
 

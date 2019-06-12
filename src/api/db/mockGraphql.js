@@ -17,6 +17,7 @@ export default {
     total: '100',
     group: '1000',
     sort: 'n',
+    __typename: 'USDADataList',
     item: () => new MockList(25)
   }),
   USDADataItem: () => ({
@@ -27,6 +28,7 @@ export default {
     __typename: 'USDADataItem' 
   }),
   USDAData: () => ({
-    list: () => new MockList(1)
+    list: () => new MockList(1),
+    __typename: 'USDAData'
   })
 }
