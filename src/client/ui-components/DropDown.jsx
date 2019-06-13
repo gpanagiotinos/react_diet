@@ -42,7 +42,7 @@ class DropDown extends React.Component {
     //   return (<Button buttonCustomClass={'dropdown-item button'} loadingButton={true} key={'loading'}/>)
     // }
     if (this.props.query !== undefined && this.props.args !== undefined) {
-      return DropDownQuery(this.props.query, this.props.args, this.state.dropDownId)
+      return DropDownQuery(this.props.query, this.props.args, this.state.dropDownId, this.props.onSelectId)
     }
   }
   handleDropDownSelection (e, value) {
@@ -137,9 +137,10 @@ function mapStateToProps(state, props) {
     if (filterData.length > 0) {
       const query = filterData[0].QueryObject.query
       const args = filterData[0].QueryObject.args
+      const onSelectId = filterData[0].onSelectId
       // const selectedIndex = filterData[0].selectedIndex
       // const requestResolved = filterData[0].requestResolved
-      return {query, args}
+      return {query, args, onSelectId}
     } else {
       return {}
     }

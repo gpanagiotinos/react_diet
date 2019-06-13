@@ -1,17 +1,20 @@
 import {dropdownConstants} from '../constants'
 
-export function dropdown(state = {dropdownQuery: [], dropdownData: []}, action) {
-  console.log(action, state)
+export function dropdown(state = {dropdownQuery: [], dropdownData: {byId: [], byHash: {}}}, action) {
   switch(action.type) {
     case dropdownConstants.ADD_DROPDOWN_QUERY:
       return {
-        dropdownQuery: [...state.dropdownQuery, {id: action.id, QueryObject: action.QueryObject}],
+        dropdownQuery: [...state.dropdownQuery, {id: action.id, QueryObject: action.QueryObject, onSelectId: action.onSelectId}],
         dropdownData: {...state.dropdownData}
       }
     case dropdownConstants.SELECT_DROPDOWN_ITEM: 
       return {
         dropdownQuery: [...state.dropdownQuery],
-        dropdownData: []
+        dropdownData: {...state.dropdownData, byId: [...state.dropdownData.byId.filter((id) => {
+          return id !== action.id
+        }), action.id], byHash: {...state.dropdownData.byHash, [action.id]: state.dropdownData.byHash[action.id] !== undefined ? [...state.dropdownData.byHash[action.id].filter((item) => {
+          return item.ndbno !== action.item.ndbno
+        }), action.item] : [action.item]}}
       }
     default:
       return state

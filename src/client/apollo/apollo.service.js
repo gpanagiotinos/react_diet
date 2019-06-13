@@ -10,7 +10,7 @@ import DropDown from '../ui-components/DropDown.jsx'
 
 
 import {GET_USDADATA, GET_USDANUTRITION, GET_USDALISTDATA, GET_USDASEARCHLIST, GET_LOCALFOODDATA} from './apollo.tags.js'
-import DropDownContent from '../ui-components/DropDownContent.jsx';
+import DropDownContent from '../ui-components/DropDownContent.jsx'
 
 export const apollo = {
   apolloQuery,
@@ -30,13 +30,13 @@ const QueryComponents = {
  * @param {Query Arguments} args 
  * @param {Element ID} id 
  */
-export const DropDownQuery = (query, args, id) => {
+export const DropDownQuery = (query, args, id, onSelectId) => {
   let itemsArray = []
+  console.log('onSelectId', onSelectId)
   return (
     <ApolloQuery query={query} variables={args} fetchPolicy="cache-and-network">
       {
         ({loading, error, data, fetchMore, networkStatus}) => {
-          console.log(data)
           if (data.getUSDAData !== undefined && data.getUSDAData !== null) {
             if (data.getUSDAData.list !== null) {
               itemsArray = [...data.getUSDAData.list.item.map((item) => {
@@ -48,7 +48,7 @@ export const DropDownQuery = (query, args, id) => {
           if (!error) {
             return (
               <>
-                <DropDownContent DropDownContentID={id + '-dropdown-content'} content={itemsArray}/>
+                <DropDownContent DropDownContentID={id + '-dropdown-content'} content={itemsArray} onSelectId={onSelectId}/>
                 <InfinityScroll elementID={id + '-dropdown-content'} onLoadMore = {
                   () => fetchMore({
                     variables: {

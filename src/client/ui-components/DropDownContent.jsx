@@ -8,16 +8,16 @@ class DropDownContent extends React.Component {
     super(props)
     this.state = {
       content: this.props.content,
-      DropDownContentID: this.props.DropDownContentID
+      DropDownContentID: this.props.DropDownContentID,
+      onSelectId: this.props.onSelectId
     }
     this.handleDropDownSelection = this.handleDropDownSelection.bind(this)
   }
   handleDropDownSelection(e, value) {
     const dispatch = this.props.dispatch
-    dispatch(dropdownActions.dropdownSelectItem(this.state.DropDownContentID, this.props.content[value]))
+    dispatch(dropdownActions.dropdownSelectItem(this.state.onSelectId, this.props.content[value]))
   }
   handleDropDownContent () {
-    console.log(this.props.content)
     if (this.props.content.length > 0) {
       return this.props.content.map((item, index) => {
         return (<Button buttonCustomClass={'dropdown-item'} buttonId={item.id} key={item.id} onButtonClick={this.handleDropDownSelection} value={index} label={item.name}/>)

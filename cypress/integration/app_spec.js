@@ -45,6 +45,7 @@ describe("Base Application", () => {
     .should('have.class', 'field is-grouped is-grouped-multiline')
     .children('div').should('have.class', 'control')
     .children('div').should('have.class', 'tags has-addons')
+    cy.get("#search-input").click().click()
   })
 
 })

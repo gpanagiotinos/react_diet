@@ -32,13 +32,13 @@ function dropdownSelectItem (id, item) {
   }
 }
 
-function dropdownQuery (QueryObject, id) {
+function dropdownQuery (QueryObject, id, onSelectId) {
   return dispatch => {
-    dispatch(addQuery(QueryObject, id))
+    dispatch(addQuery(QueryObject, id, onSelectId))
   }
   function addQuery (QueryObject) {
     return {
-      type: dropdownConstants.ADD_DROPDOWN_QUERY, QueryObject, id
+      type: dropdownConstants.ADD_DROPDOWN_QUERY, QueryObject, id, onSelectId
     }
   }
 }

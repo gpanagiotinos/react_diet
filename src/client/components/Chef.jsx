@@ -17,10 +17,11 @@ class Chef extends React.Component {
     this.handleAddNewDiet = this.handleAddNewDiet.bind(this)
     this.handleDisplayNewDiet = this.handleDisplayNewDiet.bind(this)
     this.handleInputSearch = this.handleInputSearch.bind(this)
+    this.handleDietItems = this.handleDietItems.bind(this)
   }
   handleAddNewDiet (e) {
     this.setState((prevState, props) => {
-      const diet = {name: `Menu ${prevState.DietsArray.length}`, items: [], id: 'new-diet-' + prevState.DietsArray.length}
+      const diet = {name: `Menu ${prevState.DietsArray.length}`, id: 'new-diet-' + prevState.DietsArray.length}
       return {
         DietsArray: [...prevState.DietsArray, diet]
       }
@@ -33,13 +34,24 @@ class Chef extends React.Component {
           <h1 className='title'>{item.name}</h1>
           <div className='field is-grouped is-grouped-multiline'>
           {
-            item.items.map((tags) => {
-              return (null)
-            })
+            this.handleDietItems(item.id)
           }
           </div>
         </div>
     </div>)
+    })
+  }
+  handleDietItems (id) {
+    const Items = this.props.menuItems[id] !== undefined ? [...this.props.menuItems[id]] : []
+    return Items.map((item) => {
+      return (
+        <div key={item.ndbno} className='control'>
+          <div className='tags has-addons'>
+            <a className='tag is-link'>{item.name}</a>
+            <a className="tag is-delete"></a>
+          </div>
+        </div>
+      )
     })
   }
   handleInputSearch (value, id) {
@@ -49,7 +61,7 @@ class Chef extends React.Component {
       }
     })
     const QueryObject = {query: GET_USDADATA, args: {text: value, foodGroup: this.state.foodGroupID, offset: 0, max: 25}}
-    this.props.dispatch(dropdownActions.dropdownQuery(QueryObject, id))
+    this.props.dispatch(dropdownActions.dropdownQuery(QueryObject, id, this.state.DietsArray[0].id))
   }
   render () {
     return (
@@ -80,8 +92,9 @@ class Chef extends React.Component {
 }
 
 function mapStateToProps (state, props) {
-  console.log(state.dropdown)
-  return {}
+  const menuItems = {...state.dropdown.dropdownData.byHash}
+  console.log(menuItems)
+  return {menuItems}
 }
 
 export default connect(mapStateToProps)(Chef)
